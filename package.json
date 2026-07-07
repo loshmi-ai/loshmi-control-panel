@@ -1,0 +1,38 @@
+{
+  "name": "loshmi-control-panel",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "doppler run -- doppler run --mount .dev.vars --format env -- bun wrangler dev src/index.ts --remote=false --port=9999 --env=dev --test-scheduled",
+    "__db__": "------------------------------",
+    "db:master-d1:migrations:generate": "bun drizzle-kit generate --config src/db/drizzle.master-d1.config.ts",
+    "__infra__": "---------------------------",
+    "prd:pulumi:preview": "doppler run -c prd -- pulumi preview --cwd src/infra --stack loshmi-control-panel/prd",
+    "prd:pulumi:refresh": "doppler run -c prd -- pulumi refresh --cwd src/infra --stack loshmi-control-panel/prd",
+    "prd:pulumi:up": "doppler run -c prd -- pulumi up --cwd src/infra --stack loshmi-control-panel/prd",
+    "prd:pulumi:stack-output": "doppler run -c prd -- pulumi stack output --json --cwd src/infra --stack loshmi-control-panel/prd",
+    "prd:once:set-d1-database-ids": "doppler run -c prd -- bun run src/infra/tasks/set-d1-database-ids.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.14",
+    "@cloudflare/workers-types": "^5.20260707.1",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
+    "@types/react": "^19.2.17",
+    "@typescript-eslint/eslint-plugin": "^8.63.0",
+    "@typescript-eslint/parser": "^8.63.0",
+    "drizzle-kit": "^0.31.10",
+    "eslint": "^10.6.0",
+    "wrangler": "^4.107.0"
+  },
+  "peerDependencies": {
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "@pulumi/cloudflare": "^6.6.0",
+    "@pulumi/pulumi": "^3.146.0",
+    "drizzle-orm": "^0.45.2",
+    "hono": "^4.12.28",
+    "jsonc-parser": "^3.3.1"
+  }
+}

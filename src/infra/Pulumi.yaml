@@ -1,0 +1,8 @@
+name: loshmi-control-panel
+description: Infrastructure for Loshmi Control Panel
+runtime:
+  name: nodejs
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: typescript
