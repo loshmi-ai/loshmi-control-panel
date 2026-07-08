@@ -33,6 +33,28 @@ Run production infra commands through Doppler. The Pulumi app expects:
 - `CLOUDFLARE_ACCOUNT_ID`
 - Cloudflare provider credentials, such as `CLOUDFLARE_API_TOKEN`
 
+The Cloudflare API token should be scoped to the production account with these
+permissions. Create or update it from Cloudflare dashboard profile > API
+Tokens.
+
+Account permissions:
+
+- `Workers Observability`: `Edit`
+- `Workers Builds Configuration`: `Edit`
+- `D1`: `Edit`
+- `Workers R2 Storage`: `Edit`
+- `Workers KV Storage`: `Edit`
+- `Workers Scripts`: `Edit`
+
+User permissions:
+
+- `Memberships`: `Read`
+- `User Details`: `Read`
+
+Zone permissions:
+
+- `Workers Routes`: `Edit`
+
 Keep these in the `prd` Doppler config. The package scripts intentionally wrap
 Pulumi with `doppler run -c prd -- ...` so stack secret decryption and
 Cloudflare provider credentials come from the same environment.
