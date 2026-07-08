@@ -6,6 +6,19 @@ Use Bun only for package and project commands in this repo.
 - Use `bunx <tool>` for local CLI tools.
 - Do not use `npm`, `npx`, `pnpm`, or `yarn`.
 
+## Folder structure
+
+- `src/domain`: business objects, domain terms, and domain rules.
+- `src/backend`: server entrypoints, routes, request handling, and framework
+  integration that is specific to the backend app.
+- `src/lib`: small local wrappers around third-party libraries and other
+  non-domain shared code, such as the typed Hono factory.
+- `src/db`: database schemas, config, factories, migrations helpers, and
+  database-specific utilities.
+- `src/infra`: infrastructure-as-code and operational tasks.
+- `src/ui`: React Router UI code, routes, styles, and server rendering entry
+  points.
+
 ## Commit messages
 
 Use a relevant emoji prefix for commit messages. Pick an emoji that matches the
@@ -19,6 +32,20 @@ Examples:
 - `🗄️ Wire local D1 database helpers`
 - `🐛 Fix wrangler preview database lookup`
 - `📝 Document Bun-only project commands`
+
+## Local development secrets
+
+Use a single Doppler wrapper for the local dev command:
+
+`doppler run -- bunx vite dev`
+
+Doppler injects secrets into the process environment, and the Cloudflare Vite
+plugin makes those bindings available to the Worker runtime. Do not mount or
+generate `.dev.vars` for local development.
+
+The `CLOUDFLARE_ENV` flag comes from Doppler. Keep it set to `dev` for the local
+development project so the Cloudflare Vite plugin loads `env.dev` from
+`wrangler.jsonc` when `bunx vite dev` runs.
 
 ## Local D1 preview database
 

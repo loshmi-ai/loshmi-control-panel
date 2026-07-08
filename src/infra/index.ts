@@ -1,6 +1,6 @@
 import * as cloudflare from "@pulumi/cloudflare";
 import * as pulumi from "@pulumi/pulumi";
-import { parse, printParseErrorCode, type ParseError } from "jsonc-parser";
+import { type ParseError, parse, printParseErrorCode } from "jsonc-parser";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
@@ -25,8 +25,7 @@ function readWranglerConfig() {
   const source = readFileSync(WRANGLER_CONFIG_PATH, "utf-8");
   const errors: ParseError[] = [];
   const config = parse(source, errors, { allowTrailingComma: true }) as
-    | WranglerConfig
-    | undefined;
+    WranglerConfig | undefined;
 
   if (errors.length > 0) {
     const error = errors[0]!;
@@ -68,7 +67,7 @@ function getProductionD1Databases() {
 }
 
 function getResourceName(binding: string) {
-  return `d1-${binding.toLowerCase().replaceAll("_", "-")}`;
+  return `${binding.toLowerCase().replaceAll("_", "-")}`;
 }
 
 const { CLOUDFLARE_ACCOUNT_ID } = process.env;

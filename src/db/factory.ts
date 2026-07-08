@@ -3,7 +3,7 @@ import type { Context } from "hono";
 import { env } from "hono/adapter";
 
 import * as masterD1Schema from "@src/db/schema.master-d1";
-import type { Bindings } from "@src/domain/hono.types";
+import type { Bindings } from "@src/lib/hono.types";
 
 // SQLite database factory
 function d1DBfromContext(c: Context) {

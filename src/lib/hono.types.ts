@@ -1,6 +1,11 @@
-import { D1Database } from "@cloudflare/workers-types";
+import type { D1Database } from "@cloudflare/workers-types";
 
 export type Variables = Record<string, never>;
+
+export type Env = {
+  Bindings: Bindings;
+  Variables: Variables;
+};
 
 export type Bindings = {
   // Cloudflare Infra
