@@ -23,7 +23,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="m-0 bg-slate-50 font-sans text-gray-900">
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -51,10 +51,14 @@ export function ErrorBoundary({ error }: { error: unknown }) {
   }
 
   return (
-    <main className="page page-narrow">
-      <p className="eyebrow">Loshmi Control Panel</p>
-      <h1>{title}</h1>
-      <p>{message}</p>
+    <main className="min-h-screen max-w-[840px] px-7 py-12 sm:p-12">
+      <p className="mb-3 text-[0.82rem] font-bold tracking-[0.08em] text-indigo-600 uppercase">
+        Loshmi Control Panel
+      </p>
+      <h1 className="max-w-[760px] text-4xl leading-[1.1] font-bold sm:text-5xl">
+        {title}
+      </h1>
+      <p className="mt-6 text-base leading-relaxed text-slate-600">{message}</p>
     </main>
   );
 }
