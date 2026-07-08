@@ -2,9 +2,11 @@ import * as cloudflare from "@pulumi/cloudflare";
 import * as pulumi from "@pulumi/pulumi";
 import { type ParseError, parse, printParseErrorCode } from "jsonc-parser";
 import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
 
-const WRANGLER_CONFIG_PATH = resolve(import.meta.dir, "../../wrangler.jsonc");
+const INFRA_DIR = fileURLToPath(new URL(".", import.meta.url));
+const WRANGLER_CONFIG_PATH = resolve(INFRA_DIR, "../../wrangler.jsonc");
 const WRANGLER_ENV = "prd";
 
 type WranglerD1Database = {

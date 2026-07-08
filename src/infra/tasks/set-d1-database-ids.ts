@@ -11,7 +11,7 @@ import { resolve } from "node:path";
 
 const WRANGLER_CONFIG_PATH = resolve(import.meta.dir, "../../../wrangler.jsonc");
 const PULUMI_CWD = "src/infra";
-const PULUMI_STACK = "loshmi-control-panel/prd";
+const PULUMI_STACK = "prd";
 const WRANGLER_ENV = "prd";
 const PULUMI_OUTPUT_NAME = "d1DatabaseIds";
 

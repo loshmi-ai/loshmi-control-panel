@@ -29,8 +29,34 @@ Pulumi output `d1DatabaseIds` is keyed by the Wrangler binding name, for example
 
 Run production infra commands through Doppler. The Pulumi app expects:
 
+- `PULUMI_CONFIG_PASSPHRASE`
 - `CLOUDFLARE_ACCOUNT_ID`
 - Cloudflare provider credentials, such as `CLOUDFLARE_API_TOKEN`
+
+Keep these in the `prd` Doppler config. The package scripts intentionally wrap
+Pulumi with `doppler run -c prd -- ...` so stack secret decryption and
+Cloudflare provider credentials come from the same environment.
+
+This repo does not use Pulumi Cloud for stack state. The stack is stored in the
+configured local Pulumi backend and encrypted with `PULUMI_CONFIG_PASSPHRASE`.
+
+## One-Time Stack Setup
+
+Initialize the production stack before the first preview:
+
+```sh
+bun run prd:pulumi:stack-init
+```
+
+Use the stack name `prd`. Do not use `loshmi-control-panel/prd`; for this
+backend, the slash is parsed as an organization separator and fails before
+Pulumi reaches the project.
+
+Verify the stack exists:
+
+```sh
+bun run prd:pulumi:stack-ls
+```
 
 ## Commands
 

@@ -10,10 +10,12 @@
     "__db__": "------------------------------",
     "db:master-d1:migrations:generate": "bun drizzle-kit generate --config src/db/drizzle.master-d1.config.ts",
     "__infra__": "---------------------------",
-    "prd:pulumi:preview": "doppler run -c prd -- pulumi preview --cwd src/infra --stack loshmi-control-panel/prd",
-    "prd:pulumi:refresh": "doppler run -c prd -- pulumi refresh --cwd src/infra --stack loshmi-control-panel/prd",
-    "prd:pulumi:up": "doppler run -c prd -- pulumi up --cwd src/infra --stack loshmi-control-panel/prd",
-    "prd:pulumi:stack-output": "doppler run -c prd -- pulumi stack output --json --cwd src/infra --stack loshmi-control-panel/prd",
+    "prd:pulumi:stack-init": "doppler run -c prd -- pulumi stack init prd --cwd src/infra",
+    "prd:pulumi:stack-ls": "doppler run -c prd -- pulumi stack ls --cwd src/infra",
+    "prd:pulumi:preview": "doppler run -c prd -- pulumi preview --cwd src/infra --stack prd",
+    "prd:pulumi:refresh": "doppler run -c prd -- pulumi refresh --cwd src/infra --stack prd",
+    "prd:pulumi:up": "doppler run -c prd -- pulumi up --cwd src/infra --stack prd",
+    "prd:pulumi:stack-output": "doppler run -c prd -- pulumi stack output --json --cwd src/infra --stack prd",
     "prd:once:set-d1-database-ids": "doppler run -c prd -- bun run src/infra/tasks/set-d1-database-ids.ts"
   },
   "devDependencies": {
