@@ -1,44 +1,42 @@
-import { Link } from "react-router";
-
 export function meta() {
   return [
-    { title: "Loshmi Control Panel" },
+    { title: "Loshmi" },
     {
       name: "description",
-      content: "A Workers-native Hono and React Router control panel.",
+      content:
+        "High agency intelligence that achieves outcomes — Loshmi gives a full VPS with root access to every agent.",
     },
   ];
 }
 
 export default function Landing() {
   return (
-    <main className="grid min-h-screen items-center px-7 py-12 sm:p-12">
-      <section className="max-w-[720px]">
-        <p className="mb-3 text-[0.82rem] font-bold tracking-[0.08em] text-indigo-600 uppercase">
-          Loshmi Control Panel
-        </p>
-        <h1 className="max-w-[760px] text-[2.5rem] leading-[0.98] font-bold sm:text-[clamp(2.25rem,6vw,5rem)]">
-          Workers-native control surface for Loshmi.
+    <main className="grid min-h-screen place-items-center px-6">
+      <article className="max-w-[620px]">
+        <h1 className="font-mlm-roman text-[2.5rem] leading-[1.15] sm:text-[clamp(2.25rem,6vw,3.75rem)]">
+          High agency intelligence that achieves outcomes
         </h1>
-        <p className="mt-6 max-w-[600px] text-xl leading-relaxed text-slate-600">
-          Hono handles the backend, React Router renders the UI, and Vite keeps
-          the development loop fast.
-        </p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Link
-            className="inline-flex min-h-[42px] items-center justify-center rounded-lg border border-indigo-600 bg-indigo-600 px-4 font-semibold text-white no-underline"
-            to="/dashboard"
-          >
-            Open dashboard
-          </Link>
-          <a
-            className="inline-flex min-h-[42px] items-center justify-center rounded-lg border border-slate-300 bg-white px-4 font-semibold text-gray-900 no-underline"
-            href="/health"
-          >
-            Check health
-          </a>
+        <div className="mt-8 space-y-5 text-base leading-relaxed sm:text-lg">
+          <p>
+            LLMs and AI Agents have fundamentally changed how we work. From
+            developing apps, to researching markets. From making videos to
+            publishing research.
+          </p>
+          <p>
+            Harnesses like Claude Code and Codex, help control your computer.
+            But in essence, they are limited and pose a security risk. Your
+            computer and the agent's computer should not fight for resources.
+          </p>
+          <p>
+            Loshmi gives a full VPS with root access to every agent. Our
+            tasteful harness connects to your email, holds your card securely,
+            and can take actions on your behalf.
+          </p>
         </div>
-      </section>
+        <p className="mt-10 font-semibold">
+          <a href="mailto:founders@metablocks.world">Join the waitlist.</a>
+        </p>
+      </article>
     </main>
   );
 }

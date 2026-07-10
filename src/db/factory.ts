@@ -5,12 +5,11 @@ import { env } from "hono/adapter";
 import * as masterD1Schema from "@src/db/schema.master-d1";
 import type { Bindings } from "@src/lib/hono.types";
 
-// SQLite database factory
-function d1DBfromContext(c: Context) {
-  return d1DbFromEnv(env(c));
+function masterD1FromContext(c: Context) {
+  return masterD1FromEnv(env(c));
 }
 
-function d1DbFromEnv(e: Bindings) {
+function masterD1FromEnv(e: Bindings) {
   const db = drizzleD1(e.MASTER_D1, {
     schema: masterD1Schema,
   });
@@ -19,6 +18,6 @@ function d1DbFromEnv(e: Bindings) {
 }
 
 export default {
-  d1DBfromContext,
-  d1DbFromEnv,
+  masterD1FromContext,
+  masterD1FromEnv,
 };
