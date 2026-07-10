@@ -13,6 +13,7 @@ export default function Landing() {
   return (
     <main className="grid min-h-screen place-items-center px-6">
       <article className="max-w-[620px]">
+        <img src="/zygote.png" alt="" className="mb-6 w-20 md:-ml-6" />
         <h1 className="font-mlm-roman text-[2.5rem] leading-[1.15] sm:text-[clamp(2.25rem,6vw,3.75rem)]">
           High agency intelligence that achieves outcomes
         </h1>

@@ -12,7 +12,30 @@ import type React from "react";
 
 import stylesheet from "./global.css?url";
 
-export const links: LinksFunction = () => [{ rel: "stylesheet", href: stylesheet }];
+export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: stylesheet },
+  {
+    rel: "preload",
+    href: "/fonts/MLMRoman12-Regular.woff2",
+    as: "font",
+    type: "font/woff2",
+    crossOrigin: "anonymous",
+  },
+  // {
+  //   rel: "preload",
+  //   href: "/fonts/MLMRoman12-Bold.woff2",
+  //   as: "font",
+  //   type: "font/woff2",
+  //   crossOrigin: "anonymous",
+  // },
+  // {
+  //   rel: "preload",
+  //   href: "/fonts/MLMRoman12-Italic.woff2",
+  //   as: "font",
+  //   type: "font/woff2",
+  //   crossOrigin: "anonymous",
+  // },
+];
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
