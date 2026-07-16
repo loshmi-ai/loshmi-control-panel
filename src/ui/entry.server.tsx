@@ -1,3 +1,4 @@
+import { getLogger } from "@logtape/logtape";
 import { isbot } from "isbot";
 import { renderToReadableStream } from "react-dom/server";
 import {
@@ -5,6 +6,8 @@ import {
   type RouterContextProvider,
   ServerRouter,
 } from "react-router";
+
+const logger = getLogger(["ui-lib", "entry-server"]);
 
 export default async function handleRequest(
   request: Request,
@@ -23,7 +26,9 @@ export default async function handleRequest(
         responseStatusCode = 500;
 
         if (shellRendered) {
-          console.error(error);
+          logger.error("React Router stream render failed after shell render.", {
+            error,
+          });
         }
       },
     },

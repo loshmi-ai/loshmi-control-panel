@@ -1,25 +1,22 @@
-import { useState, type FormEvent } from "react";
+import { type FormEvent, useState } from "react";
 import {
   Link,
+  type LoaderFunctionArgs,
   redirect,
   useSearchParams,
-  type LoaderFunctionArgs,
 } from "react-router";
 
-import { cloudflareContext } from "@src/backend/react-router-context";
-import { getSessionFromRequest } from "@src/lib/auth";
-import { authClient } from "@src/ui/auth-client";
-import { safeRedirectTo } from "@src/ui/auth-redirect";
+import { rrContext } from "@src/ui/lib/rr-context";
+import { authClient, safeRedirectTo } from "@src/ui/lib/auth";
 
 export function meta() {
   return [{ title: "Log in | Loshmi Control Panel" }];
 }
 
 export async function loader({ context, request }: LoaderFunctionArgs) {
-  const cloudflare = context.get(cloudflareContext);
-  const session = await getSessionFromRequest(cloudflare.env, request);
+  const rrContextValue = context.get(rrContext);
 
-  if (session) {
+  if (rrContextValue.authSession) {
     const url = new URL(request.url);
     throw redirect(safeRedirectTo(url.searchParams.get("redirectTo")));
   }

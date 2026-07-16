@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link, type LoaderFunctionArgs } from "react-router";
 
-import { cloudflareContext } from "@src/backend/react-router-context";
-import { requireAuth } from "@src/lib/auth";
-import { authClient } from "@src/ui/auth-client";
+import { requireAuthSession } from "@src/api/lib/auth";
+import { authClient } from "@src/ui/lib/auth";
+import { rrContext } from "@src/ui/lib/rr-context";
 
 export function meta() {
   return [{ title: "Dashboard | Loshmi Control Panel" }];
@@ -22,11 +22,11 @@ export async function loader({
   context,
   request,
 }: LoaderFunctionArgs): Promise<DashboardLoaderData> {
-  const cloudflare = context.get(cloudflareContext);
-  const session = await requireAuth(cloudflare.env, request);
+  const rrContextValue = context.get(rrContext);
+  const session = requireAuthSession(rrContextValue.authSession, request);
 
   return {
-    environment: cloudflare.env.DOPPLER_ENVIRONMENT,
+    environment: rrContextValue.cfEnv.DOPPLER_ENVIRONMENT,
     renderedAt: new Date().toISOString(),
     user: {
       name: session.user.name,
@@ -55,7 +55,7 @@ export default function Dashboard({
         <Link className="text-gray-900" to="/">
           Home
         </Link>
-        <a className="text-gray-900" href="/health">
+        <a className="text-gray-900" href="/api/health">
           Health
         </a>
         <button

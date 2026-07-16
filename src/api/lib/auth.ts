@@ -1,10 +1,14 @@
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
+import { getLogger } from "@logtape/logtape";
 import { betterAuth } from "better-auth";
 import { redirect } from "react-router";
 
 import dbFactory from "@src/db/factory";
 import * as masterD1Schema from "@src/db/schema.master-d1";
-import type { Bindings } from "@src/lib/hono.types";
+import type { AuthSession } from "@src/api/lib/auth.types";
+import type { Bindings } from "@src/api/lib/hono.types";
+
+const logger = getLogger(["api-lib", "auth"]);
 
 const baseConfig = {
   emailAndPassword: {
@@ -16,6 +20,10 @@ const baseConfig = {
 };
 
 export function fromEnv(e: Bindings) {
+  logger.info("Creating Better Auth service for {baseURL}.", {
+    baseURL: e.BETTER_AUTH_URL,
+  });
+
   const db = dbFactory.masterD1FromEnv(e);
   return betterAuth({
     ...baseConfig,
@@ -34,9 +42,10 @@ export async function getSessionFromRequest(e: Bindings, request: Request) {
   });
 }
 
-export async function requireAuth(e: Bindings, request: Request) {
-  const session = await getSessionFromRequest(e, request);
-
+export function requireAuthSession(
+  session: AuthSession | undefined,
+  request: Request,
+) {
   if (!session) {
     const url = new URL(request.url);
     const redirectTo = `${url.pathname}${url.search}`;

@@ -9,18 +9,22 @@ Use Bun only for package and project commands in this repo.
 ## Folder structure
 
 - `src/domain`: business objects, domain terms, and domain rules.
-- `src/backend`: server entrypoints, routes, request handling, and framework
-  integration that is specific to the backend app.
-- `src/lib`: small local wrappers around third-party libraries and other
-  non-domain shared code, such as the typed Hono factory.
+- `src/api`: Worker entrypoints, API routes, request handling, and framework
+  integration for everything served by the app, including UI rendering.
 - `src/db`: database schemas, config, factories, migrations helpers, and
   database-specific utilities.
 - `src/infra`: infrastructure-as-code and operational tasks.
 - `src/ui`: React Router UI code, routes, styles, and server rendering entry
   points.
 
+Use local `lib` folders for helpers that belong to one app surface:
+
+- `src/api/lib`: API/runtime helpers, such as the typed Hono factory.
+- `src/ui/lib`: UI helpers, such as client auth and React Router context.
+
 Keep exported TypeScript types in adjacent `{moduleName}.types.ts` files. For
-example, types for `src/lib/auth.ts` should live in `src/lib/auth.types.ts`.
+example, types for `src/api/lib/auth.ts` should live in
+`src/api/lib/auth.types.ts`.
 
 ## Commit messages
 

@@ -3,7 +3,7 @@ import type { Context } from "hono";
 import { env } from "hono/adapter";
 
 import * as masterD1Schema from "@src/db/schema.master-d1";
-import type { Bindings } from "@src/lib/hono.types";
+import type { Bindings } from "@src/api/lib/hono.types";
 
 function masterD1FromContext(c: Context) {
   return masterD1FromEnv(env(c));

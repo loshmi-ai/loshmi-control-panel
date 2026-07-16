@@ -1,7 +1,6 @@
 import { Link, type LoaderFunctionArgs } from "react-router";
 
-import { cloudflareContext } from "@src/backend/react-router-context";
-import { getSessionFromRequest } from "@src/lib/auth";
+import { rrContext } from "@src/ui/lib/rr-context";
 
 export function meta() {
   return [
@@ -23,16 +22,14 @@ type LandingLoaderData = {
 
 export async function loader({
   context,
-  request,
 }: LoaderFunctionArgs): Promise<LandingLoaderData> {
-  const cloudflare = context.get(cloudflareContext);
-  const session = await getSessionFromRequest(cloudflare.env, request);
+  const rrContextValue = context.get(rrContext);
 
   return {
-    user: session
+    user: rrContextValue.authSession
       ? {
-          name: session.user.name,
-          email: session.user.email,
+          name: rrContextValue.authSession.user.name,
+          email: rrContextValue.authSession.user.email,
         }
       : null,
   };

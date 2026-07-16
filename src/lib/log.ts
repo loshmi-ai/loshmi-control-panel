@@ -13,7 +13,22 @@ configureSync({
   },
   loggers: [
     {
-      category: "loshmi-control-panel",
+      category: ["api-routes"],
+      lowestLevel: "info",
+      sinks: ["console"],
+    },
+    {
+      category: ["api-lib"],
+      lowestLevel: "info",
+      sinks: ["console"],
+    },
+    {
+      category: ["ui-routes"],
+      lowestLevel: "info",
+      sinks: ["console"],
+    },
+    {
+      category: ["ui-lib"],
       lowestLevel: "info",
       sinks: ["console"],
     },
