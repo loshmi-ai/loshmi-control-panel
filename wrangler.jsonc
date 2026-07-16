@@ -11,7 +11,8 @@
         {
           "binding": "MASTER_D1",
           "database_name": "loshmi-master-d1-dev",
-          "preview_database_id": "loshmi-master-d1-preview-id"
+          "preview_database_id": "loshmi-master-d1-preview-id",
+          "migrations_dir": "migrations/master-d1"
         }
       ]
     },

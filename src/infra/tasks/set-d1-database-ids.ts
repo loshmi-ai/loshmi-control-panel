@@ -9,7 +9,13 @@ import {
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-const WRANGLER_CONFIG_PATH = resolve(import.meta.dir, "../../../wrangler.jsonc");
+import { WRANGLER_CONFIG_PATH } from "@src/constants";
+
+const RESOLVED_WRANGLER_CONFIG_PATH = resolve(
+  import.meta.dir,
+  "../../..",
+  WRANGLER_CONFIG_PATH,
+);
 const PULUMI_CWD = "src/infra";
 const PULUMI_STACK = "prd";
 const WRANGLER_ENV = "prd";
@@ -149,7 +155,7 @@ function hasDatabaseIdProperty(source: string, databaseIndex: number) {
 }
 
 async function main() {
-  const source = readFileSync(WRANGLER_CONFIG_PATH, "utf-8");
+  const source = readFileSync(RESOLVED_WRANGLER_CONFIG_PATH, "utf-8");
   const config = readWranglerConfig(source);
   const databases = getProductionD1Databases(config);
   const d1DatabaseIds = await readPulumiD1DatabaseIds();
@@ -185,7 +191,7 @@ async function main() {
     updatedSource = applyEdits(updatedSource, edits);
   });
 
-  writeFileSync(WRANGLER_CONFIG_PATH, updatedSource);
+  writeFileSync(RESOLVED_WRANGLER_CONFIG_PATH, updatedSource);
 
   console.log(
     `Updated ${databases.length} production D1 database id(s) in wrangler.jsonc.`,

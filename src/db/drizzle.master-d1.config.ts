@@ -1,7 +1,10 @@
-import { getLocalD1DatabasePath } from "./util";
 import type { Config } from "drizzle-kit";
-import fs from "fs";
-import ts from "typescript";
+import { existsSync } from "node:fs";
+
+import {
+  getLocalD1DatabasePathForId,
+  getWranglerD1DatabaseLocalId,
+} from "@src/db/util";
 
 // Use local D1 DB for dev environment, using settings from this comment
 // https://github.com/drizzle-team/drizzle-orm/discussions/1545#discussioncomment-9642932
@@ -14,72 +17,17 @@ const {
 } = process.env;
 
 const isLocal = DOPPLER_ENVIRONMENT === "dev";
-const WRANGLER_CONFIG_PATH = "wrangler.jsonc";
-const LOCAL_WRANGLER_ENV = "dev";
-const MASTER_D1_BINDING = "MASTER_D1";
-
-type WranglerD1Database = {
-  binding?: string;
-  database_id?: string;
-  preview_database_id?: string;
-};
-
-type WranglerConfig = {
-  env?: Record<
-    string,
-    {
-      d1_databases?: WranglerD1Database[];
-    }
-  >;
-};
-
-function readWranglerConfig() {
-  const source = fs.readFileSync(WRANGLER_CONFIG_PATH, "utf-8");
-  const parsed = ts.parseConfigFileTextToJson(WRANGLER_CONFIG_PATH, source);
-
-  if (parsed.error) {
-    throw new Error(
-      `Could not parse ${WRANGLER_CONFIG_PATH}: ${ts.flattenDiagnosticMessageText(
-        parsed.error.messageText,
-        "\n",
-      )}`,
-    );
-  }
-
-  return parsed.config as WranglerConfig;
-}
-
-function getLocalD1DatabaseName() {
-  const wranglerConfig = readWranglerConfig();
-  const d1Database = wranglerConfig.env?.[
-    LOCAL_WRANGLER_ENV
-  ]?.d1_databases?.find((database) => database.binding === MASTER_D1_BINDING);
-
-  if (!d1Database) {
-    throw new Error(
-      `Could not find ${MASTER_D1_BINDING} D1 binding in env.${LOCAL_WRANGLER_ENV}.d1_databases in ${WRANGLER_CONFIG_PATH}.`,
-    );
-  }
-
-  const localDatabaseName =
-    d1Database.preview_database_id ??
-    d1Database.database_id ??
-    d1Database.binding;
-
-  if (!localDatabaseName) {
-    throw new Error(
-      `Could not determine local D1 database name for ${MASTER_D1_BINDING}. Set preview_database_id in ${WRANGLER_CONFIG_PATH}.`,
-    );
-  }
-
-  return localDatabaseName;
-}
+const MASTER_D1_DATABASE_ID = "master-d1";
 
 function getLocalD1DB() {
-  const localDatabaseName = getLocalD1DatabaseName();
-  const localD1Path = getLocalD1DatabasePath(localDatabaseName);
+  const lookup = {
+    databaseId: MASTER_D1_DATABASE_ID,
+    env: "dev",
+  };
+  const localDatabaseName = getWranglerD1DatabaseLocalId(lookup);
+  const localD1Path = getLocalD1DatabasePathForId(lookup);
 
-  if (!fs.existsSync(localD1Path)) {
+  if (!existsSync(localD1Path)) {
     throw new Error(
       `Could not find local D1 database at ${localD1Path}. Run wrangler dev or wrangler d1 execute locally for ${localDatabaseName} first.`,
     );

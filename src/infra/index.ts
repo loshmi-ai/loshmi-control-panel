@@ -5,8 +5,14 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
 
+import { WRANGLER_CONFIG_PATH } from "@src/constants";
+
 const INFRA_DIR = fileURLToPath(new URL(".", import.meta.url));
-const WRANGLER_CONFIG_PATH = resolve(INFRA_DIR, "../../wrangler.jsonc");
+const RESOLVED_WRANGLER_CONFIG_PATH = resolve(
+  INFRA_DIR,
+  "../..",
+  WRANGLER_CONFIG_PATH,
+);
 const WRANGLER_ENV = "prd";
 
 type WranglerD1Database = {
@@ -24,7 +30,7 @@ type WranglerConfig = {
 };
 
 function readWranglerConfig() {
-  const source = readFileSync(WRANGLER_CONFIG_PATH, "utf-8");
+  const source = readFileSync(RESOLVED_WRANGLER_CONFIG_PATH, "utf-8");
   const errors: ParseError[] = [];
   const config = parse(source, errors, { allowTrailingComma: true }) as
     WranglerConfig | undefined;
