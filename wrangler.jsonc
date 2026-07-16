@@ -12,27 +12,34 @@
           "binding": "MASTER_D1",
           "database_name": "loshmi-master-d1-dev",
           "preview_database_id": "loshmi-master-d1-preview-id",
-          "migrations_dir": "migrations/master-d1"
-        }
-      ]
+          "migrations_dir": "migrations/master-d1",
+        },
+      ],
     },
     "prd": {
       "name": "loshmi-control-panel-prd",
       "workers_dev": false,
       "preview_urls": false,
+      "observability": {
+        "logs": {
+          "enabled": true,
+          "invocation_logs": true,
+        },
+      },
       "routes": [
         {
           "pattern": "loshmi.com",
-          "custom_domain": true
-        }
+          "custom_domain": true,
+        },
       ],
       "d1_databases": [
         {
           "binding": "MASTER_D1",
           "database_name": "loshmi-master-d1-prd",
-          "database_id": "fdf59abb-c0e0-4d5f-8645-8b17788069ed"
-        }
-      ]
-    }
-  }
+          "database_id": "fdf59abb-c0e0-4d5f-8645-8b17788069ed",
+          "migrations_dir": "migrations/master-d1",
+        },
+      ],
+    },
+  },
 }
