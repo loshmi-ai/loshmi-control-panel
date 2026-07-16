@@ -19,6 +19,9 @@ Use Bun only for package and project commands in this repo.
 - `src/ui`: React Router UI code, routes, styles, and server rendering entry
   points.
 
+Keep exported TypeScript types in adjacent `{moduleName}.types.ts` files. For
+example, types for `src/lib/auth.ts` should live in `src/lib/auth.types.ts`.
+
 ## Commit messages
 
 Use a relevant emoji prefix for commit messages. Pick an emoji that matches the

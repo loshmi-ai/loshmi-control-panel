@@ -1,3 +1,8 @@
+import { Link, type LoaderFunctionArgs } from "react-router";
+
+import { cloudflareContext } from "@src/backend/react-router-context";
+import { getSessionFromRequest } from "@src/lib/auth";
+
 export function meta() {
   return [
     { title: "Loshmi" },
@@ -9,9 +14,37 @@ export function meta() {
   ];
 }
 
-export default function Landing() {
+type LandingLoaderData = {
+  user: {
+    name: string;
+    email: string;
+  } | null;
+};
+
+export async function loader({
+  context,
+  request,
+}: LoaderFunctionArgs): Promise<LandingLoaderData> {
+  const cloudflare = context.get(cloudflareContext);
+  const session = await getSessionFromRequest(cloudflare.env, request);
+
+  return {
+    user: session
+      ? {
+          name: session.user.name,
+          email: session.user.email,
+        }
+      : null,
+  };
+}
+
+export default function Landing({
+  loaderData,
+}: {
+  loaderData: LandingLoaderData;
+}) {
   return (
-    <main className="grid min-h-screen place-items-center px-6">
+    <main className="grid min-h-screen place-items-center px-6 py-14 sm:py-0">
       <article className="max-w-[620px]">
         <img src="/zygote.png" alt="" className="mb-6 w-20 md:-ml-6" />
         <h1 className="font-mlm-roman text-[2.5rem] leading-[1.15] sm:text-[clamp(2.25rem,6vw,3.75rem)]">
@@ -34,9 +67,22 @@ export default function Landing() {
             and can take actions on your behalf.
           </p>
         </div>
-        <p className="mt-10 font-semibold">
+        <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-3 font-semibold">
           <a href="mailto:founders@metablocks.world">Join the waitlist.</a>
-        </p>
+          {loaderData.user ? (
+            <>
+              <Link to="/dashboard">Dashboard</Link>
+              <span className="text-sm font-normal text-slate-600">
+                {loaderData.user.name || loaderData.user.email}
+              </span>
+            </>
+          ) : (
+            <>
+              <Link to="/login">Log in</Link>
+              <Link to="/signup">Sign up</Link>
+            </>
+          )}
+        </div>
       </article>
     </main>
   );

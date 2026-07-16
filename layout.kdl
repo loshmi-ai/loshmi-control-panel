@@ -1,0 +1,37 @@
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="tab-bar"
+        }
+        children
+    }
+
+    tab name="codex" focus=true {
+        pane split_direction="vertical" {
+            pane name="codex-1" {
+                command "codex"
+            }
+            pane name="codex-2" {
+                command "codex"
+            }
+        }
+    }
+
+    tab name="nvim" {
+        pane name="nvim" {
+            command "nvim"
+            args "."
+        }
+    }
+
+    tab name="server" {
+        pane name="server" {
+            command "bun"
+            args "dev"
+        }
+    }
+
+    tab name="terminal" {
+        pane
+    }
+}

@@ -1,7 +1,9 @@
 import { getLogger } from "@logtape/logtape";
 import { RouterContextProvider, createRequestHandler } from "react-router";
 
+import { authUserMiddleware } from "@src/backend/middleware/auth-user";
 import { cloudflareContext } from "@src/backend/react-router-context";
+import * as auth from "@src/lib/auth";
 import { createApp } from "@src/lib/hono";
 import type { Bindings } from "@src/lib/hono.types";
 import "@src/lib/log";
@@ -14,6 +16,13 @@ const reactRouterHandler = createRequestHandler(
 );
 
 const app = createApp();
+
+// Mount Better Auth's API routes for client auth calls and session cookies.
+app.on(["GET", "POST"], "/api/auth/*", (c) => {
+  return auth.fromEnv(c.env).handler(c.req.raw);
+});
+
+app.use("/api/*", authUserMiddleware);
 
 app.get("/health", (c) => {
   logger.info("Health check requested for {service}.", {

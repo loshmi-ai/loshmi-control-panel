@@ -1,6 +1,11 @@
 import type { D1Database } from "@cloudflare/workers-types";
 
-export type Variables = Record<string, never>;
+import type { AuthSession } from "@src/lib/auth.types";
+
+export type Variables = {
+  authSession?: AuthSession;
+  authUser?: NonNullable<AuthSession>["user"];
+};
 
 export type Env = {
   Bindings: Bindings;
@@ -20,5 +25,8 @@ export type Bindings = {
 
   // App
   // -------------------------------------------------
+  BETTER_AUTH_SECRET: string;
+  BETTER_AUTH_URL: string;
+
   DOPPLER_ENVIRONMENT: "dev" | "stg" | "prd";
 };

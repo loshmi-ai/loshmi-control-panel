@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link, type LoaderFunctionArgs } from "react-router";
 
 import { cloudflareContext } from "@src/backend/react-router-context";
+import { requireAuth } from "@src/lib/auth";
+import { authClient } from "@src/ui/auth-client";
 
 export function meta() {
   return [{ title: "Dashboard | Loshmi Control Panel" }];
@@ -10,14 +12,26 @@ export function meta() {
 type DashboardLoaderData = {
   environment: string;
   renderedAt: string;
+  user: {
+    name: string;
+    email: string;
+  };
 };
 
-export function loader({ context }: LoaderFunctionArgs): DashboardLoaderData {
+export async function loader({
+  context,
+  request,
+}: LoaderFunctionArgs): Promise<DashboardLoaderData> {
   const cloudflare = context.get(cloudflareContext);
+  const session = await requireAuth(cloudflare.env, request);
 
   return {
     environment: cloudflare.env.DOPPLER_ENVIRONMENT,
     renderedAt: new Date().toISOString(),
+    user: {
+      name: session.user.name,
+      email: session.user.email,
+    },
   };
 }
 
@@ -27,16 +41,31 @@ export default function Dashboard({
   loaderData: DashboardLoaderData;
 }) {
   const [count, setCount] = useState(0);
+  const [isSigningOut, setIsSigningOut] = useState(false);
+
+  async function handleSignOut() {
+    setIsSigningOut(true);
+    await authClient.signOut();
+    window.location.assign("/login");
+  }
 
   return (
     <main className="min-h-screen max-w-[840px] px-7 py-12 sm:p-12">
-      <nav className="mb-8 flex gap-4">
+      <nav className="mb-8 flex flex-wrap items-center gap-4">
         <Link className="text-gray-900" to="/">
           Home
         </Link>
         <a className="text-gray-900" href="/health">
           Health
         </a>
+        <button
+          className="cursor-pointer border-0 bg-transparent p-0 text-gray-900"
+          disabled={isSigningOut}
+          type="button"
+          onClick={handleSignOut}
+        >
+          {isSigningOut ? "Signing out..." : "Sign out"}
+        </button>
       </nav>
 
       <section className="rounded-lg border border-slate-200 bg-white p-7">
@@ -44,6 +73,10 @@ export default function Dashboard({
           Dashboard
         </p>
         <h1 className="text-4xl leading-tight font-bold">SSR dashboard</h1>
+        <p className="mt-4 leading-relaxed text-slate-600">
+          Signed in as <strong>{loaderData.user.name}</strong>{" "}
+          <span className="text-slate-500">({loaderData.user.email})</span>.
+        </p>
         <p className="mt-6 leading-relaxed text-slate-600">
           Rendered in the Worker for <strong>{loaderData.environment}</strong>{" "}
           at{" "}
