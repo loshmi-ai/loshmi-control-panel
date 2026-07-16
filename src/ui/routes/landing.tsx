@@ -1,6 +1,6 @@
 import { Link, type LoaderFunctionArgs } from "react-router";
 
-import { rrContext } from "@src/ui/lib/rr-context";
+import { rrContext } from "@src/api/lib/rr-context";
 
 export function meta() {
   return [

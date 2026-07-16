@@ -6,8 +6,8 @@ import {
   useSearchParams,
 } from "react-router";
 
+import { rrContext } from "@src/api/lib/rr-context";
 import { authClient, safeRedirectTo } from "@src/ui/lib/auth";
-import { rrContext } from "@src/ui/lib/rr-context";
 
 export function meta() {
   return [{ title: "Sign up | Loshmi Control Panel" }];

@@ -6,7 +6,7 @@ import {
   useSearchParams,
 } from "react-router";
 
-import { rrContext } from "@src/ui/lib/rr-context";
+import { rrContext } from "@src/api/lib/rr-context";
 import { authClient, safeRedirectTo } from "@src/ui/lib/auth";
 
 export function meta() {

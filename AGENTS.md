@@ -19,8 +19,14 @@ Use Bun only for package and project commands in this repo.
 
 Use local `lib` folders for helpers that belong to one app surface:
 
-- `src/api/lib`: API/runtime helpers, such as the typed Hono factory.
-- `src/ui/lib`: UI helpers, such as client auth and React Router context.
+- `src/api/lib`: API/runtime helpers, such as the typed Hono factory and
+  React Router context produced by API route handlers.
+- `src/ui/lib`: UI helpers, such as client auth.
+
+When a helper is shared between API and UI, place it with the side that owns the
+value or lifecycle. For example, React Router context is consumed by UI route
+loaders, but the API route creates the context, injects auth/runtime values, and
+mounts React Router, so its context helper belongs in `src/api/lib`.
 
 Keep exported TypeScript types in adjacent `{moduleName}.types.ts` files. For
 example, types for `src/api/lib/auth.ts` should live in

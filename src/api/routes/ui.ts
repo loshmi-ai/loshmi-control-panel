@@ -3,7 +3,7 @@ import { RouterContextProvider, createRequestHandler } from "react-router";
 
 import { createApp } from "@src/api/lib/hono";
 import { authenticateUserMiddleware } from "@src/api/middleware/authenticate-user";
-import { rrContext } from "@src/ui/lib/rr-context";
+import { rrContext } from "@src/api/lib/rr-context";
 
 const logger = getLogger(["ui-routes", "react-router"]);
 
