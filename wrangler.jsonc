@@ -7,6 +7,9 @@
   "env": {
     "dev": {
       "name": "loshmi-control-panel-dev",
+      "secrets": {
+        "required": ["BETTER_AUTH_URL", "BETTER_AUTH_SECRET"],
+      },
       "d1_databases": [
         {
           "binding": "MASTER_D1",
@@ -18,6 +21,9 @@
     },
     "prd": {
       "name": "loshmi-control-panel-prd",
+      "secrets": {
+        "required": ["BETTER_AUTH_URL", "BETTER_AUTH_SECRET"],
+      },
       "workers_dev": false,
       "preview_urls": false,
       "observability": {
