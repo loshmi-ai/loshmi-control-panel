@@ -29,8 +29,8 @@
     "prd:deploy": "doppler run -c prd -- run-s prd:build prd:wrangler-deploy"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.43.2",
-    "@cloudflare/workers-types": "^5.20260707.1",
+    "@cloudflare/vite-plugin": "^1.45.1",
+    "@cloudflare/workers-types": "^5.20260717.1",
     "@react-router/dev": "8.1.0",
     "@tailwindcss/vite": "^4.3.2",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
