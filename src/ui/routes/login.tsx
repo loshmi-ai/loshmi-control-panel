@@ -1,4 +1,4 @@
-import { type FormEvent, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 import {
   Link,
   type LoaderFunctionArgs,
@@ -28,7 +28,36 @@ export default function Login() {
   const [searchParams] = useSearchParams();
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPasskeySubmitting, setIsPasskeySubmitting] = useState(false);
   const redirectTo = safeRedirectTo(searchParams.get("redirectTo"));
+
+  useEffect(() => {
+    async function startConditionalPasskeySignIn() {
+      if (
+        typeof PublicKeyCredential === "undefined" ||
+        !PublicKeyCredential.isConditionalMediationAvailable
+      ) {
+        return;
+      }
+
+      const isAvailable =
+        await PublicKeyCredential.isConditionalMediationAvailable();
+
+      if (!isAvailable) {
+        return;
+      }
+
+      const result = await authClient.signIn.passkey({ autoFill: true });
+
+      if (result.error) {
+        return;
+      }
+
+      window.location.assign(redirectTo);
+    }
+
+    void startConditionalPasskeySignIn();
+  }, [redirectTo]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -55,6 +84,22 @@ export default function Login() {
     window.location.assign(redirectTo);
   }
 
+  async function handlePasskeySignIn() {
+    setError(null);
+    setIsPasskeySubmitting(true);
+
+    const result = await authClient.signIn.passkey();
+
+    setIsPasskeySubmitting(false);
+
+    if (result.error) {
+      setError(result.error.message ?? "Could not log in with passkey.");
+      return;
+    }
+
+    window.location.assign(redirectTo);
+  }
+
   return (
     <main className="grid min-h-screen place-items-center px-6 py-12">
       <section className="w-full max-w-[420px] rounded-lg border border-slate-200 bg-white p-7">
@@ -67,7 +112,7 @@ export default function Login() {
             <span className="text-sm font-semibold text-slate-700">Email</span>
             <input
               required
-              autoComplete="email"
+              autoComplete="email webauthn"
               className="mt-2 min-h-11 w-full rounded-md border border-slate-300 px-3 text-base"
               name="email"
               type="email"
@@ -79,7 +124,7 @@ export default function Login() {
             </span>
             <input
               required
-              autoComplete="current-password"
+              autoComplete="current-password webauthn"
               className="mt-2 min-h-11 w-full rounded-md border border-slate-300 px-3 text-base"
               minLength={8}
               name="password"
@@ -95,6 +140,19 @@ export default function Login() {
             {isSubmitting ? "Logging in..." : "Log in"}
           </button>
         </form>
+        <div className="my-5 flex items-center gap-3 text-xs font-semibold text-slate-500 uppercase">
+          <span className="h-px flex-1 bg-slate-200" />
+          <span>or</span>
+          <span className="h-px flex-1 bg-slate-200" />
+        </div>
+        <button
+          className="inline-flex min-h-11 w-full cursor-pointer items-center justify-center rounded-md border border-slate-300 bg-white px-4 font-semibold text-gray-950 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500"
+          disabled={isSubmitting || isPasskeySubmitting}
+          type="button"
+          onClick={handlePasskeySignIn}
+        >
+          {isPasskeySubmitting ? "Checking passkey..." : "Sign in with passkey"}
+        </button>
         <p className="mt-6 text-sm text-slate-600">
           New here?{" "}
           <Link

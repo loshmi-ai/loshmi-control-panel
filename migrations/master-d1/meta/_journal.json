@@ -8,6 +8,13 @@
       "when": 1784213051969,
       "tag": "0000_lucky_the_initiative",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1784309251329,
+      "tag": "0001_overconfident_proteus",
+      "breakpoints": true
     }
   ]
 }

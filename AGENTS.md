@@ -50,7 +50,7 @@ Examples:
 
 Use a single Doppler wrapper for the local dev command:
 
-`doppler run -- bunx vite dev`
+`doppler run -c dev -- vite dev`
 
 Doppler injects secrets into the process environment, and the Cloudflare Vite
 plugin makes those bindings available to the Worker runtime. Do not mount or
@@ -58,7 +58,7 @@ generate `.dev.vars` for local development.
 
 The `CLOUDFLARE_ENV` flag comes from Doppler. Keep it set to `dev` for the local
 development project so the Cloudflare Vite plugin loads `env.dev` from
-`wrangler.jsonc` when `bunx vite dev` runs.
+`wrangler.jsonc` when `vite dev` runs.
 
 ## Local D1 preview database
 

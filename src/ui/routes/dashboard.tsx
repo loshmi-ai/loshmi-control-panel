@@ -58,6 +58,9 @@ export default function Dashboard({
         <a className="text-gray-900" href="/api/health">
           Health
         </a>
+        <Link className="text-gray-900" to="/settings">
+          Settings
+        </Link>
         <button
           className="cursor-pointer border-0 bg-transparent p-0 text-gray-900"
           disabled={isSigningOut}
