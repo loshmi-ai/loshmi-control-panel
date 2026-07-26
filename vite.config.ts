@@ -8,6 +8,7 @@ export default defineConfig({
     alias: {
       "@src": "/src",
     },
+    dedupe: ["react", "react-dom", "react-router"],
   },
   plugins: [
     cloudflare({

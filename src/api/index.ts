@@ -1,5 +1,6 @@
 import { createApp } from "@src/api/lib/hono";
 import type { Bindings } from "@src/api/lib/hono.types";
+import autumnRoutes from "@src/api/routes/autumn";
 import authRoutes from "@src/api/routes/auth";
 import devtoolsRoutes from "@src/api/routes/devtools";
 import healthRoutes from "@src/api/routes/health";
@@ -9,6 +10,7 @@ import "@src/lib/log";
 // API Endpoints
 // -------------------------------------------
 const api = createApp();
+api.route("/", autumnRoutes);
 api.route("/", authRoutes);
 api.route("/", healthRoutes);
 

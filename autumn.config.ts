@@ -1,8 +1,5 @@
 import { feature, item, plan } from "atmn";
 
-const LOSHMI_ONE_PLAN_ID = "loshmi_one";
-const LOSHMI_ONE_BYOK_PLAN_ID = "loshmi_one_byok";
-
 export const freeAgentSubdomain = feature({
   id: "free_agent_subdomain",
   name: "Free agent subdomain: {username}.agent.loshmi.com",
@@ -62,8 +59,9 @@ export const extraAiCredits = feature({
 });
 
 export const loshmiOne = plan({
-  id: LOSHMI_ONE_PLAN_ID,
+  id: "loshmi_one",
   name: "Loshmi One",
+  description: "Agent box with included AI credits.",
   price: {
     amount: 19.99,
     interval: "month",
@@ -87,8 +85,9 @@ export const loshmiOne = plan({
 });
 
 export const loshmiOneByok = plan({
-  id: LOSHMI_ONE_BYOK_PLAN_ID,
+  id: "loshmi_one_byok",
   name: "Loshmi One BYOK",
+  description: "Agent box for bringing your own AI keys.",
   price: {
     amount: 9.99,
     interval: "month",

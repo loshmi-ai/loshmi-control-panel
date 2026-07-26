@@ -14,6 +14,8 @@ const reactRouterHandler = createRequestHandler(
 
 const app = createApp();
 
+app.get("/favicon.ico", () => new Response(null, { status: 204 }));
+
 // Defer unknown paths to React Router.
 app.all("*", authenticateUserMiddleware, (c) => {
   logger.info("UI route request received for {method} {path}.", {

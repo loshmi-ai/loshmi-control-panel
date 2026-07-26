@@ -12,8 +12,8 @@ app.get("/health", (c) => {
 
   return c.json({
     ok: true,
-    message: "🤍",
-    environment: c.env.DOPPLER_ENVIRONMENT,
+    msg: "🤍",
+    env: c.env.DOPPLER_ENVIRONMENT,
   });
 });
 

@@ -1,3 +1,4 @@
+import { AutumnProvider } from "autumn-js/react";
 import {
   isRouteErrorResponse,
   Links,
@@ -47,7 +48,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className="m-0 bg-slate-50 font-sans text-gray-900">
-        {children}
+        <AutumnProvider>{children}</AutumnProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

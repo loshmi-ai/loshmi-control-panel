@@ -144,6 +144,9 @@ export default function Settings({
         <Link className="text-gray-900" to="/dashboard">
           Dashboard
         </Link>
+        <Link className="text-gray-900" to="/billing">
+          Billing
+        </Link>
         <Link className="text-gray-900" to="/">
           Home
         </Link>

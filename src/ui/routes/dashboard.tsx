@@ -61,6 +61,9 @@ export default function Dashboard({
         <Link className="text-gray-900" to="/settings">
           Settings
         </Link>
+        <Link className="text-gray-900" to="/billing">
+          Billing
+        </Link>
         <button
           className="cursor-pointer border-0 bg-transparent p-0 text-gray-900"
           disabled={isSigningOut}

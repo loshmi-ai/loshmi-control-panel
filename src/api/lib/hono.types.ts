@@ -27,6 +27,7 @@ export type Bindings = {
   // -------------------------------------------------
   BETTER_AUTH_SECRET: string;
   BETTER_AUTH_URL: string;
+  AUTUMN_SECRET_KEY: string;
 
   DOPPLER_ENVIRONMENT: "dev" | "stg" | "prd";
 };

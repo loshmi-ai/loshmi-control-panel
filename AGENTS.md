@@ -32,6 +32,67 @@ Keep exported TypeScript types in adjacent `{moduleName}.types.ts` files. For
 example, types for `src/api/lib/auth.ts` should live in
 `src/api/lib/auth.types.ts`.
 
+## UI route structure
+
+Keep React Router route modules as flat files in `src/ui/routes` when they map
+directly to a route path. For example, the `/billing` route module should be:
+
+- `src/ui/routes/billing.tsx`
+
+When a route needs supporting files, create a folder with the same route name
+next to the route module:
+
+- `src/ui/routes/billing/server.ts`: server-only route helpers, loader support,
+  config normalization, and code that imports server-safe files.
+- `src/ui/routes/billing/types.ts`: exported route data and component types for
+  that route.
+- `src/ui/routes/billing/components/*`: components that belong only to that
+  route.
+
+Do not move the route module itself into `src/ui/routes/{routeName}/index.tsx`
+unless the route registration is intentionally changed to that file. Prefer the
+flat route module plus sibling support folder pattern.
+
+Use absolute imports with the `@src/*` alias throughout app code, including
+imports between files in the same route folder. Avoid `./` and `../` imports
+except where a tool or framework specifically requires them.
+
+## UI components
+
+Put reusable, app-wide UI building blocks in `src/ui/components/designSystem`.
+For example:
+
+- `src/ui/components/designSystem/button.tsx`
+
+Put route-specific components inside the owning route support folder. For
+example, a billing-only plan card belongs at:
+
+- `src/ui/routes/billing/components/plan-card.tsx`
+
+Do not place route-specific components in global component folders. Promote a
+component to `src/ui/components/designSystem` only when it is reused across
+multiple routes and its API is intentionally generic.
+
+## UI state
+
+Use `src/ui/domain` for UI-owned domain state and actions that are shared by a
+route and its components. This layer may use React and UI state libraries.
+Keep business-domain rules that do not depend on React in `src/domain`.
+
+Use Jotai for route workflow state when it gives a clear growth path. Prefer one
+cohesive atom for small route workflows instead of many tiny atoms. For example,
+billing state should live in `src/ui/domain/billing.ts` as one exported atom for
+the billing workflow state, plus a hook that exposes actions and derived values.
+
+Keep server-loaded route data in React Router loader data and pass it through
+props. Do not duplicate loader data into Jotai unless the client must edit it or
+share it outside the route lifecycle.
+
+Keep async UI actions in the UI domain hook when they orchestrate client state
+and client SDK calls. For example, billing actions such as attaching a plan or
+opening the billing portal belong in `src/ui/domain/billing.ts`, while
+server-only plan loading belongs in `src/ui/routes/billing/server.ts`.
+
 ## Commit messages
 
 Use a relevant emoji prefix for commit messages. Pick an emoji that matches the
