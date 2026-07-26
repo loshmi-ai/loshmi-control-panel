@@ -1,6 +1,5 @@
 import { type FormEvent, useEffect, useState } from "react";
 import {
-  Link,
   type LoaderFunctionArgs,
   redirect,
   useSearchParams,
@@ -153,15 +152,6 @@ export default function Login() {
         >
           {isPasskeySubmitting ? "Checking passkey..." : "Sign in with passkey"}
         </button>
-        <p className="mt-6 text-sm text-slate-600">
-          New here?{" "}
-          <Link
-            className="font-semibold text-gray-950"
-            to={`/signup?redirectTo=${encodeURIComponent(redirectTo)}`}
-          >
-            Create an account.
-          </Link>
-        </p>
       </section>
     </main>
   );

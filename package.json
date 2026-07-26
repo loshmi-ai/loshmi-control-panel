@@ -25,7 +25,7 @@
     "__deployment__": "---------------------------",
     "prd:build": "doppler run -c prd -- bun vite build",
     "prd:wrangler-deploy": "doppler run -c prd --mount secrets.json -- bun wrangler deploy --secrets-file secrets.json",
-    "__comment:prd:deploy": "The top level `doppler run -c prd` is needed to access CF tokens, so CLI can push to CF workers.",
+    "//prd:deploy": "The top level `doppler run -c prd` is needed to access CF tokens, so CLI can push to CF workers.",
     "prd:deploy": "doppler run -c prd -- run-s prd:build prd:wrangler-deploy"
   },
   "devDependencies": {
