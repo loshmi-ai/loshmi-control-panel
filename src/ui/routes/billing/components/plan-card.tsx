@@ -1,5 +1,5 @@
 import { Button } from "@src/ui/components/designSystem/button";
-import type { BillingPlan } from "@src/ui/routes/billing/types";
+import type { BillingPlan } from "@src/ui/routes/billing.types";
 
 type BillingPlanCardProps = {
   isAttaching: boolean;

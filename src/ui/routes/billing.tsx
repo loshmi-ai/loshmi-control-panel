@@ -1,31 +1,25 @@
 import { Link, type LoaderFunctionArgs } from "react-router";
 
-import { requireAuthSession } from "@src/api/lib/auth";
-import { rrContext } from "@src/api/lib/rr-context";
 import { Button } from "@src/ui/components/designSystem/button";
 import { useBillingActions } from "@src/ui/domain/billing";
+import { getUserOrRedirectToLogin } from "@src/ui/lib/route-context.server";
 import { BillingPlanCard } from "@src/ui/routes/billing/components/plan-card";
 import { getBillingPlans } from "@src/ui/routes/billing/server";
-import type { BillingLoaderData } from "@src/ui/routes/billing/types";
+import type { BillingLoaderData } from "@src/ui/routes/billing.types";
 
 export function meta() {
   return [{ title: "Billing | Loshmi Control Panel" }];
 }
 
-export async function loader({
-  context,
-  request,
-}: LoaderFunctionArgs): Promise<BillingLoaderData> {
-  const rrContextValue = context.get(rrContext);
-  const session = requireAuthSession(rrContextValue.authSession, request);
+export async function loader(
+  args: LoaderFunctionArgs,
+): Promise<BillingLoaderData> {
+  const user = getUserOrRedirectToLogin(args);
   const plans = await getBillingPlans();
 
   return {
     plans,
-    user: {
-      name: session.user.name,
-      email: session.user.email,
-    },
+    user,
   };
 }
 

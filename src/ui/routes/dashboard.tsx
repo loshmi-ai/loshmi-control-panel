@@ -1,37 +1,27 @@
 import { useState } from "react";
 import { Link, type LoaderFunctionArgs } from "react-router";
 
-import { requireAuthSession } from "@src/api/lib/auth";
-import { rrContext } from "@src/api/lib/rr-context";
 import { authClient } from "@src/ui/lib/auth";
+import {
+  getRouteContext,
+  getUserOrRedirectToLogin,
+} from "@src/ui/lib/route-context.server";
+import type { DashboardLoaderData } from "@src/ui/routes/dashboard.types";
 
 export function meta() {
   return [{ title: "Dashboard | Loshmi Control Panel" }];
 }
 
-type DashboardLoaderData = {
-  environment: string;
-  renderedAt: string;
-  user: {
-    name: string;
-    email: string;
-  };
-};
-
-export async function loader({
-  context,
-  request,
-}: LoaderFunctionArgs): Promise<DashboardLoaderData> {
-  const rrContextValue = context.get(rrContext);
-  const session = requireAuthSession(rrContextValue.authSession, request);
+export async function loader(
+  args: LoaderFunctionArgs,
+): Promise<DashboardLoaderData> {
+  const rrContextValue = getRouteContext(args);
+  const user = getUserOrRedirectToLogin(args);
 
   return {
     environment: rrContextValue.cfEnv.DOPPLER_ENVIRONMENT,
     renderedAt: new Date().toISOString(),
-    user: {
-      name: session.user.name,
-      email: session.user.email,
-    },
+    user,
   };
 }
 

@@ -1,6 +1,6 @@
 import type { Feature, Plan, PlanItem } from "atmn";
 
-import type { BillingPlan } from "@src/ui/routes/billing/types";
+import type { BillingPlan } from "@src/ui/routes/billing.types";
 
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   currency: "USD",

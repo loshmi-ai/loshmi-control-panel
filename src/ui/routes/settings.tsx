@@ -2,33 +2,21 @@ import type { Passkey } from "@better-auth/passkey/client";
 import { type FormEvent, useState } from "react";
 import { Link, type LoaderFunctionArgs } from "react-router";
 
-import { requireAuthSession } from "@src/api/lib/auth";
-import { rrContext } from "@src/api/lib/rr-context";
 import { authClient } from "@src/ui/lib/auth";
+import { getUserOrRedirectToLogin } from "@src/ui/lib/route-context.server";
+import type { SettingsLoaderData } from "@src/ui/routes/settings.types";
 
 export function meta() {
   return [{ title: "Settings | Loshmi Control Panel" }];
 }
 
-type SettingsLoaderData = {
-  user: {
-    name: string;
-    email: string;
-  };
-};
-
-export async function loader({
-  context,
-  request,
-}: LoaderFunctionArgs): Promise<SettingsLoaderData> {
-  const rrContextValue = context.get(rrContext);
-  const session = requireAuthSession(rrContextValue.authSession, request);
+export async function loader(
+  args: LoaderFunctionArgs,
+): Promise<SettingsLoaderData> {
+  const user = getUserOrRedirectToLogin(args);
 
   return {
-    user: {
-      name: session.user.name,
-      email: session.user.email,
-    },
+    user,
   };
 }
 

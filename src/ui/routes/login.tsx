@@ -5,18 +5,18 @@ import {
   useSearchParams,
 } from "react-router";
 
-import { rrContext } from "@src/api/lib/rr-context";
 import { authClient, safeRedirectTo } from "@src/ui/lib/auth";
+import { getUser } from "@src/ui/lib/route-context.server";
 
 export function meta() {
   return [{ title: "Log in | Loshmi Control Panel" }];
 }
 
-export async function loader({ context, request }: LoaderFunctionArgs) {
-  const rrContextValue = context.get(rrContext);
+export async function loader(args: LoaderFunctionArgs) {
+  const user = getUser(args);
 
-  if (rrContextValue.authSession) {
-    const url = new URL(request.url);
+  if (user) {
+    const url = new URL(args.request.url);
     throw redirect(safeRedirectTo(url.searchParams.get("redirectTo")));
   }
 

@@ -2,15 +2,11 @@ import { useCustomer } from "autumn-js/react";
 import { atom, useAtom } from "jotai";
 import { useMemo } from "react";
 
-import type { BillingActions } from "@src/ui/domain/billing.types";
-import type { BillingPlan } from "@src/ui/routes/billing/types";
-
-type BillingState = {
-  attachingPlanId: BillingPlan["id"] | null;
-  error: string | null;
-  isOpeningBillingPortal: boolean;
-  message: string | null;
-};
+import type {
+  BillingActions,
+  BillingState,
+} from "@src/ui/domain/billing.types";
+import type { BillingPlan } from "@src/ui/routes/billing.types";
 
 const initialBillingState: BillingState = {
   attachingPlanId: null,

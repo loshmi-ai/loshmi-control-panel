@@ -1,10 +1,9 @@
 import type { D1Database } from "@cloudflare/workers-types";
 
-import type { AuthSession } from "@src/api/lib/auth.types";
+import type { BetterAuthSession } from "@src/api/lib/auth.types";
 
 export type Variables = {
-  authSession?: AuthSession;
-  authUser?: NonNullable<AuthSession>["user"];
+  authCtx?: BetterAuthSession;
 };
 
 export type Env = {

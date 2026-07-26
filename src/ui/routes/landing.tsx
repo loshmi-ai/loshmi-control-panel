@@ -1,6 +1,7 @@
 import { Link, type LoaderFunctionArgs } from "react-router";
 
-import { rrContext } from "@src/api/lib/rr-context";
+import { getUser } from "@src/ui/lib/route-context.server";
+import type { LandingLoaderData } from "@src/ui/routes/landing.types";
 
 export function meta() {
   return [
@@ -13,25 +14,13 @@ export function meta() {
   ];
 }
 
-type LandingLoaderData = {
-  user: {
-    name: string;
-    email: string;
-  } | null;
-};
-
-export async function loader({
-  context,
-}: LoaderFunctionArgs): Promise<LandingLoaderData> {
-  const rrContextValue = context.get(rrContext);
+export async function loader(
+  args: LoaderFunctionArgs,
+): Promise<LandingLoaderData> {
+  const user = getUser(args);
 
   return {
-    user: rrContextValue.authSession
-      ? {
-          name: rrContextValue.authSession.user.name,
-          email: rrContextValue.authSession.user.email,
-        }
-      : null,
+    user,
   };
 }
 

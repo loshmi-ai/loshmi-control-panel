@@ -1,3 +1,5 @@
+import type { getUserOrRedirectToLogin } from "@src/ui/lib/route-context.server";
+
 export type BillingPlan = {
   id: string;
   name: string;
@@ -8,8 +10,5 @@ export type BillingPlan = {
 
 export type BillingLoaderData = {
   plans: BillingPlan[];
-  user: {
-    name: string;
-    email: string;
-  };
+  user: ReturnType<typeof getUserOrRedirectToLogin>;
 };

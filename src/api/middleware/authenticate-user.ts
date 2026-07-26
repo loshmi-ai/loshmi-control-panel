@@ -8,8 +8,7 @@ export const authenticateUserMiddleware = createMiddleware<Env>(
     const session = await getSessionFromRequest(c.env, c.req.raw);
 
     if (session) {
-      c.set("authSession", session);
-      c.set("authUser", session.user);
+      c.set("authCtx", session);
     }
 
     await next();
