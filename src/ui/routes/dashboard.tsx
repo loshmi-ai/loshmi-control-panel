@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { Link, type LoaderFunctionArgs } from "react-router";
+import { type LoaderFunctionArgs } from "react-router";
 
+import { AppShell } from "@src/ui/components/designSystem/app-shell";
+import { Button } from "@src/ui/components/designSystem/button";
 import { authClient } from "@src/ui/lib/auth";
 import {
   getRouteContext,
@@ -40,31 +42,16 @@ export default function Dashboard({
   }
 
   return (
-    <main className="min-h-screen max-w-[840px] px-7 py-12 sm:p-12">
-      <nav className="mb-8 flex flex-wrap items-center gap-4">
-        <Link className="text-gray-900" to="/">
-          Home
-        </Link>
-        <a className="text-gray-900" href="/api/health">
-          Health
-        </a>
-        <Link className="text-gray-900" to="/settings">
-          Settings
-        </Link>
-        <Link className="text-gray-900" to="/billing">
-          Billing
-        </Link>
-        <button
-          className="cursor-pointer border-0 bg-transparent p-0 text-gray-900"
-          disabled={isSigningOut}
-          type="button"
-          onClick={handleSignOut}
-        >
-          {isSigningOut ? "Signing out..." : "Sign out"}
-        </button>
-      </nav>
-
-      <section className="rounded-lg border border-slate-200 bg-white p-7">
+    <AppShell
+      actions={[{ label: "Home", to: "/" }]}
+      isSigningOut={isSigningOut}
+      navItems={[{ label: "Dashboard", shortLabel: "D", to: "/dashboard" }]}
+      title="Dashboard"
+      userEmail={loaderData.user.email}
+      userName={loaderData.user.name}
+      onSignOut={handleSignOut}
+    >
+      <section className="rounded-[28px] border border-slate-200 bg-white p-7">
         <p className="mb-3 text-[0.82rem] font-bold tracking-[0.08em] text-indigo-600 uppercase">
           Dashboard
         </p>
@@ -81,15 +68,14 @@ export default function Dashboard({
 
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <span className="font-bold">Counter: {count}</span>
-          <button
-            className="inline-flex min-h-[42px] cursor-pointer items-center justify-center rounded-lg border border-slate-300 bg-white px-4 font-semibold text-gray-900"
-            type="button"
+          <Button
+            variant="secondary"
             onClick={() => setCount((value) => value + 1)}
           >
             Increment
-          </button>
+          </Button>
         </div>
       </section>
-    </main>
+    </AppShell>
   );
 }

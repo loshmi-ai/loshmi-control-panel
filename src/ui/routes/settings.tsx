@@ -1,7 +1,9 @@
 import type { Passkey } from "@better-auth/passkey/client";
 import { type FormEvent, useState } from "react";
-import { Link, type LoaderFunctionArgs } from "react-router";
+import { type LoaderFunctionArgs } from "react-router";
 
+import { AppShell } from "@src/ui/components/designSystem/app-shell";
+import { Button } from "@src/ui/components/designSystem/button";
 import { authClient } from "@src/ui/lib/auth";
 import { getUserOrRedirectToLogin } from "@src/ui/lib/route-context.server";
 import type { SettingsLoaderData } from "@src/ui/routes/settings.types";
@@ -50,6 +52,13 @@ export default function Settings({
   const [deletingPasskeyId, setDeletingPasskeyId] = useState<string | null>(
     null,
   );
+  const [isSigningOut, setIsSigningOut] = useState(false);
+
+  async function handleSignOut() {
+    setIsSigningOut(true);
+    await authClient.signOut();
+    window.location.assign("/login");
+  }
 
   async function handleAddPasskey(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -127,20 +136,19 @@ export default function Settings({
   const userPasskeys = passkeys.data ?? [];
 
   return (
-    <main className="min-h-screen max-w-[840px] px-7 py-12 sm:p-12">
-      <nav className="mb-8 flex flex-wrap items-center gap-4">
-        <Link className="text-gray-900" to="/dashboard">
-          Dashboard
-        </Link>
-        <Link className="text-gray-900" to="/billing">
-          Billing
-        </Link>
-        <Link className="text-gray-900" to="/">
-          Home
-        </Link>
-      </nav>
-
-      <section className="rounded-lg border border-slate-200 bg-white p-7">
+    <AppShell
+      actions={[
+        { label: "Home", to: "/" },
+        { label: "Dashboard", to: "/dashboard" },
+      ]}
+      isSigningOut={isSigningOut}
+      navItems={[{ label: "Dashboard", shortLabel: "D", to: "/dashboard" }]}
+      title="Settings"
+      userEmail={loaderData.user.email}
+      userName={loaderData.user.name}
+      onSignOut={handleSignOut}
+    >
+      <section className="rounded-[28px] border border-slate-200 bg-white p-7">
         <p className="mb-3 text-[0.82rem] font-bold tracking-[0.08em] text-indigo-600 uppercase">
           Settings
         </p>
@@ -166,13 +174,9 @@ export default function Settings({
               type="text"
             />
           </label>
-          <button
-            className="inline-flex min-h-11 cursor-pointer items-center justify-center self-end rounded-md bg-gray-950 px-4 font-semibold text-white disabled:cursor-not-allowed disabled:bg-slate-400"
-            disabled={isAddingPasskey}
-            type="submit"
-          >
+          <Button className="self-end" disabled={isAddingPasskey} type="submit">
             {isAddingPasskey ? "Adding..." : "Add passkey"}
-          </button>
+          </Button>
         </form>
 
         {error ? <p className="mt-5 text-sm text-red-700">{error}</p> : null}
@@ -207,16 +211,15 @@ export default function Settings({
                         {passkey.backedUp ? " backed up" : ""}
                       </p>
                     </div>
-                    <button
-                      className="inline-flex min-h-10 cursor-pointer items-center justify-center rounded-md border border-red-200 bg-white px-3 text-sm font-semibold text-red-700 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500"
+                    <Button
                       disabled={deletingPasskeyId === passkey.id}
-                      type="button"
+                      variant="danger"
                       onClick={() => void handleDeletePasskey(passkey.id)}
                     >
                       {deletingPasskeyId === passkey.id
                         ? "Deleting..."
                         : "Delete"}
-                    </button>
+                    </Button>
                   </div>
                   <form
                     className="mt-4 flex flex-col gap-3 sm:flex-row"
@@ -235,13 +238,14 @@ export default function Settings({
                         type="text"
                       />
                     </label>
-                    <button
-                      className="inline-flex min-h-10 cursor-pointer items-center justify-center self-end rounded-md border border-slate-300 bg-white px-3 text-sm font-semibold text-gray-950 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500"
+                    <Button
+                      className="self-end"
                       disabled={updatingPasskeyId === passkey.id}
                       type="submit"
+                      variant="secondary"
                     >
                       {updatingPasskeyId === passkey.id ? "Saving..." : "Save"}
-                    </button>
+                    </Button>
                   </form>
                 </article>
               ))}
@@ -249,6 +253,6 @@ export default function Settings({
           )}
         </div>
       </section>
-    </main>
+    </AppShell>
   );
 }

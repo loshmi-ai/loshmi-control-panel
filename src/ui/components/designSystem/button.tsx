@@ -1,9 +1,12 @@
 import type { ButtonHTMLAttributes } from "react";
 
 const buttonVariants = {
-  primary: "bg-gray-950 text-white disabled:bg-slate-400 disabled:text-white",
+  primary:
+    "border border-gray-950 text-white disabled:border-slate-300 disabled:bg-slate-300 disabled:text-white",
   secondary:
-    "border border-slate-300 bg-white text-gray-950 disabled:bg-slate-100 disabled:text-slate-500",
+    "border border-slate-200 text-gray-950 disabled:bg-slate-100 disabled:text-slate-500",
+  danger:
+    "border border-red-100 text-red-700 disabled:bg-slate-100 disabled:text-slate-500",
 };
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -23,7 +26,7 @@ export function Button({
   return (
     <button
       className={cx(
-        "inline-flex min-h-10 cursor-pointer items-center justify-center rounded-md px-3 text-sm font-semibold disabled:cursor-not-allowed",
+        "inline-flex min-h-11 cursor-pointer items-center justify-center rounded-full px-5 text-sm font-bold transition hover:-translate-y-px disabled:cursor-not-allowed disabled:transform-none",
         buttonVariants[variant],
         className,
       )}

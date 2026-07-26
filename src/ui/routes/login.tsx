@@ -5,6 +5,7 @@ import {
   useSearchParams,
 } from "react-router";
 
+import { Button } from "@src/ui/components/designSystem/button";
 import { authClient, safeRedirectTo } from "@src/ui/lib/auth";
 import { getUser } from "@src/ui/lib/route-context.server";
 
@@ -101,7 +102,7 @@ export default function Login() {
 
   return (
     <main className="grid min-h-screen place-items-center px-6 py-12">
-      <section className="w-full max-w-[420px] rounded-lg border border-slate-200 bg-white p-7">
+      <section className="w-full max-w-[420px] rounded-[28px] border border-slate-200 bg-white p-7">
         <p className="mb-3 text-[0.82rem] font-bold tracking-[0.08em] text-indigo-600 uppercase">
           Loshmi
         </p>
@@ -131,27 +132,23 @@ export default function Login() {
             />
           </label>
           {error ? <p className="text-sm text-red-700">{error}</p> : null}
-          <button
-            className="inline-flex min-h-11 w-full cursor-pointer items-center justify-center rounded-md bg-gray-950 px-4 font-semibold text-white disabled:cursor-not-allowed disabled:bg-slate-400"
-            disabled={isSubmitting}
-            type="submit"
-          >
+          <Button className="w-full" disabled={isSubmitting} type="submit">
             {isSubmitting ? "Logging in..." : "Log in"}
-          </button>
+          </Button>
         </form>
         <div className="my-5 flex items-center gap-3 text-xs font-semibold text-slate-500 uppercase">
           <span className="h-px flex-1 bg-slate-200" />
           <span>or</span>
           <span className="h-px flex-1 bg-slate-200" />
         </div>
-        <button
-          className="inline-flex min-h-11 w-full cursor-pointer items-center justify-center rounded-md border border-slate-300 bg-white px-4 font-semibold text-gray-950 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500"
+        <Button
+          className="w-full"
           disabled={isSubmitting || isPasskeySubmitting}
-          type="button"
+          variant="secondary"
           onClick={handlePasskeySignIn}
         >
           {isPasskeySubmitting ? "Checking passkey..." : "Sign in with passkey"}
-        </button>
+        </Button>
       </section>
     </main>
   );

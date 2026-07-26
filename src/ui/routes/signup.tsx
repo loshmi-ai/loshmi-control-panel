@@ -6,6 +6,7 @@ import {
   useSearchParams,
 } from "react-router";
 
+import { Button } from "@src/ui/components/designSystem/button";
 import { authClient, safeRedirectTo } from "@src/ui/lib/auth";
 import { getUser } from "@src/ui/lib/route-context.server";
 
@@ -59,7 +60,7 @@ export default function Signup() {
 
   return (
     <main className="grid min-h-screen place-items-center px-6 py-12">
-      <section className="w-full max-w-[420px] rounded-lg border border-slate-200 bg-white p-7">
+      <section className="w-full max-w-[420px] rounded-[28px] border border-slate-200 bg-white p-7">
         <p className="mb-3 text-[0.82rem] font-bold tracking-[0.08em] text-indigo-600 uppercase">
           Loshmi
         </p>
@@ -99,13 +100,9 @@ export default function Signup() {
             />
           </label>
           {error ? <p className="text-sm text-red-700">{error}</p> : null}
-          <button
-            className="inline-flex min-h-11 w-full cursor-pointer items-center justify-center rounded-md bg-gray-950 px-4 font-semibold text-white disabled:cursor-not-allowed disabled:bg-slate-400"
-            disabled={isSubmitting}
-            type="submit"
-          >
+          <Button className="w-full" disabled={isSubmitting} type="submit">
             {isSubmitting ? "Creating..." : "Create account"}
-          </button>
+          </Button>
         </form>
         <p className="mt-6 text-sm text-slate-600">
           Already have an account?{" "}

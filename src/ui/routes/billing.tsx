@@ -1,11 +1,14 @@
-import { Link, type LoaderFunctionArgs } from "react-router";
+import { useState } from "react";
+import { type LoaderFunctionArgs } from "react-router";
 
+import { AppShell } from "@src/ui/components/designSystem/app-shell";
 import { Button } from "@src/ui/components/designSystem/button";
 import { useBillingActions } from "@src/ui/domain/billing";
+import { authClient } from "@src/ui/lib/auth";
 import { getUserOrRedirectToLogin } from "@src/ui/lib/route-context.server";
+import type { BillingLoaderData } from "@src/ui/routes/billing.types";
 import { BillingPlanCard } from "@src/ui/routes/billing/components/plan-card";
 import { getBillingPlans } from "@src/ui/routes/billing/server";
-import type { BillingLoaderData } from "@src/ui/routes/billing.types";
 
 export function meta() {
   return [{ title: "Billing | Loshmi Control Panel" }];
@@ -29,22 +32,28 @@ export default function Billing({
   loaderData: BillingLoaderData;
 }) {
   const billing = useBillingActions(loaderData.plans);
+  const [isSigningOut, setIsSigningOut] = useState(false);
+
+  async function handleSignOut() {
+    setIsSigningOut(true);
+    await authClient.signOut();
+    window.location.assign("/login");
+  }
 
   return (
-    <main className="min-h-screen max-w-[840px] px-7 py-12 sm:p-12">
-      <nav className="mb-8 flex flex-wrap items-center gap-4">
-        <Link className="text-gray-900" to="/dashboard">
-          Dashboard
-        </Link>
-        <Link className="text-gray-900" to="/settings">
-          Settings
-        </Link>
-        <Link className="text-gray-900" to="/">
-          Home
-        </Link>
-      </nav>
-
-      <section className="rounded-lg border border-slate-200 bg-white p-7">
+    <AppShell
+      actions={[
+        { label: "Home", to: "/" },
+        { label: "Dashboard", to: "/dashboard" },
+      ]}
+      isSigningOut={isSigningOut}
+      navItems={[{ label: "Dashboard", shortLabel: "D", to: "/dashboard" }]}
+      title="Billing"
+      userEmail={loaderData.user.email}
+      userName={loaderData.user.name}
+      onSignOut={handleSignOut}
+    >
+      <section className="rounded-[28px] border border-slate-200 bg-white p-7">
         <p className="mb-3 text-[0.82rem] font-bold tracking-[0.08em] text-indigo-600 uppercase">
           Billing
         </p>
@@ -100,6 +109,6 @@ export default function Billing({
           </Button>
         ) : null}
       </section>
-    </main>
+    </AppShell>
   );
 }
