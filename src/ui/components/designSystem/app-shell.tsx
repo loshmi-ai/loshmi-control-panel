@@ -13,7 +13,7 @@ function Base({ children }: { children: ReactNode }) {
   return (
     <div
       className={clsx(
-        "bg-black",
+        "bg-neutral-950",
         "flex flex-col",
         "h-screen w-full",
         "overflow-hidden",
@@ -35,6 +35,12 @@ function Nav({ user }: { user: AppShellProps["user"] }): ReactElement {
       <div className="ml-auto flex min-w-0 items-center gap-3">
         <Link className="text-sm font-semibold text-white/80" to="/billing">
           Billing
+        </Link>
+        <Link
+          className="text-sm font-semibold text-white/80"
+          to="/design-system"
+        >
+          Design System
         </Link>
         <Link className="text-sm font-semibold text-white/80" to="/settings">
           Settings
@@ -59,14 +65,16 @@ function Panel({ children }: PanelProps): ReactElement {
   return (
     <main
       className={clsx(
-        "flex-grow",
+        "min-h-0 flex-grow overflow-hidden",
         "text-white",
-        "bg-[#1C1C1E] rounded-3xl",
-        "mx-2 mb-2 py-2 px-4",
-        "flex-grow",
+        // "bg-[#1C1C1E] rounded-3xl",
+        "bg-neutral-900 rounded-2xl",
+        "mx-2 mb-2",
       )}
     >
-      {children}
+      <div className="scrollbar-soft my-1 mr-1 h-[calc(100%-0.5rem)] overflow-y-auto px-4 py-2 [scrollbar-gutter:stable]">
+        {children}
+      </div>
     </main>
   );
 }
