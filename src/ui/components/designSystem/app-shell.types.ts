@@ -11,6 +11,7 @@ export type AppShellUser = {
 
 export type AppShellProps = PropsWithChildren<{
   env?: string;
+  depth?: number;
   renderedAt?: string;
   user: AppShellUser;
 }>;
