@@ -2,6 +2,9 @@ import type { Passkey } from "@better-auth/passkey/client";
 import type { ComponentProps } from "react";
 
 import { Button } from "@src/ui/components/designSystem/button";
+import { Input } from "@src/ui/components/designSystem/input";
+import { Intent } from "@src/ui/components/designSystem/intents";
+import { Variant } from "@src/ui/components/designSystem/variants";
 
 type PasskeyCardProps = {
   deletingPasskeyId: Passkey["id"] | null;
@@ -48,43 +51,40 @@ export function PasskeyCard({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h2 className="text-lg font-bold">{getPasskeyLabel(passkey)}</h2>
-          <p className="mt-1 text-sm">
-            Added {getPasskeyCreatedAt(passkey)}
-          </p>
+          <p className="mt-1 text-sm">Added {getPasskeyCreatedAt(passkey)}</p>
           <p className="mt-1 text-sm">
             {passkey.deviceType}
             {passkey.backedUp ? " backed up" : ""}
           </p>
         </div>
         <Button
-          disabled={deletingPasskeyId === passkey.id}
-          variant="danger"
+          intent={Intent.Danger}
+          loading={deletingPasskeyId === passkey.id}
+          variant={Variant.Outline}
           onClick={() => void onDeletePasskey(passkey.id)}
         >
-          {deletingPasskeyId === passkey.id ? "Deleting..." : "Delete"}
+          Delete
         </Button>
       </div>
       <form
         className="mt-4 flex flex-col gap-3 sm:flex-row"
         onSubmit={handleRenamePasskey}
       >
-        <label className="min-w-0 flex-1">
-          <span className="text-sm font-semibold">Rename</span>
-          <input
-            className="mt-2 min-h-10 w-full rounded-md border border-slate-300 px-3 text-base text-gray-950"
-            defaultValue={passkey.name ?? ""}
-            name="name"
-            required
-            type="text"
-          />
-        </label>
+        <Input
+          className="min-w-0 flex-1"
+          defaultValue={passkey.name ?? ""}
+          label="Rename"
+          name="name"
+          required
+          type="text"
+        />
         <Button
           className="self-end"
-          disabled={updatingPasskeyId === passkey.id}
+          loading={updatingPasskeyId === passkey.id}
           type="submit"
-          variant="secondary"
+          variant={Variant.Secondary}
         >
-          {updatingPasskeyId === passkey.id ? "Saving..." : "Save"}
+          Save
         </Button>
       </form>
     </article>

@@ -11,6 +11,8 @@ import {
 
 import type React from "react";
 
+import { CuelumeBinding } from "@src/ui/lib/cuelume";
+
 import "./global.css";
 
 export const links = () => [
@@ -46,7 +48,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="m-0 bg-slate-50 font-sans text-gray-900">
+      <body className="m-0 bg-slate-50 font-sans text-gray-900 antialiased">
         <AutumnProvider>{children}</AutumnProvider>
         <ScrollRestoration />
         <Scripts />
@@ -56,7 +58,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <>
+      <CuelumeBinding />
+      <Outlet />
+    </>
+  );
 }
 
 export function ErrorBoundary({ error }: { error: unknown }) {

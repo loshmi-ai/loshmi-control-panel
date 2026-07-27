@@ -1,35 +1,117 @@
-import type { InputHTMLAttributes } from "react";
+import clsx from "clsx";
+import { Eye, EyeOff } from "lucide-react";
+import { useId, useState } from "react";
 
-const inputStatuses = {
+import type { InputProps } from "@src/ui/components/designSystem/input.types";
+
+const inputStatuses: Record<NonNullable<InputProps["status"]>, string> = {
   default:
-    "border-slate-300 text-gray-950 placeholder:text-slate-400 focus:border-gray-950 focus:ring-gray-950/15",
+    "border-white/18 bg-white/[0.07] text-white placeholder:text-white/38 focus-within:border-emerald-300/70 focus-within:ring-emerald-300/18",
   error:
-    "border-red-300 text-red-950 placeholder:text-red-300 focus:border-red-600 focus:ring-red-600/15",
+    "border-red-300/60 bg-red-950/18 text-white placeholder:text-red-200/45 focus-within:border-red-300 focus-within:ring-red-300/20",
 };
-
-type InputProps = InputHTMLAttributes<HTMLInputElement> & {
-  status?: keyof typeof inputStatuses;
-};
-
-function cx(...classNames: (false | null | string | undefined)[]) {
-  return classNames.filter(Boolean).join(" ");
-}
 
 export function Input({
+  "aria-describedby": ariaDescribedBy,
+  "aria-invalid": ariaInvalid,
   className,
+  disabled,
+  errors = [],
+  id,
+  label,
+  leftIcon: LeftIcon,
+  readOnly,
+  rightIcon: RightIcon,
   status = "default",
   type = "text",
   ...props
 }: InputProps) {
+  const generatedId = useId();
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const inputId = id ?? generatedId;
+  const errorId = `${inputId}-errors`;
+  const hasErrors = errors.length > 0;
+  const resolvedStatus = hasErrors ? "error" : status;
+  const isPassword = type === "password";
+  const PasswordIcon = isPasswordVisible ? EyeOff : Eye;
+  const describedBy = clsx(ariaDescribedBy, hasErrors && errorId) || undefined;
+
   return (
-    <input
-      className={cx(
-        "min-h-11 w-full rounded-md border bg-white px-3 text-base transition outline-none focus:ring-4 disabled:cursor-not-allowed disabled:border-slate-200 disabled:bg-slate-100 disabled:text-slate-500 read-only:bg-slate-50",
-        inputStatuses[status],
-        className,
-      )}
-      type={type}
-      {...props}
-    />
+    <div className={clsx("w-full", className)}>
+      {label ? (
+        <label
+          className="mb-2 block text-sm font-semibold text-white/82"
+          htmlFor={inputId}
+        >
+          {label}
+        </label>
+      ) : null}
+      <div
+        className={clsx(
+          "flex min-h-11 w-full items-center gap-2 rounded-md border px-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition focus-within:ring-4",
+          inputStatuses[resolvedStatus],
+          disabled &&
+            "cursor-not-allowed border-white/10 bg-white/[0.04] text-white/35 shadow-none",
+          readOnly && !disabled && "bg-white/[0.045]",
+        )}
+      >
+        {LeftIcon ? (
+          <LeftIcon
+            aria-hidden="true"
+            className={clsx(
+              "shrink-0",
+              resolvedStatus === "error" ? "text-red-200/75" : "text-white/45",
+              disabled && "text-white/25",
+            )}
+            size={18}
+            strokeWidth={2.1}
+          />
+        ) : null}
+        <input
+          aria-describedby={describedBy}
+          aria-invalid={hasErrors ? true : ariaInvalid}
+          className="min-w-0 flex-1 border-0 bg-transparent px-0 py-2.5 text-base outline-none placeholder:text-inherit disabled:cursor-not-allowed disabled:text-white/35"
+          disabled={disabled}
+          id={inputId}
+          readOnly={readOnly}
+          type={isPassword && isPasswordVisible ? "text" : type}
+          {...props}
+        />
+        {isPassword ? (
+          <button
+            aria-label={isPasswordVisible ? "Hide password" : "Show password"}
+            className="grid size-8 shrink-0 place-items-center rounded-full text-white/58 transition hover:bg-white/10 hover:text-white focus-visible:ring-2 focus-visible:ring-emerald-300/70 focus-visible:outline-none disabled:cursor-not-allowed disabled:text-white/25"
+            disabled={disabled}
+            type="button"
+            onClick={() => {
+              setIsPasswordVisible((currentValue) => !currentValue);
+            }}
+          >
+            <PasswordIcon aria-hidden="true" size={18} strokeWidth={2.1} />
+          </button>
+        ) : RightIcon ? (
+          <RightIcon
+            aria-hidden="true"
+            className={clsx(
+              "shrink-0",
+              resolvedStatus === "error" ? "text-red-200/75" : "text-white/45",
+              disabled && "text-white/25",
+            )}
+            size={18}
+            strokeWidth={2.1}
+          />
+        ) : null}
+      </div>
+      {hasErrors ? (
+        <ul
+          className="mt-2 space-y-1 text-sm leading-snug text-red-200"
+          id={errorId}
+        >
+          {errors.map((error) => (
+            <li key={error}>{error}</li>
+          ))}
+        </ul>
+      ) : null}
+    </div>
   );
 }

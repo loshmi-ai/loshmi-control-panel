@@ -3,22 +3,7 @@ import { Link } from "react-router";
 
 import { AppShell } from "@src/ui/components/designSystem/app-shell";
 import { getUserOrRedirectToLogin } from "@src/ui/domain/auth.server";
-import type { DesignSystemComponentLink } from "@src/ui/routes/design-system.types";
-
-const designSystemComponentLinks = [
-  {
-    description: "Actions for forms, navigation, and destructive workflows.",
-    id: "button",
-    path: "/design-system/button",
-    title: "Button",
-  },
-  {
-    description: "Single-line text entry for auth, settings, and forms.",
-    id: "input",
-    path: "/design-system/input",
-    title: "Input",
-  },
-] satisfies DesignSystemComponentLink[];
+import { designSystemComponentLinks } from "@src/ui/routes/design-system/navigation";
 
 const designSystemFoundations = {
   colors: [

@@ -5,8 +5,23 @@ import type {
   DesignSystemSection,
 } from "@src/ui/routes/design-system.types";
 
-export type DesignSystemComponentPageProps<Props> = {
+type DesignSystemComponentPageBaseProps<Props> = {
   activeComponent: DesignSystemComponentId;
-  renderExample: (props: Props) => ReactNode;
   section: DesignSystemSection<Props>;
 };
+
+type DesignSystemComponentPageCustomContentProps<Props> =
+  DesignSystemComponentPageBaseProps<Props> & {
+    children: ReactNode;
+    renderExample?: never;
+  };
+
+type DesignSystemComponentPageExamplesProps<Props> =
+  DesignSystemComponentPageBaseProps<Props> & {
+    children?: never;
+    renderExample: (props: Props) => ReactNode;
+  };
+
+export type DesignSystemComponentPageProps<Props> =
+  | DesignSystemComponentPageCustomContentProps<Props>
+  | DesignSystemComponentPageExamplesProps<Props>;

@@ -1,4 +1,5 @@
-export type DesignSystemComponentId = "button" | "input";
+export type DesignSystemComponentId =
+  "button" | "intents" | "input" | "table" | "variants";
 
 export type DesignSystemComponentLink = {
   description: string;
@@ -13,8 +14,15 @@ export type DesignSystemExample<Props> = {
   title: string;
 };
 
+export type DesignSystemExampleGroup<Props> = {
+  description?: string;
+  examples: DesignSystemExample<Props>[];
+  title: string;
+};
+
 export type DesignSystemSection<Props> = DesignSystemComponentLink & {
   component: DesignSystemComponentId;
-  examples: DesignSystemExample<Props>[];
+  exampleGroups?: DesignSystemExampleGroup<Props>[];
+  examples?: DesignSystemExample<Props>[];
   previewClassName: string;
 };

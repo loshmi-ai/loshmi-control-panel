@@ -1,11 +1,20 @@
+/*
+ * Use Tailwind utilities everywhere possible.
+ * This file is only for things that cannot be done in Tailwind.
+ */
+
+/* Tailwind entrypoint */
 @import "tailwindcss";
 
+/* Theme tokens */
 @theme {
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+  --font-sans:
+    "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont,
     "Helvetica Neue", sans-serif;
   --font-mlm-roman: "MLMRoman", serif;
 }
 
+/* Font faces */
 @font-face {
   font-family: "MLMRoman";
   src: url("/fonts/MLMRoman12-Regular.woff2") format("woff2");
@@ -14,11 +23,30 @@
   font-display: swap;
 }
 
+/* Scrollbar utilities */
 @utility scrollbar-soft {
   scrollbar-color: color-mix(in oklab, white 13%, transparent) transparent;
   scrollbar-width: thin;
 }
 
+/* Loading indicators */
+.button-loading-spinner {
+  animation: button-loading-spinner 0.015s linear infinite;
+}
+
+@keyframes button-loading-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button-loading-spinner {
+    animation-duration: 1.2s;
+  }
+}
+
+/* WebKit scrollbar utilities */
 @utility scrollbar-soft {
   &::-webkit-scrollbar {
     width: 0.625rem;
@@ -41,6 +69,7 @@
   }
 }
 
+/* Reserved font variants */
 /* @font-face {
   font-family: "MLMRoman";
   src: url("/fonts/MLMRoman12-Italic.woff2") format("woff2");

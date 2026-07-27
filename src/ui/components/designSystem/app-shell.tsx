@@ -6,6 +6,8 @@ import type {
   AppShellProps,
   PanelProps,
 } from "@src/ui/components/designSystem/app-shell.types";
+import { Button } from "@src/ui/components/designSystem/button";
+import { Variant } from "@src/ui/components/designSystem/variants";
 import { useAuthActions } from "@src/ui/domain/auth";
 
 // Ether to stitch everything onto
@@ -48,14 +50,15 @@ function Nav({ user }: { user: AppShellProps["user"] }): ReactElement {
         <span className="hidden max-w-48 truncate text-sm text-white/60 sm:block">
           {user.email}
         </span>
-        <button
-          className="cursor-pointer border-0 bg-transparent p-0 text-sm font-semibold text-white/80 disabled:cursor-not-allowed disabled:text-white/40"
+        <Button
+          className="min-h-0 px-0 py-0 text-sm text-white/80 shadow-none"
           disabled={auth.isSigningOut}
           type="button"
+          variant={Variant.Minimal}
           onClick={() => void auth.signOut()}
         >
           {auth.isSigningOut ? "Signing out..." : "Sign out"}
-        </button>
+        </Button>
       </div>
     </nav>
   );

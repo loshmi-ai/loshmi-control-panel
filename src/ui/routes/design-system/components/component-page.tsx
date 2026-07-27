@@ -1,28 +1,22 @@
 import { Link } from "react-router";
 
-import type { DesignSystemComponentLink } from "@src/ui/routes/design-system.types";
 import type { DesignSystemComponentPageProps } from "@src/ui/routes/design-system/components/component-page.types";
-
-const designSystemComponentLinks = [
-  {
-    description: "Actions for forms, navigation, and destructive workflows.",
-    id: "button",
-    path: "/design-system/button",
-    title: "Button",
-  },
-  {
-    description: "Single-line text entry for auth, settings, and forms.",
-    id: "input",
-    path: "/design-system/input",
-    title: "Input",
-  },
-] satisfies DesignSystemComponentLink[];
+import { designSystemComponentLinks } from "@src/ui/routes/design-system/navigation";
 
 export function DesignSystemComponentPage<Props>({
   activeComponent,
+  children,
   renderExample,
   section,
 }: DesignSystemComponentPageProps<Props>) {
+  const hasCustomContent = children !== undefined;
+  const exampleGroups = section.exampleGroups ?? [
+    {
+      examples: section.examples ?? [],
+      title: section.title,
+    },
+  ];
+
   return (
     <div className="flex min-h-full flex-col gap-5 lg:flex-row">
       <aside className="shrink-0 border-b border-white/10 pb-4 lg:w-56 lg:border-r lg:border-b-0 lg:pr-5">
@@ -62,26 +56,47 @@ export function DesignSystemComponentPage<Props>({
             {section.description}
           </p>
 
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
-            {section.examples.map((example) => (
-              <article
-                className="rounded-lg border border-white/10 bg-white/[0.03] p-4"
-                key={example.title}
-              >
-                <div className="mb-4">
-                  <h2 className="font-semibold">{example.title}</h2>
-                  <p className="mt-1 text-sm leading-relaxed text-white/60">
-                    {example.description}
-                  </p>
-                </div>
-                <div
-                  className={`flex min-h-20 items-center rounded-md border border-white/10 p-4 ${section.previewClassName}`}
-                >
-                  {renderExample(example.props)}
-                </div>
-              </article>
-            ))}
-          </div>
+          {hasCustomContent ? (
+            <div className="mt-8">{children}</div>
+          ) : (
+            <div className="mt-8 space-y-8">
+              {exampleGroups.map((group) => (
+                <section key={group.title}>
+                  {section.exampleGroups ? (
+                    <div className="mb-4">
+                      <h2 className="text-xl font-bold">{group.title}</h2>
+                      {group.description ? (
+                        <p className="mt-1 max-w-2xl text-sm leading-relaxed text-white/60">
+                          {group.description}
+                        </p>
+                      ) : null}
+                    </div>
+                  ) : null}
+
+                  <div className="grid gap-4 md:grid-cols-2">
+                    {group.examples.map((example) => (
+                      <article
+                        className="rounded-lg border border-white/10 bg-white/[0.03] p-4"
+                        key={example.title}
+                      >
+                        <div className="mb-4">
+                          <h3 className="font-semibold">{example.title}</h3>
+                          <p className="mt-1 text-sm leading-relaxed text-white/60">
+                            {example.description}
+                          </p>
+                        </div>
+                        <div
+                          className={`flex min-h-20 items-center rounded-md border border-white/10 p-4 ${section.previewClassName}`}
+                        >
+                          {renderExample(example.props)}
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </div>

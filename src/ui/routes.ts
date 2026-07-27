@@ -7,7 +7,10 @@ export default [
   route("/dashboard", "routes/dashboard.tsx"),
   route("/design-system", "routes/design-system.tsx"),
   route("/design-system/button", "routes/design-system/button.tsx"),
+  route("/design-system/variants", "routes/design-system/variants.tsx"),
+  route("/design-system/intents", "routes/design-system/intents.tsx"),
   route("/design-system/input", "routes/design-system/input.tsx"),
+  route("/design-system/table", "routes/design-system/table.tsx"),
   route("/billing", "routes/billing.tsx"),
   route("/settings", "routes/settings.tsx"),
 ] satisfies RouteConfig;

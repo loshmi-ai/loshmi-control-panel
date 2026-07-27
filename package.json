@@ -65,11 +65,13 @@
     "autumn-js": "^1.2.44",
     "better-auth": "^1.6.23",
     "clsx": "^2.1.1",
+    "cuelume": "^0.1.2",
     "drizzle-orm": "^0.45.2",
     "hono": "^4.12.28",
     "isbot": "5",
     "jotai": "^2.20.2",
     "jsonc-parser": "^3.3.1",
+    "lucide-react": "^1.27.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-router": "8.1.0"

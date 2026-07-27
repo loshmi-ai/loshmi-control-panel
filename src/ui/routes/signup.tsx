@@ -1,12 +1,14 @@
 import { type FormEvent, useState } from "react";
 import {
-  Link,
   type LoaderFunctionArgs,
   redirect,
   useSearchParams,
 } from "react-router";
 
-import { Button } from "@src/ui/components/designSystem/button";
+import { AnchorButton, Button } from "@src/ui/components/designSystem/button";
+import { Input } from "@src/ui/components/designSystem/input";
+import { PublicShell } from "@src/ui/components/designSystem/public-shell";
+import { Variant } from "@src/ui/components/designSystem/variants";
 import { authClient, safeRedirectTo } from "@src/ui/domain/auth";
 import { getUser } from "@src/ui/domain/auth.server";
 
@@ -59,61 +61,49 @@ export default function Signup() {
   }
 
   return (
-    <main className="grid min-h-screen place-items-center px-6 py-12">
-      <section className="w-full max-w-[420px] rounded-[28px] border border-slate-200 bg-white p-7">
-        <p className="mb-3 text-[0.82rem] font-bold tracking-[0.08em] text-indigo-600 uppercase">
-          Loshmi
-        </p>
-        <h1 className="text-3xl leading-tight font-bold">Create account</h1>
-        <form className="mt-7 space-y-5" onSubmit={handleSubmit}>
-          <label className="block">
-            <span className="text-sm font-semibold text-slate-700">Name</span>
-            <input
-              required
-              autoComplete="name"
-              className="mt-2 min-h-11 w-full rounded-md border border-slate-300 px-3 text-base"
-              name="name"
-              type="text"
-            />
-          </label>
-          <label className="block">
-            <span className="text-sm font-semibold text-slate-700">Email</span>
-            <input
+    <PublicShell user={null}>
+      <section className="grid min-h-full place-items-center px-4 py-12 sm:px-6">
+        <article className="w-full max-w-[420px] rounded-lg border border-white/10 bg-neutral-950/78 p-6 shadow-[0_22px_50px_rgba(0,0,0,0.28)] sm:p-7">
+          <p className="mb-3 text-sm font-bold text-emerald-200/80 uppercase">
+            Loshmi
+          </p>
+          <h1 className="text-3xl leading-tight font-bold text-white">
+            Create account
+          </h1>
+          <form className="mt-7 space-y-5" onSubmit={handleSubmit}>
+            <Input required autoComplete="name" label="Name" name="name" />
+            <Input
               required
               autoComplete="email"
-              className="mt-2 min-h-11 w-full rounded-md border border-slate-300 px-3 text-base"
+              label="Email"
               name="email"
               type="email"
             />
-          </label>
-          <label className="block">
-            <span className="text-sm font-semibold text-slate-700">
-              Password
-            </span>
-            <input
+            <Input
               required
               autoComplete="new-password"
-              className="mt-2 min-h-11 w-full rounded-md border border-slate-300 px-3 text-base"
+              label="Password"
               minLength={8}
               name="password"
               type="password"
             />
-          </label>
-          {error ? <p className="text-sm text-red-700">{error}</p> : null}
-          <Button className="w-full" disabled={isSubmitting} type="submit">
-            {isSubmitting ? "Creating..." : "Create account"}
-          </Button>
-        </form>
-        <p className="mt-6 text-sm text-slate-600">
-          Already have an account?{" "}
-          <Link
-            className="font-semibold text-gray-950"
-            to={`/login?redirectTo=${encodeURIComponent(redirectTo)}`}
-          >
-            Log in.
-          </Link>
-        </p>
+            {error ? <p className="text-sm text-red-700">{error}</p> : null}
+            <Button className="w-full" loading={isSubmitting} type="submit">
+              Create account
+            </Button>
+          </form>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <p className="text-sm text-white/62">Already have an account?</p>
+            <AnchorButton
+              className="w-full sm:ml-auto sm:w-auto"
+              to={`/login?redirectTo=${encodeURIComponent(redirectTo)}`}
+              variant={Variant.Secondary}
+            >
+              Log in
+            </AnchorButton>
+          </div>
+        </article>
       </section>
-    </main>
+    </PublicShell>
   );
 }
