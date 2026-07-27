@@ -1,8 +1,6 @@
 import type { PropsWithChildren } from "react";
 
-export type PanelProps = PropsWithChildren<{
-  depth?: number;
-}>;
+export type PanelProps = PropsWithChildren<{}>;
 
 export type AppShellUser = {
   email: string;
@@ -11,7 +9,6 @@ export type AppShellUser = {
 
 export type AppShellProps = PropsWithChildren<{
   env?: string;
-  depth?: number;
   renderedAt?: string;
   user: AppShellUser;
 }>;

@@ -55,58 +55,31 @@ function Nav({ user }: { user: AppShellProps["user"] }): ReactElement {
   );
 }
 
-function Panel({ depth = 0, children }: PanelProps): ReactElement {
+function Panel({ children }: PanelProps): ReactElement {
   return (
-    <main className={clsx("flex-grow", "text-white")}>
-      {[...Array(depth + 1).keys()].map((renderDepth: number): ReactNode => {
-        if (depth === renderDepth) {
-          return (
-            <div
-              key={`panel-${renderDepth}`}
-              className={clsx(
-                "bg-[#1C1C1E] rounded-3xl",
-                "mx-2 mb-2 py-2 px-4",
-                "flex-grow",
-                {
-                  "shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] -mt-6 border-t border-black/40":
-                    depth > 0,
-                },
-              )}
-            >
-              {children}
-            </div>
-          );
-        } else {
-          // render fake depth cards
-          const marginX = 8 * (depth - renderDepth) + 8;
-          return (
-            <div
-              key={`panel-${renderDepth}`}
-              className={clsx(
-                "h-8",
-                { "-mt-6": renderDepth !== 0 },
-                "bg-[#1C1C1E]",
-                "rounded-t-3xl border-t border-black/40",
-                "shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]",
-              )}
-              style={{ marginRight: marginX, marginLeft: marginX }}
-            ></div>
-          );
-        }
-      })}
+    <main
+      className={clsx(
+        "flex-grow",
+        "text-white",
+        "bg-[#1C1C1E] rounded-3xl",
+        "mx-2 mb-2 py-2 px-4",
+        "flex-grow",
+      )}
+    >
+      {children}
     </main>
   );
 }
 
 export function AppShell(props: AppShellProps) {
-  const { children, env, renderedAt, user, depth } = props;
+  const { children, env, renderedAt, user } = props;
   void env;
   void renderedAt;
 
   return (
     <Base>
       <Nav user={user} />
-      <Panel depth={depth}>{children}</Panel>
+      <Panel>{children}</Panel>
     </Base>
   );
 }
