@@ -1,6 +1,6 @@
 import { Link, type LoaderFunctionArgs } from "react-router";
 
-import { getUser } from "@src/ui/lib/route-context.server";
+import { getUser } from "@src/ui/domain/auth.server";
 import type { LandingLoaderData } from "@src/ui/routes/landing.types";
 
 export function meta() {

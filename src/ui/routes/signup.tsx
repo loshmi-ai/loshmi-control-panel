@@ -7,8 +7,8 @@ import {
 } from "react-router";
 
 import { Button } from "@src/ui/components/designSystem/button";
-import { authClient, safeRedirectTo } from "@src/ui/lib/auth";
-import { getUser } from "@src/ui/lib/route-context.server";
+import { authClient, safeRedirectTo } from "@src/ui/domain/auth";
+import { getUser } from "@src/ui/domain/auth.server";
 
 export function meta() {
   return [{ title: "Sign up | Loshmi Control Panel" }];

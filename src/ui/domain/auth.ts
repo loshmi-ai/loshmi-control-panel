@@ -1,5 +1,6 @@
 import { passkeyClient } from "@better-auth/passkey/client";
 import { createAuthClient } from "better-auth/react";
+import { useState } from "react";
 
 import { DEFAULT_AUTH_REDIRECT } from "@src/constants";
 
@@ -17,4 +18,19 @@ export function safeRedirectTo(value: string | null | undefined) {
   }
 
   return value;
+}
+
+export function useAuthActions() {
+  const [isSigningOut, setIsSigningOut] = useState(false);
+
+  async function signOut() {
+    setIsSigningOut(true);
+    await authClient.signOut();
+    window.location.assign("/login");
+  }
+
+  return {
+    isSigningOut,
+    signOut,
+  };
 }

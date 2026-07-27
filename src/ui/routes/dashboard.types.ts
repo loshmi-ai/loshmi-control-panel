@@ -1,4 +1,4 @@
-import type { getUserOrRedirectToLogin } from "@src/ui/lib/route-context.server";
+import type { getUserOrRedirectToLogin } from "@src/ui/domain/auth.server";
 
 export type DashboardLoaderData = {
   environment: string;

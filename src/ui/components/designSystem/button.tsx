@@ -4,7 +4,7 @@ const buttonVariants = {
   primary:
     "border border-gray-950 text-white disabled:border-slate-300 disabled:bg-slate-300 disabled:text-white",
   secondary:
-    "border border-slate-200 text-gray-950 disabled:bg-slate-100 disabled:text-slate-500",
+    "border border-slate-200 text-current disabled:bg-slate-100 disabled:text-slate-500",
   danger:
     "border border-red-100 text-red-700 disabled:bg-slate-100 disabled:text-slate-500",
 };

@@ -1,24 +1,16 @@
-import type { ReactNode } from "react";
+import type { PropsWithChildren } from "react";
 
-export type AppShellNavItem = {
-  label: string;
-  shortLabel: string;
-  to: string;
+export type PanelProps = PropsWithChildren<{
+  depth?: number;
+}>;
+
+export type AppShellUser = {
+  email: string;
+  name: string;
 };
 
-export type AppShellAction = {
-  label: string;
-  to: string;
-};
-
-export type AppShellProps = {
-  actions?: AppShellAction[];
-  children: ReactNode;
-  isSigningOut?: boolean;
-  navItems: AppShellNavItem[];
-  searchPlaceholder?: string;
-  title: string;
-  userEmail?: string;
-  userName?: string;
-  onSignOut?: () => void;
-};
+export type AppShellProps = PropsWithChildren<{
+  env?: string;
+  renderedAt?: string;
+  user: AppShellUser;
+}>;

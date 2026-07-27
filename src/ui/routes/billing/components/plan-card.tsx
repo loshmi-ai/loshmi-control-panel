@@ -18,19 +18,15 @@ export function BillingPlanCard({
 }: BillingPlanCardProps) {
   return (
     <article className="rounded-md border border-slate-200 p-4">
-      <h2 className="text-lg font-bold text-gray-950">{plan.name}</h2>
-      <p className="mt-2 text-sm leading-relaxed text-slate-600">
-        {plan.description}
-      </p>
+      <h2 className="text-lg font-bold">{plan.name}</h2>
+      <p className="mt-2 text-sm leading-relaxed">{plan.description}</p>
       {plan.price ? (
-        <p className="mt-4 text-sm font-semibold text-gray-950">{plan.price}</p>
+        <p className="mt-4 text-sm font-semibold">{plan.price}</p>
       ) : null}
-      <ul className="mt-4 space-y-2 text-sm leading-relaxed text-slate-700">
+      <ul className="mt-4 space-y-2 text-sm leading-relaxed">
         {plan.features.map((featureText) => (
           <li className="flex gap-2" key={featureText}>
-            <span aria-hidden="true" className="text-slate-400">
-              -
-            </span>
+            <span aria-hidden="true">-</span>
             <span>{featureText}</span>
           </li>
         ))}

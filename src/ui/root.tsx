@@ -11,10 +11,9 @@ import {
 
 import type React from "react";
 
-import stylesheet from "./global.css?url";
+import "./global.css";
 
-export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: stylesheet },
+export const links = () => [
   {
     rel: "preload",
     href: "/fonts/MLMRoman12-Regular.woff2",
@@ -36,7 +35,7 @@ export const links: LinksFunction = () => [
   //   type: "font/woff2",
   //   crossOrigin: "anonymous",
   // },
-];
+] satisfies ReturnType<LinksFunction>;
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
