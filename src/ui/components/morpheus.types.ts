@@ -8,6 +8,7 @@ export enum MorphAnchor {
   LeftMiddle = "left-middle",
   LeftBottom = "left-bottom",
   TopMiddle = "top-middle",
+  MiddleMiddle = "middle-middle",
   RightTop = "right-top",
   RightMiddle = "right-middle",
   RightBottom = "right-bottom",
@@ -16,12 +17,18 @@ export enum MorphAnchor {
 
 export type PanelSize = { width: number; height: number };
 export type ContentOffset = { x: number; y: number };
+export type PanelPosition = {
+  left?: number;
+  right?: number;
+  top?: number;
+  bottom?: number;
+};
+export type PanelVisualStyle = {
+  backgroundColor: string;
+  borderRadius: string;
+};
 export type MorphSpringPreset =
-  | "balanced"
-  | "snappy"
-  | "smooth"
-  | "wobbly"
-  | "heavy";
+  "balanced" | "snappy" | "smooth" | "wobbly" | "heavy";
 
 export type MorphProps = {
   // Direction describes where the panel opens from. It only picks the default
@@ -33,10 +40,6 @@ export type MorphProps = {
   onClose?: () => void;
   collapsedContent: ReactNode;
   expandedContent: ReactNode;
-  collapsedSize?: PanelSize;
-  expandedSize?: PanelSize;
-  collapsedClassName?: string;
-  expandedClassName?: string;
   className?: string;
   overlayColor?: string;
   overlayOpacity?: number;
@@ -55,28 +58,28 @@ export type MorphOverlayProps = {
 export type MorphMeasurementNodesProps = {
   collapsedRef: RefObject<HTMLDivElement | null>;
   expandedRef: RefObject<HTMLDivElement | null>;
-  collapsedClassName?: string;
-  expandedClassName?: string;
-  collapsedSize: PanelSize;
-  expandedSize: PanelSize;
+  collapsedContent: ReactNode;
+  expandedContent: ReactNode;
 };
 
 export type MorphShellProps = {
   expanded: boolean;
-  anchorClassName: string;
+  position: PanelPosition;
   animatedSize: PanelSize;
+  visualStyle: PanelVisualStyle;
   spring: Transition;
   children: ReactNode;
 };
 
 export type MorphContentLayersProps = {
   expanded: boolean;
-  anchorClassName: string;
   collapsedContent: ReactNode;
   expandedContent: ReactNode;
   collapsedLayerSize: PanelSize;
   expandedLayerSize: PanelSize;
-  contentOffset: ContentOffset;
+  sourcePosition: PanelPosition;
+  targetPosition: PanelPosition;
+  sourceToExpandedScale: ContentOffset;
   collapsedToExpandedScale: ContentOffset;
   transformOrigin: string;
   sourceTransition: Transition;

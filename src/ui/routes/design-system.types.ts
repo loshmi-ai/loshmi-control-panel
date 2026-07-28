@@ -1,4 +1,4 @@
-export type DesignSystemComponentId = "frame";
+export type DesignSystemComponentId = "frame" | "morpheus";
 
 export type DesignSystemComponentLink = {
   description: string;

@@ -3,7 +3,6 @@ import {
   ComponentIcon,
   LayoutDashboardIcon,
   SquareStackIcon,
-  WandSparklesIcon,
   type LucideIcon,
 } from "lucide-react";
 import { Link, useLocation } from "react-router";
@@ -34,7 +33,7 @@ const overviewLink = {
 };
 
 type CustomComponentNavItem = {
-  component: DesignSystemComponentId | "morpheus";
+  component: DesignSystemComponentId;
   disabled?: boolean;
   icon: LucideIcon;
   id: string;
@@ -50,13 +49,6 @@ const customComponentLinks: CustomComponentNavItem[] = [
     path: link.path,
     title: link.title,
   })),
-  {
-    component: "morpheus",
-    disabled: true,
-    icon: WandSparklesIcon,
-    id: "morpheus",
-    title: "Morpheus",
-  },
 ];
 
 export function DesignSystemSidebar({

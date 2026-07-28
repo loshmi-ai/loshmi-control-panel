@@ -81,7 +81,6 @@ export function PasskeyCard({
           />
         </label>
         <Button
-          className="self-end"
           disabled={updatingPasskeyId === passkey.id}
           loading={updatingPasskeyId === passkey.id}
           type="submit"

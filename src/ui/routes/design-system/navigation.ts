@@ -7,4 +7,10 @@ export const designSystemComponentLinks = [
     path: "/design-system/frame",
     title: "Frame",
   },
+  {
+    description: "Two-state surfaces that morph source controls into targets.",
+    id: "morpheus",
+    path: "/design-system/morpheus",
+    title: "Morpheus",
+  },
 ] satisfies DesignSystemComponentLink[];

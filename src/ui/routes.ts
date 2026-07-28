@@ -7,6 +7,7 @@ export default [
   route("/dashboard", "routes/dashboard.tsx"),
   route("/design-system", "routes/design-system.tsx"),
   route("/design-system/frame", "routes/design-system/frame.tsx"),
+  route("/design-system/morpheus", "routes/design-system/morpheus.tsx"),
   route("/billing", "routes/billing.tsx"),
   route("/settings", "routes/settings.tsx"),
 ] satisfies RouteConfig;

@@ -1,9 +1,15 @@
-import { AnimatePresence, motion, type Transition } from "framer-motion";
-import { useLayoutEffect, useRef, useState, type RefObject } from "react";
+import { AnimatePresence, type Transition, motion } from "framer-motion";
+import {
+  type RefObject,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 
 import {
-  MorphAnchor,
   type ContentOffset,
+  MorphAnchor,
   type MorphContentLayersProps,
   type MorphDirection,
   type MorphMeasurementNodesProps,
@@ -11,7 +17,9 @@ import {
   type MorphProps,
   type MorphShellProps,
   type MorphSpringPreset,
+  type PanelPosition,
   type PanelSize,
+  type PanelVisualStyle,
 } from "@src/ui/components/morpheus.types";
 
 /*
@@ -19,10 +27,9 @@ import {
  *
  * A reusable two-state panel that visually morphs a compact source UI into a
  * larger target UI. The caller owns the state with `expanded`, provides the two
- * pieces of content, and can either pass explicit sizes or CSS class names that
- * define each state. `direction` gives a sensible default hinge point, while
- * `anchor` can override the exact point that stays visually pinned during the
- * morph.
+ * pieces of content, and Morpheus measures both states automatically.
+ * `direction` gives a sensible default hinge point, while `anchor` can override
+ * the exact point that stays visually pinned during the morph.
  *
  * The important API rule is that `collapsedContent` and `expandedContent` are
  * rendered as separate layers. They are not the same DOM tree being resized.
@@ -36,6 +43,8 @@ export type {
   MorphDirection,
   MorphMeasurementNodesProps,
   MorphOverlayProps,
+  PanelPosition,
+  PanelVisualStyle,
   MorphProps,
   MorphShellProps,
   MorphSpringPreset,
@@ -49,32 +58,6 @@ export const defaultAnchorByDirection: Record<MorphDirection, MorphAnchor> = {
   left: MorphAnchor.RightMiddle,
 };
 
-const anchorClasses: Record<MorphAnchor, string> = {
-  [MorphAnchor.LeftTop]: "left-0 top-0",
-  [MorphAnchor.LeftMiddle]: "left-0 top-1/2 -translate-y-1/2",
-  [MorphAnchor.LeftBottom]: "bottom-0 left-0",
-  [MorphAnchor.TopMiddle]: "left-1/2 top-0 -translate-x-1/2",
-  [MorphAnchor.RightTop]: "right-0 top-0",
-  [MorphAnchor.RightMiddle]: "right-0 top-1/2 -translate-y-1/2",
-  [MorphAnchor.RightBottom]: "bottom-0 right-0",
-  [MorphAnchor.BottomMiddle]: "bottom-0 left-1/2 -translate-x-1/2",
-};
-
-// Small content offsets keep the outgoing and incoming layers from looking like
-// they are perfectly stacked during the crossfade. The offset follows the
-// anchor so the content appears to move away from, or settle back into, the
-// fixed hinge point.
-const anchorContentOffsets: Record<MorphAnchor, ContentOffset> = {
-  [MorphAnchor.LeftTop]: { x: -14, y: -14 },
-  [MorphAnchor.LeftMiddle]: { x: -16, y: 0 },
-  [MorphAnchor.LeftBottom]: { x: -14, y: 14 },
-  [MorphAnchor.TopMiddle]: { x: 0, y: -16 },
-  [MorphAnchor.RightTop]: { x: 14, y: -14 },
-  [MorphAnchor.RightMiddle]: { x: 16, y: 0 },
-  [MorphAnchor.RightBottom]: { x: 14, y: 14 },
-  [MorphAnchor.BottomMiddle]: { x: 0, y: 16 },
-};
-
 // Scale transforms must originate from the same point as the absolute anchor.
 // If these ever disagree, the target layer will grow from one point while the
 // shell is pinned to another, which makes the morph feel like it is sliding.
@@ -83,6 +66,7 @@ const anchorTransformOrigins: Record<MorphAnchor, string> = {
   [MorphAnchor.LeftMiddle]: "left center",
   [MorphAnchor.LeftBottom]: "left bottom",
   [MorphAnchor.TopMiddle]: "center top",
+  [MorphAnchor.MiddleMiddle]: "center center",
   [MorphAnchor.RightTop]: "right top",
   [MorphAnchor.RightMiddle]: "right center",
   [MorphAnchor.RightBottom]: "right bottom",
@@ -128,21 +112,34 @@ const contentFade: Transition = {
   duration: 0.22,
   ease: "easeOut",
 };
+const sourceContentFade: Transition = {
+  duration: 0.12,
+  ease: "easeOut",
+};
+const sourceReturnDelay = 0.06;
+
+const instantTransition: Transition = { duration: 0 };
+const defaultVisualStyle: PanelVisualStyle = {
+  backgroundColor: "transparent",
+  borderRadius: "0px",
+};
+const liveSurfaceContentClassName =
+  "absolute [&>*:first-child]:!border-transparent [&>*:first-child]:!bg-transparent [&>*:first-child]:!shadow-none";
 
 const createSourceContentMotion = (spring: Transition): Transition => ({
-  width: spring,
-  height: spring,
-  opacity: contentFade,
-  x: contentFade,
-  y: contentFade,
+  opacity: sourceContentFade,
+  scaleX: spring,
+  scaleY: spring,
+  left: spring,
+  top: spring,
 });
 
 const createTargetContentMotion = (spring: Transition): Transition => ({
   opacity: contentFade,
   scaleX: spring,
   scaleY: spring,
-  x: contentFade,
-  y: contentFade,
+  left: spring,
+  top: spring,
 });
 
 // Framer Motion scale values are ratios. When a measured target dimension is
@@ -155,6 +152,8 @@ function useMeasuredSize(
   fallbackSize: PanelSize,
 ) {
   const [size, setSize] = useState(fallbackSize);
+  const [visualStyle, setVisualStyle] = useState(defaultVisualStyle);
+  const [measured, setMeasured] = useState(false);
 
   useLayoutEffect(() => {
     const element = ref.current;
@@ -175,10 +174,28 @@ function useMeasuredSize(
         return;
       }
 
-      setSize(current =>
+      setMeasured(true);
+      setSize((current) =>
         current.width === width && current.height === height
           ? current
           : { width, height },
+      );
+
+      const surfaceElement =
+        element.firstElementChild instanceof HTMLElement
+          ? element.firstElementChild
+          : element;
+      const computedStyle = getComputedStyle(surfaceElement);
+      const nextVisualStyle = {
+        backgroundColor: computedStyle.backgroundColor,
+        borderRadius: computedStyle.borderTopLeftRadius,
+      };
+
+      setVisualStyle((current) =>
+        current.backgroundColor === nextVisualStyle.backgroundColor &&
+        current.borderRadius === nextVisualStyle.borderRadius
+          ? current
+          : nextVisualStyle,
       );
     };
 
@@ -190,7 +207,60 @@ function useMeasuredSize(
     return () => observer.disconnect();
   }, [fallbackSize.height, fallbackSize.width, ref]);
 
-  return size;
+  return { measured, size, visualStyle };
+}
+
+function getAnchoredPanelPosition(
+  anchor: MorphAnchor,
+  collapsedSize: PanelSize,
+  targetSize: PanelSize,
+): PanelPosition {
+  const alignLeft = 0;
+  const alignCenterX = (collapsedSize.width - targetSize.width) / 2;
+  const alignRight = collapsedSize.width - targetSize.width;
+  const alignTop = 0;
+  const alignCenterY = (collapsedSize.height - targetSize.height) / 2;
+  const alignBottom = collapsedSize.height - targetSize.height;
+
+  switch (anchor) {
+    case MorphAnchor.LeftTop:
+      return { left: alignLeft, top: alignTop };
+    case MorphAnchor.LeftMiddle:
+      return { left: alignLeft, top: alignCenterY };
+    case MorphAnchor.LeftBottom:
+      return { left: alignLeft, top: alignBottom };
+    case MorphAnchor.TopMiddle:
+      return { left: alignCenterX, top: alignTop };
+    case MorphAnchor.MiddleMiddle:
+      return { left: alignCenterX, top: alignCenterY };
+    case MorphAnchor.RightTop:
+      return { left: alignRight, top: alignTop };
+    case MorphAnchor.RightMiddle:
+      return { left: alignRight, top: alignCenterY };
+    case MorphAnchor.RightBottom:
+      return { left: alignRight, top: alignBottom };
+    case MorphAnchor.BottomMiddle:
+      return { left: alignCenterX, top: alignBottom };
+  }
+}
+
+function invertPosition(position: PanelPosition): PanelPosition {
+  return {
+    left: -(position.left ?? 0),
+    top: -(position.top ?? 0),
+  };
+}
+
+function getOverlayBackgroundColor(color: string, opacity: number) {
+  if (/^#[0-9a-f]{6}$/i.test(color)) {
+    const red = Number.parseInt(color.slice(1, 3), 16);
+    const green = Number.parseInt(color.slice(3, 5), 16);
+    const blue = Number.parseInt(color.slice(5, 7), 16);
+
+    return `rgb(${red} ${green} ${blue} / ${opacity})`;
+  }
+
+  return color;
 }
 
 function MorphOverlay({
@@ -207,14 +277,21 @@ function MorphOverlay({
           type="button"
           aria-label="Close morph"
           className="fixed inset-0 z-40 cursor-default"
-          initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
-          animate={{
-            opacity,
-            backdropFilter: `blur(${blur}px)`,
+          initial={{
+            opacity: 0,
           }}
-          exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+          animate={{
+            opacity: 1,
+          }}
+          exit={{
+            opacity: 0,
+          }}
           transition={{ duration: 0.18, ease: "easeOut" }}
-          style={{ backgroundColor: color }}
+          style={{
+            backdropFilter: `blur(${blur}px)`,
+            backgroundColor: getOverlayBackgroundColor(color, opacity),
+            WebkitBackdropFilter: `blur(${blur}px)`,
+          }}
           onClick={onClose}
         />
       ) : null}
@@ -225,58 +302,47 @@ function MorphOverlay({
 function MorphMeasurementNodes({
   collapsedRef,
   expandedRef,
-  collapsedClassName,
-  expandedClassName,
-  collapsedSize,
-  expandedSize,
+  collapsedContent,
+  expandedContent,
 }: MorphMeasurementNodesProps) {
   return (
     <>
       <div
         ref={collapsedRef}
         aria-hidden="true"
-        className={`invisible absolute left-0 top-0 pointer-events-none ${
-          collapsedClassName ?? ""
-        }`}
-        style={
-          collapsedClassName
-            ? undefined
-            : { width: collapsedSize.width, height: collapsedSize.height }
-        }
-      />
+        className="invisible absolute left-0 top-0 pointer-events-none"
+      >
+        {collapsedContent}
+      </div>
       <div
         ref={expandedRef}
         aria-hidden="true"
-        className={`invisible absolute left-0 top-0 pointer-events-none ${
-          expandedClassName ?? ""
-        }`}
-        style={
-          expandedClassName
-            ? undefined
-            : { width: expandedSize.width, height: expandedSize.height }
-        }
-      />
+        className="invisible absolute left-0 top-0 pointer-events-none"
+      >
+        {expandedContent}
+      </div>
     </>
   );
 }
 
 function MorphShell({
   expanded,
-  anchorClassName,
+  position,
   animatedSize,
+  visualStyle,
   spring,
   children,
 }: MorphShellProps) {
   return (
     <motion.div
-      className={`absolute overflow-hidden rounded-[24px] border border-black/10 bg-white shadow-2xl shadow-black/10 ${
-        expanded ? "z-50" : "z-0"
-      } ${anchorClassName}`}
+      className={`absolute overflow-hidden shadow-xs ${expanded ? "z-50" : "z-0"}`}
       initial={false}
       animate={{
         width: animatedSize.width,
         height: animatedSize.height,
-        borderRadius: expanded ? 28 : 24,
+        backgroundColor: visualStyle.backgroundColor,
+        borderRadius: visualStyle.borderRadius,
+        ...position,
       }}
       transition={spring}
     >
@@ -287,12 +353,13 @@ function MorphShell({
 
 function MorphContentLayers({
   expanded,
-  anchorClassName,
   collapsedContent,
   expandedContent,
   collapsedLayerSize,
   expandedLayerSize,
-  contentOffset,
+  sourcePosition,
+  targetPosition,
+  sourceToExpandedScale,
   collapsedToExpandedScale,
   transformOrigin,
   sourceTransition,
@@ -302,20 +369,25 @@ function MorphContentLayers({
   return (
     <>
       <motion.div
-        className={`absolute ${anchorClassName}`}
+        className={liveSurfaceContentClassName}
         initial={false}
         animate={{
-          width: expanded ? expandedLayerSize.width : collapsedLayerSize.width,
-          height: expanded
-            ? expandedLayerSize.height
-            : collapsedLayerSize.height,
           opacity: expanded ? 0 : 1,
-          x: expanded ? contentOffset.x : 0,
-          y: expanded ? contentOffset.y : 0,
+          scaleX: expanded ? sourceToExpandedScale.x : 1,
+          scaleY: expanded ? sourceToExpandedScale.y : 1,
+          ...sourcePosition,
         }}
-        transition={sourceTransition}
+        transition={{
+          ...sourceTransition,
+          opacity: {
+            ...sourceContentFade,
+            delay: expanded ? 0 : sourceReturnDelay,
+          },
+        }}
         onClick={expanded ? undefined : onOpen}
         style={{
+          width: collapsedLayerSize.width,
+          height: collapsedLayerSize.height,
           pointerEvents: expanded ? "none" : "auto",
           transformOrigin,
         }}
@@ -324,18 +396,17 @@ function MorphContentLayers({
       </motion.div>
 
       <motion.div
-        className={`absolute ${anchorClassName}`}
+        className={liveSurfaceContentClassName}
         initial={false}
         animate={{
           opacity: expanded ? 1 : 0,
           scaleX: expanded ? 1 : collapsedToExpandedScale.x,
           scaleY: expanded ? 1 : collapsedToExpandedScale.y,
-          x: expanded ? 0 : contentOffset.x,
-          y: expanded ? 0 : contentOffset.y,
+          ...targetPosition,
         }}
         transition={{
           ...targetTransition,
-          opacity: { ...contentFade, delay: expanded ? 0.1 : 0 },
+          opacity: { ...contentFade, delay: expanded ? 0.03 : 0 },
         }}
         style={{
           width: expandedLayerSize.width,
@@ -358,47 +429,67 @@ export function Morpheus({
   onClose,
   collapsedContent,
   expandedContent,
-  collapsedSize = { width: 220, height: 88 },
-  expandedSize = { width: 420, height: 300 },
-  collapsedClassName,
-  expandedClassName,
-  className = "relative mx-auto h-[360px] w-full max-w-[560px]",
+  className = "relative inline-block align-top",
   overlayColor = "#05070a",
   overlayOpacity = 0.54,
-  overlayBlur = 8,
+  overlayBlur = 0,
   spring = defaultPanelSpring,
 }: MorphProps) {
   const collapsedMeasureRef = useRef<HTMLDivElement>(null);
   const expandedMeasureRef = useRef<HTMLDivElement>(null);
-  const measuredCollapsedSize = useMeasuredSize(
-    collapsedMeasureRef,
-    collapsedSize,
-  );
-  const measuredExpandedSize = useMeasuredSize(expandedMeasureRef, expandedSize);
+  const measuredCollapsed = useMeasuredSize(collapsedMeasureRef, {
+    width: 1,
+    height: 1,
+  });
+  const measuredExpanded = useMeasuredSize(expandedMeasureRef, {
+    width: 1,
+    height: 1,
+  });
+  const measurementsReady =
+    measuredCollapsed.measured && measuredExpanded.measured;
+  const [animationEnabled, setAnimationEnabled] = useState(false);
 
-  // Numeric sizes are the stable default, but class-driven sizing needs the
-  // measured values. This keeps the simple API cheap while still allowing a
-  // consuming app to provide responsive Tailwind/CSS classes.
-  const size = expanded ? expandedSize : collapsedSize;
+  useEffect(() => {
+    if (!measurementsReady) {
+      return;
+    }
+
+    const frame = requestAnimationFrame(() => setAnimationEnabled(true));
+
+    return () => cancelAnimationFrame(frame);
+  }, [measurementsReady]);
+
+  // Real hidden content measurement lets ordinary controls, such as Button,
+  // define the source footprint without requiring a Morpheus-specific class.
+  const measuredCollapsedSize = measuredCollapsed.size;
+  const measuredExpandedSize = measuredExpanded.size;
   const measuredSize = expanded ? measuredExpandedSize : measuredCollapsedSize;
-  const animatedSize =
-    (expanded ? expandedClassName : collapsedClassName) ? measuredSize : size;
+  const animatedSize = measuredSize;
+  const visualStyle = expanded
+    ? measuredExpanded.visualStyle
+    : measuredCollapsed.visualStyle;
 
   // The inner layers need their own dimensions because the collapsed and
   // expanded content are separate DOM trees. Each layer uses its own natural
   // size even while the outer shell is animating between states.
-  const collapsedLayerSize = collapsedClassName
-    ? measuredCollapsedSize
-    : collapsedSize;
-  const expandedLayerSize = expandedClassName
-    ? measuredExpandedSize
-    : expandedSize;
+  const collapsedLayerSize = measuredCollapsedSize;
+  const expandedLayerSize = measuredExpandedSize;
   const panelAnchor = anchor ?? defaultAnchorByDirection[direction];
-  const anchorClassName = anchorClasses[panelAnchor];
-  const contentOffset = anchorContentOffsets[panelAnchor];
+  const sourcePanelPosition = { left: 0, top: 0 };
+  const targetPanelPosition = getAnchoredPanelPosition(
+    panelAnchor,
+    collapsedLayerSize,
+    expandedLayerSize,
+  );
+  const anchorPosition = expanded ? targetPanelPosition : sourcePanelPosition;
+  const sourcePosition = expanded
+    ? invertPosition(targetPanelPosition)
+    : sourcePanelPosition;
+  const targetPosition = expanded ? sourcePanelPosition : targetPanelPosition;
   const transformOrigin = anchorTransformOrigins[panelAnchor];
-  const sourceContentMotion = createSourceContentMotion(spring);
-  const targetContentMotion = createTargetContentMotion(spring);
+  const activeSpring = animationEnabled ? spring : instantTransition;
+  const sourceContentMotion = createSourceContentMotion(activeSpring);
+  const targetContentMotion = createTargetContentMotion(activeSpring);
 
   // The target layer is always laid out at its expanded size, then scaled down
   // to match the collapsed footprint while hidden. When it opens, we animate
@@ -408,6 +499,10 @@ export function Morpheus({
   const collapsedToExpandedScale = {
     x: safeScale(collapsedLayerSize.width, expandedLayerSize.width),
     y: safeScale(collapsedLayerSize.height, expandedLayerSize.height),
+  };
+  const sourceToExpandedScale = {
+    x: safeScale(expandedLayerSize.width, collapsedLayerSize.width),
+    y: safeScale(expandedLayerSize.height, collapsedLayerSize.height),
   };
 
   return (
@@ -423,25 +518,33 @@ export function Morpheus({
         <MorphMeasurementNodes
           collapsedRef={collapsedMeasureRef}
           expandedRef={expandedMeasureRef}
-          collapsedClassName={collapsedClassName}
-          expandedClassName={expandedClassName}
-          collapsedSize={collapsedSize}
-          expandedSize={expandedSize}
+          collapsedContent={collapsedContent}
+          expandedContent={expandedContent}
+        />
+        <div
+          aria-hidden="true"
+          style={{
+            visibility: "hidden",
+            width: collapsedLayerSize.width,
+            height: collapsedLayerSize.height,
+          }}
         />
         <MorphShell
           expanded={expanded}
-          anchorClassName={anchorClassName}
+          position={anchorPosition}
           animatedSize={animatedSize}
-          spring={spring}
+          visualStyle={visualStyle}
+          spring={activeSpring}
         >
           <MorphContentLayers
             expanded={expanded}
-            anchorClassName={anchorClassName}
             collapsedContent={collapsedContent}
             expandedContent={expandedContent}
             collapsedLayerSize={collapsedLayerSize}
             expandedLayerSize={expandedLayerSize}
-            contentOffset={contentOffset}
+            sourcePosition={sourcePosition}
+            targetPosition={targetPosition}
+            sourceToExpandedScale={sourceToExpandedScale}
             collapsedToExpandedScale={collapsedToExpandedScale}
             transformOrigin={transformOrigin}
             sourceTransition={sourceContentMotion}

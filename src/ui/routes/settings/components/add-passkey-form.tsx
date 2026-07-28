@@ -40,7 +40,6 @@ export function AddPasskeyForm({
         />
       </label>
       <Button
-        className="self-end"
         disabled={isAddingPasskey}
         loading={isAddingPasskey}
         type="submit"
