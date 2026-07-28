@@ -1,6 +1,6 @@
 import { type LoaderFunctionArgs } from "react-router";
 
-import { AppShell } from "@src/ui/components/designSystem/app-shell";
+import { AppShell } from "@src/ui/components/app-shell";
 import { getUserOrRedirectToLogin } from "@src/ui/domain/auth.server";
 import { useSettingsActions } from "@src/ui/domain/settings";
 import type { SettingsLoaderData } from "@src/ui/routes/settings.types";

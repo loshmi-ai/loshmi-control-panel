@@ -1,5 +1,6 @@
-import { Link } from "react-router";
-
+import { AnchorButton } from "@src/ui/components/button";
+import { Frame } from "@src/ui/components/frame";
+import { Variant } from "@src/ui/components/variants";
 import type { DesignSystemComponentPageProps } from "@src/ui/routes/design-system/components/component-page.types";
 import { designSystemComponentLinks } from "@src/ui/routes/design-system/navigation";
 
@@ -16,6 +17,46 @@ export function DesignSystemComponentPage<Props>({
       title: section.title,
     },
   ];
+  const content =
+    hasCustomContent || !renderExample ? (
+      <div className="mt-8">{children}</div>
+    ) : (
+      <div className="mt-8 space-y-8">
+        {exampleGroups.map((group) => (
+          <section key={group.title}>
+            {section.exampleGroups ? (
+              <div className="mb-4">
+                <h2 className="text-xl font-bold">{group.title}</h2>
+                {group.description ? (
+                  <p className="mt-1 max-w-2xl text-sm leading-relaxed text-white/60">
+                    {group.description}
+                  </p>
+                ) : null}
+              </div>
+            ) : null}
+
+            <div className="grid gap-4 md:grid-cols-2">
+              {group.examples.map((example) => (
+                <Frame borderVisible={true} className="p-4" key={example.title}>
+                  <div className="mb-4">
+                    <h3 className="font-semibold">{example.title}</h3>
+                    <p className="mt-1 text-sm leading-relaxed text-white/60">
+                      {example.description}
+                    </p>
+                  </div>
+                  <Frame
+                    borderVisible={true}
+                    className={`flex min-h-20 items-center p-4 ${section.previewClassName}`}
+                  >
+                    {renderExample(example.props)}
+                  </Frame>
+                </Frame>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    );
 
   return (
     <div className="flex min-h-full flex-col gap-5 lg:flex-row">
@@ -24,24 +65,22 @@ export function DesignSystemComponentPage<Props>({
           Design System
         </p>
         <nav className="flex gap-2 overflow-x-auto lg:flex-col lg:overflow-visible">
-          <Link
-            className="rounded-md px-3 py-2 text-sm font-semibold whitespace-nowrap text-white/70 transition hover:bg-white/10 hover:text-white"
+          <AnchorButton
+            className="font-normal"
             to="/design-system"
+            variant={Variant.Minimal}
           >
             Overview
-          </Link>
+          </AnchorButton>
           {designSystemComponentLinks.map((item) => (
-            <Link
-              className={
-                item.id === activeComponent
-                  ? "rounded-md bg-white/10 px-3 py-2 text-sm font-semibold whitespace-nowrap text-white"
-                  : "rounded-md px-3 py-2 text-sm font-semibold whitespace-nowrap text-white/70 transition hover:bg-white/10 hover:text-white"
-              }
+            <AnchorButton
+              className="font-normal"
               key={item.id}
               to={item.path}
+              variant={Variant.Minimal}
             >
               {item.title}
-            </Link>
+            </AnchorButton>
           ))}
         </nav>
       </aside>
@@ -56,47 +95,7 @@ export function DesignSystemComponentPage<Props>({
             {section.description}
           </p>
 
-          {hasCustomContent ? (
-            <div className="mt-8">{children}</div>
-          ) : (
-            <div className="mt-8 space-y-8">
-              {exampleGroups.map((group) => (
-                <section key={group.title}>
-                  {section.exampleGroups ? (
-                    <div className="mb-4">
-                      <h2 className="text-xl font-bold">{group.title}</h2>
-                      {group.description ? (
-                        <p className="mt-1 max-w-2xl text-sm leading-relaxed text-white/60">
-                          {group.description}
-                        </p>
-                      ) : null}
-                    </div>
-                  ) : null}
-
-                  <div className="grid gap-4 md:grid-cols-2">
-                    {group.examples.map((example) => (
-                      <article
-                        className="rounded-lg border border-white/10 bg-white/[0.03] p-4"
-                        key={example.title}
-                      >
-                        <div className="mb-4">
-                          <h3 className="font-semibold">{example.title}</h3>
-                          <p className="mt-1 text-sm leading-relaxed text-white/60">
-                            {example.description}
-                          </p>
-                        </div>
-                        <div
-                          className={`flex min-h-20 items-center rounded-md border border-white/10 p-4 ${section.previewClassName}`}
-                        >
-                          {renderExample(example.props)}
-                        </div>
-                      </article>
-                    ))}
-                  </div>
-                </section>
-              ))}
-            </div>
-          )}
+          {content}
         </div>
       </section>
     </div>

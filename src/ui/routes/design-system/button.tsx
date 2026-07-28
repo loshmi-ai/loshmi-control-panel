@@ -2,10 +2,10 @@ import type { LucideIcon } from "lucide-react";
 import { ArrowRight, Plus, Trash2 } from "lucide-react";
 import { type LoaderFunctionArgs } from "react-router";
 
-import { AppShell } from "@src/ui/components/designSystem/app-shell";
-import { AnchorButton, Button } from "@src/ui/components/designSystem/button";
-import { Intent, intents } from "@src/ui/components/designSystem/intents";
-import { Variant } from "@src/ui/components/designSystem/variants";
+import { AppShell } from "@src/ui/components/app-shell";
+import { AnchorButton, Button } from "@src/ui/components/button";
+import { Intent, intents } from "@src/ui/components/intents";
+import { Variant } from "@src/ui/components/variants";
 import { getUserOrRedirectToLogin } from "@src/ui/domain/auth.server";
 import type {
   DesignSystemExample,
@@ -155,7 +155,7 @@ const buttonSection: DesignSystemSection<ButtonExampleProps> = {
   ],
   id: "button",
   path: "/design-system/button",
-  previewClassName: "bg-neutral-950 text-white",
+  previewClassName: "text-white",
   title: "Button",
 };
 

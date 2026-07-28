@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { type LoaderFunctionArgs } from "react-router";
 
-import { AppShell } from "@src/ui/components/designSystem/app-shell";
-import { Button } from "@src/ui/components/designSystem/button";
-import { Variant } from "@src/ui/components/designSystem/variants";
+import { AppShell } from "@src/ui/components/app-shell";
+import { Button } from "@src/ui/components/button";
+import { Variant } from "@src/ui/components/variants";
 import { getUserOrRedirectToLogin } from "@src/ui/domain/auth.server";
 import { getRouteContext } from "@src/ui/lib/route-context.server";
 import type { DashboardLoaderData } from "@src/ui/routes/dashboard.types";

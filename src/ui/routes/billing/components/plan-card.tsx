@@ -1,4 +1,5 @@
-import { Button } from "@src/ui/components/designSystem/button";
+import { Button } from "@src/ui/components/button";
+import { Frame } from "@src/ui/components/frame";
 import type { BillingPlan } from "@src/ui/routes/billing.types";
 
 type BillingPlanCardProps = {
@@ -17,7 +18,7 @@ export function BillingPlanCard({
   onSelectPlan,
 }: BillingPlanCardProps) {
   return (
-    <article className="rounded-md border border-slate-200 p-4">
+    <Frame borderVisible={true} className="p-4">
       <h2 className="text-lg font-bold">{plan.name}</h2>
       <p className="mt-2 text-sm leading-relaxed">{plan.description}</p>
       {plan.price ? (
@@ -39,6 +40,6 @@ export function BillingPlanCard({
       >
         {isCurrentPlan ? "Current plan" : "Select plan"}
       </Button>
-    </article>
+    </Frame>
   );
 }

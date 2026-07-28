@@ -2,8 +2,8 @@ import type { ButtonHTMLAttributes } from "react";
 import type { LucideIcon } from "lucide-react";
 import type { LinkProps } from "react-router";
 
-import type { Intent } from "@src/ui/components/designSystem/intents";
-import type { Variant } from "@src/ui/components/designSystem/variants";
+import type { Intent } from "@src/ui/components/intents";
+import type { Variant } from "@src/ui/components/variants";
 
 type ButtonStyleProps = {
   intent?: Intent;

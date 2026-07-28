@@ -1,4 +1,11 @@
 import clsx from "clsx";
+import {
+  CreditCard,
+  LogIn,
+  LogOut,
+  Palette,
+  Settings,
+} from "lucide-react";
 import type { ReactElement, ReactNode } from "react";
 import { Link } from "react-router";
 
@@ -6,19 +13,23 @@ import type {
   AppShellNavLink,
   AppShellProps,
   PanelProps,
-} from "@src/ui/components/designSystem/app-shell.types";
-import { Button } from "@src/ui/components/designSystem/button";
-import { Variant } from "@src/ui/components/designSystem/variants";
+} from "@src/ui/components/app-shell.types";
+import { AnchorButton, Button } from "@src/ui/components/button";
+import { Variant } from "@src/ui/components/variants";
 import { useAuthActions } from "@src/ui/domain/auth";
 
 const authenticatedNavLinks = {
-  billing: { label: "Billing", to: "/billing" },
-  designSystem: { label: "Design System", to: "/design-system" },
-  settings: { label: "Settings", to: "/settings" },
+  billing: { label: "Billing", leftIcon: CreditCard, to: "/billing" },
+  designSystem: {
+    label: "Design System",
+    leftIcon: Palette,
+    to: "/design-system",
+  },
+  settings: { label: "Settings", leftIcon: Settings, to: "/settings" },
 } satisfies Record<string, AppShellNavLink>;
 
 const publicNavLinks = {
-  login: { label: "Log in", to: "/login" },
+  login: { label: "Log in", leftIcon: LogIn, to: "/login" },
 } satisfies Record<string, AppShellNavLink>;
 
 // Ether to stitch everything onto
@@ -42,11 +53,8 @@ function Nav({ user }: { user: AppShellProps["user"] }): ReactElement {
   const navLinks = user ? authenticatedNavLinks : publicNavLinks;
 
   return (
-    <nav className={clsx("flex items-center gap-3", "px-9 py-2 text-white")}>
-      <Link
-        className="flex min-w-0 items-center gap-2 font-semibold"
-        to={user ? "/dashboard" : "/"}
-      >
+    <nav className={clsx("flex items-center", "px-9 py-2 text-white")}>
+      <Link to={user ? "/dashboard" : "/"} className="flex items-center">
         <img
           alt="Loshmi Cat Logo"
           aria-hidden="true"
@@ -55,39 +63,31 @@ function Nav({ user }: { user: AppShellProps["user"] }): ReactElement {
         />
         Loshmi
       </Link>
-      <div className="ml-auto flex min-w-0 items-center gap-3">
-        {Object.values(navLinks).map((link) =>
-          link.to.startsWith("mailto:") ? (
-            <a
-              className="text-sm font-semibold text-white/90"
-              href={link.to}
-              key={link.to}
-            >
-              {link.label}
-            </a>
-          ) : (
-            <Link
-              className="text-sm font-semibold text-white/90"
-              key={link.to}
-              to={link.to}
-            >
-              {link.label}
-            </Link>
-          ),
-        )}
+      <div className="ml-auto flex min-w-0 items-center">
+        {Object.values(navLinks).map((link) => (
+          <AnchorButton
+            className="font-normal"
+            key={link.to}
+            leftIcon={link.leftIcon}
+            to={link.to}
+            variant={Variant.Minimal}
+          >
+            {link.label}
+          </AnchorButton>
+        ))}
         {user ? (
           <>
             <span className="hidden max-w-48 truncate text-sm text-white/60 sm:block">
               {user.name || user.email}
             </span>
             <Button
-              className="min-h-0 px-0 py-0 text-sm text-white/90 shadow-none"
-              disabled={auth.isSigningOut}
-              type="button"
+              className="font-normal"
+              leftIcon={LogOut}
+              loading={auth.isSigningOut}
               variant={Variant.Minimal}
               onClick={() => void auth.signOut()}
             >
-              {auth.isSigningOut ? "Signing out..." : "Sign out"}
+              Sign out
             </Button>
           </>
         ) : null}

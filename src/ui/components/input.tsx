@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { Eye, EyeOff } from "lucide-react";
 import { useId, useState } from "react";
 
-import type { InputProps } from "@src/ui/components/designSystem/input.types";
+import type { InputProps } from "@src/ui/components/input.types";
 
 const inputStatuses: Record<NonNullable<InputProps["status"]>, string> = {
   default:

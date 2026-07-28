@@ -1,10 +1,11 @@
 import type { Passkey } from "@better-auth/passkey/client";
 import type { ComponentProps } from "react";
 
-import { Button } from "@src/ui/components/designSystem/button";
-import { Input } from "@src/ui/components/designSystem/input";
-import { Intent } from "@src/ui/components/designSystem/intents";
-import { Variant } from "@src/ui/components/designSystem/variants";
+import { Button } from "@src/ui/components/button";
+import { Frame } from "@src/ui/components/frame";
+import { Input } from "@src/ui/components/input";
+import { Intent } from "@src/ui/components/intents";
+import { Variant } from "@src/ui/components/variants";
 
 type PasskeyCardProps = {
   deletingPasskeyId: Passkey["id"] | null;
@@ -47,7 +48,7 @@ export function PasskeyCard({
   };
 
   return (
-    <article className="rounded-md border border-slate-200 p-4">
+    <Frame borderVisible={true} className="p-4">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h2 className="text-lg font-bold">{getPasskeyLabel(passkey)}</h2>
@@ -87,6 +88,6 @@ export function PasskeyCard({
           Save
         </Button>
       </form>
-    </article>
+    </Frame>
   );
 }

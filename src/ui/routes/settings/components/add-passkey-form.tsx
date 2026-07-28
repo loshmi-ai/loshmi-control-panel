@@ -1,7 +1,7 @@
 import type { ComponentProps } from "react";
 
-import { Button } from "@src/ui/components/designSystem/button";
-import { Input } from "@src/ui/components/designSystem/input";
+import { Button } from "@src/ui/components/button";
+import { Input } from "@src/ui/components/input";
 
 type AddPasskeyFormProps = {
   isAddingPasskey: boolean;

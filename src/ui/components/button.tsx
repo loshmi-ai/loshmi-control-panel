@@ -5,19 +5,19 @@ import { Link } from "react-router";
 import type {
   AnchorButtonProps,
   ButtonProps,
-} from "@src/ui/components/designSystem/button.types";
-import { Intent } from "@src/ui/components/designSystem/intents";
-import { Variant } from "@src/ui/components/designSystem/variants";
+} from "@src/ui/components/button.types";
+import { Intent } from "@src/ui/components/intents";
+import { Variant } from "@src/ui/components/variants";
 
 const baseButtonClassName =
-  "relative inline-flex min-h-8 items-center justify-center gap-2 rounded-full px-3.5 text-sm font-bold shadow-sm transition duration-200 ease-out focus-visible:ring-2 focus-visible:ring-indigo-300/70 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950 focus-visible:outline-none";
+  "relative inline-flex min-h-8 items-center justify-center gap-2 rounded-full px-3.5 text-sm font-medium shadow-sm transition duration-200 ease-out focus-visible:ring-2 focus-visible:ring-indigo-300/70 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950 focus-visible:outline-none";
 
 const enabledButtonClassName = "cursor-pointer active:shadow-none";
 
 const disabledButtonClassName =
   "cursor-not-allowed opacity-45 shadow-none";
 
-const loadingButtonClassName = "cursor-wait";
+const loadingButtonClassName = "cursor-wait opacity-45 shadow-none";
 
 const variantClassNames: Record<
   Variant,

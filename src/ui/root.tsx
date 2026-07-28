@@ -11,6 +11,8 @@ import {
 
 import type React from "react";
 
+import { AppShell } from "@src/ui/components/app-shell";
+import { Frame } from "@src/ui/components/frame";
 import { CuelumeBinding } from "@src/ui/lib/cuelume";
 
 import "./global.css";
@@ -68,27 +70,40 @@ export default function App() {
 
 export function ErrorBoundary({ error }: { error: unknown }) {
   let title = "Something went wrong";
-  let message = "An unexpected error occurred.";
+  let message = "Something went wrong while loading this page.";
+  let status: number | null = 500;
 
   if (isRouteErrorResponse(error)) {
-    title = `${error.status} ${error.statusText}`;
-    message =
-      error.status === 404
-        ? "The page you are looking for does not exist."
-        : String(error.data);
+    status = error.status;
+
+    if (error.status === 404) {
+      title = "Page not found";
+      message = "The page you are looking for does not exist.";
+    }
   } else if (error instanceof Error) {
-    message = error.message;
+    status = null;
   }
 
   return (
-    <main className="min-h-screen max-w-[840px] px-7 py-12 sm:p-12">
-      <p className="mb-3 text-[0.82rem] font-bold tracking-[0.08em] text-indigo-600 uppercase">
-        Loshmi Control Panel
-      </p>
-      <h1 className="max-w-[760px] text-4xl leading-[1.1] font-bold sm:text-5xl">
-        {title}
-      </h1>
-      <p className="mt-6 text-base leading-relaxed text-slate-600">{message}</p>
-    </main>
+    <AppShell user={null}>
+      <section className="grid min-h-full place-items-center px-4 py-12 sm:px-6">
+        <Frame
+          borderVisible={true}
+          className="w-full max-w-[460px] p-6 sm:p-7"
+        >
+          {status ? (
+            <p className="mb-3 text-[0.78rem] font-bold tracking-[0.08em] text-white/50 uppercase">
+              Error {status}
+            </p>
+          ) : null}
+          <h1 className="text-3xl leading-tight font-bold text-white">
+            {title}
+          </h1>
+          <p className="mt-4 text-base leading-relaxed text-white/65">
+            {message}
+          </p>
+        </Frame>
+      </section>
+    </AppShell>
   );
 }

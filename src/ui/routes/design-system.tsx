@@ -1,7 +1,10 @@
 import { type LoaderFunctionArgs } from "react-router";
 import { Link } from "react-router";
 
-import { AppShell } from "@src/ui/components/designSystem/app-shell";
+import { AppShell } from "@src/ui/components/app-shell";
+import { AnchorButton } from "@src/ui/components/button";
+import { Frame } from "@src/ui/components/frame";
+import { Variant } from "@src/ui/components/variants";
 import { getUserOrRedirectToLogin } from "@src/ui/domain/auth.server";
 import { designSystemComponentLinks } from "@src/ui/routes/design-system/navigation";
 
@@ -111,20 +114,22 @@ export default function DesignSystem({
             Design System
           </p>
           <nav className="flex gap-2 overflow-x-auto lg:flex-col lg:overflow-visible">
-            <Link
-              className="rounded-md bg-white/10 px-3 py-2 text-sm font-semibold whitespace-nowrap text-white"
+            <AnchorButton
+              className="font-normal"
               to="/design-system"
+              variant={Variant.Minimal}
             >
               Overview
-            </Link>
+            </AnchorButton>
             {designSystemComponentLinks.map((section) => (
-              <Link
-                className="rounded-md px-3 py-2 text-sm font-semibold whitespace-nowrap text-white/70 transition hover:bg-white/10 hover:text-white"
+              <AnchorButton
+                className="font-normal"
                 key={section.id}
                 to={section.path}
+                variant={Variant.Minimal}
               >
                 {section.title}
-              </Link>
+              </AnchorButton>
             ))}
           </nav>
         </aside>
@@ -148,14 +153,19 @@ export default function DesignSystem({
                 <div className="grid gap-4 md:grid-cols-2">
                   {designSystemComponentLinks.map((section) => (
                     <Link
-                      className="rounded-lg border border-white/10 bg-white/[0.03] p-4 transition hover:border-white/25 hover:bg-white/[0.06]"
+                      className="group rounded-lg focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none"
                       key={section.id}
                       to={section.path}
                     >
-                      <h3 className="font-semibold">{section.title}</h3>
-                      <p className="mt-2 text-sm leading-relaxed text-white/60">
-                        {section.description}
-                      </p>
+                      <Frame
+                        borderVisible={true}
+                        className="h-full p-4 transition group-hover:border-[#979797] group-hover:bg-[#363638]"
+                      >
+                        <h3 className="font-semibold">{section.title}</h3>
+                        <p className="mt-2 text-sm leading-relaxed text-white/60">
+                          {section.description}
+                        </p>
+                      </Frame>
                     </Link>
                   ))}
                 </div>
@@ -170,10 +180,7 @@ export default function DesignSystem({
                 </div>
                 <div className="grid gap-4 md:grid-cols-2">
                   {designSystemFoundations.fonts.map((font) => (
-                    <article
-                      className="rounded-lg border border-white/10 bg-white/[0.03] p-4"
-                      key={font.name}
-                    >
+                    <Frame borderVisible={true} className="p-4" key={font.name}>
                       <p className="text-xs font-bold tracking-[0.08em] text-white/45 uppercase">
                         {font.token}
                       </p>
@@ -182,7 +189,7 @@ export default function DesignSystem({
                       <p className="mt-1 text-sm leading-relaxed text-white/60">
                         {font.description}
                       </p>
-                    </article>
+                    </Frame>
                   ))}
                 </div>
               </section>
@@ -196,8 +203,9 @@ export default function DesignSystem({
                 </div>
                 <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                   {designSystemFoundations.colors.map((color) => (
-                    <article
-                      className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.03]"
+                    <Frame
+                      borderVisible={true}
+                      className="overflow-hidden"
                       key={color.token}
                     >
                       <div className={`h-20 ${color.className}`} />
@@ -210,7 +218,7 @@ export default function DesignSystem({
                           {color.description}
                         </p>
                       </div>
-                    </article>
+                    </Frame>
                   ))}
                 </div>
               </section>

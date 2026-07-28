@@ -59,10 +59,10 @@ except where a tool or framework specifically requires them.
 
 ## UI components
 
-Put reusable, app-wide UI building blocks in `src/ui/components/designSystem`.
+Put reusable, app-wide UI building blocks directly in `src/ui/components`.
 For example:
 
-- `src/ui/components/designSystem/button.tsx`
+- `src/ui/components/button.tsx`
 
 Put route-specific components inside the owning route support folder. For
 example, a billing-only plan card belongs at:
@@ -70,8 +70,8 @@ example, a billing-only plan card belongs at:
 - `src/ui/routes/billing/components/plan-card.tsx`
 
 Do not place route-specific components in global component folders. Promote a
-component to `src/ui/components/designSystem` only when it is reused across
-multiple routes and its API is intentionally generic.
+component to `src/ui/components` only when it is reused across multiple routes
+and its API is intentionally generic.
 
 ## UI state
 
@@ -112,6 +112,9 @@ Examples:
 Use a single Doppler wrapper for the local dev command:
 
 `doppler run -c dev -- vite dev`
+
+Do not start the local development server unless explicitly asked. Assume the
+server is already running.
 
 Doppler injects secrets into the process environment, and the Cloudflare Vite
 plugin makes those bindings available to the Worker runtime. Do not mount or

@@ -1,8 +1,12 @@
-import type { TableProps } from "@src/ui/components/designSystem/table.types";
+import { Frame } from "@src/ui/components/frame";
+import type { TableProps } from "@src/ui/components/table.types";
 
 export function Table<Row>({ columns, getRowKey, rows }: TableProps<Row>) {
   return (
-    <div className="overflow-x-auto rounded-lg border border-white/[0.06] bg-[#181818] [scrollbar-color:rgba(255,255,255,0.28)_transparent]">
+    <Frame
+      borderVisible={true}
+      className="overflow-x-auto border-white/[0.06] bg-[#181818] [scrollbar-color:rgba(255,255,255,0.28)_transparent]"
+    >
       <table className="w-full min-w-[48rem] border-collapse text-left lg:min-w-full">
         <thead className="border-b border-white/[0.06] bg-[#141414]">
           <tr>
@@ -31,6 +35,6 @@ export function Table<Row>({ columns, getRowKey, rows }: TableProps<Row>) {
           ))}
         </tbody>
       </table>
-    </div>
+    </Frame>
   );
 }

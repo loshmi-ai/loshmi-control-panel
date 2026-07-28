@@ -1,9 +1,9 @@
 import { type LoaderFunctionArgs } from "react-router";
 
-import { AppShell } from "@src/ui/components/designSystem/app-shell";
-import { Intent, intents } from "@src/ui/components/designSystem/intents";
-import { Table } from "@src/ui/components/designSystem/table";
-import type { TableColumn } from "@src/ui/components/designSystem/table.types";
+import { AppShell } from "@src/ui/components/app-shell";
+import { Intent, intents } from "@src/ui/components/intents";
+import { Table } from "@src/ui/components/table";
+import type { TableColumn } from "@src/ui/components/table.types";
 import { getUserOrRedirectToLogin } from "@src/ui/domain/auth.server";
 import type { DesignSystemSection } from "@src/ui/routes/design-system.types";
 import { DesignSystemComponentPage } from "@src/ui/routes/design-system/components/component-page";
@@ -62,7 +62,7 @@ const intentSection: DesignSystemSection<never> = {
   description: "Reusable semantic tone for normal and dangerous actions.",
   id: "intents",
   path: "/design-system/intents",
-  previewClassName: "bg-neutral-950 text-white",
+  previewClassName: "text-white",
   title: "Intents",
 };
 

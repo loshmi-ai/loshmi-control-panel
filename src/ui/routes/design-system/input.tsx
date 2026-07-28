@@ -2,8 +2,8 @@ import type { ComponentProps } from "react";
 import { AtSign, Building2, Search, User } from "lucide-react";
 import { type LoaderFunctionArgs } from "react-router";
 
-import { AppShell } from "@src/ui/components/designSystem/app-shell";
-import { Input } from "@src/ui/components/designSystem/input";
+import { AppShell } from "@src/ui/components/app-shell";
+import { Input } from "@src/ui/components/input";
 import { getUserOrRedirectToLogin } from "@src/ui/domain/auth.server";
 import { DesignSystemComponentPage } from "@src/ui/routes/design-system/components/component-page";
 import type { DesignSystemSection } from "@src/ui/routes/design-system.types";
@@ -117,7 +117,7 @@ const inputSection: DesignSystemSection<ComponentProps<typeof Input>> = {
   ],
   id: "input",
   path: "/design-system/input",
-  previewClassName: "bg-neutral-950 text-white",
+  previewClassName: "text-white",
   title: "Input",
 };
 

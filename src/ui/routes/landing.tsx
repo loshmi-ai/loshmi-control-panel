@@ -1,6 +1,6 @@
 import { type LoaderFunctionArgs } from "react-router";
 
-import { AppShell } from "@src/ui/components/designSystem/app-shell";
+import { AppShell } from "@src/ui/components/app-shell";
 import { getUser } from "@src/ui/domain/auth.server";
 import type { LandingLoaderData } from "@src/ui/routes/landing.types";
 

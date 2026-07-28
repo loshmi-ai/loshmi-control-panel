@@ -1,8 +1,8 @@
 import { type LoaderFunctionArgs } from "react-router";
 
-import { AppShell } from "@src/ui/components/designSystem/app-shell";
-import { Table } from "@src/ui/components/designSystem/table";
-import type { TableColumn } from "@src/ui/components/designSystem/table.types";
+import { AppShell } from "@src/ui/components/app-shell";
+import { Table } from "@src/ui/components/table";
+import type { TableColumn } from "@src/ui/components/table.types";
 import { getUserOrRedirectToLogin } from "@src/ui/domain/auth.server";
 import type { DesignSystemSection } from "@src/ui/routes/design-system.types";
 import { DesignSystemComponentPage } from "@src/ui/routes/design-system/components/component-page";
@@ -69,7 +69,7 @@ const tableSection: DesignSystemSection<never> = {
   description: "Structured data display for dense administrative views.",
   id: "table",
   path: "/design-system/table",
-  previewClassName: "bg-neutral-950 text-white",
+  previewClassName: "text-white",
   title: "Table",
 };
 

@@ -8,6 +8,12 @@ export const designSystemComponentLinks = [
     title: "Button",
   },
   {
+    description: "Contrast surfaces for grouped UI and preview containers.",
+    id: "frame",
+    path: "/design-system/frame",
+    title: "Frame",
+  },
+  {
     description: "Reusable visual emphasis levels for design-system controls.",
     id: "variants",
     path: "/design-system/variants",

@@ -1,9 +1,9 @@
 import { type LoaderFunctionArgs } from "react-router";
 
-import { AppShell } from "@src/ui/components/designSystem/app-shell";
-import { Table } from "@src/ui/components/designSystem/table";
-import type { TableColumn } from "@src/ui/components/designSystem/table.types";
-import { Variant, variants } from "@src/ui/components/designSystem/variants";
+import { AppShell } from "@src/ui/components/app-shell";
+import { Table } from "@src/ui/components/table";
+import type { TableColumn } from "@src/ui/components/table.types";
+import { Variant, variants } from "@src/ui/components/variants";
 import { getUserOrRedirectToLogin } from "@src/ui/domain/auth.server";
 import type { DesignSystemSection } from "@src/ui/routes/design-system.types";
 import { DesignSystemComponentPage } from "@src/ui/routes/design-system/components/component-page";
@@ -64,7 +64,7 @@ const variantSection: DesignSystemSection<never> = {
   description: "Reusable visual emphasis levels for design-system controls.",
   id: "variants",
   path: "/design-system/variants",
-  previewClassName: "bg-neutral-950 text-white",
+  previewClassName: "text-white",
   title: "Variants",
 };
 
