@@ -18,10 +18,8 @@ export enum MorphAnchor {
 export type PanelSize = { width: number; height: number };
 export type ContentOffset = { x: number; y: number };
 export type PanelPosition = {
-  left?: number;
-  right?: number;
-  top?: number;
-  bottom?: number;
+  left: number;
+  top: number;
 };
 export type PanelVisualStyle = {
   backgroundColor: string;

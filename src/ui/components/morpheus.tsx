@@ -124,6 +124,8 @@ const defaultVisualStyle: PanelVisualStyle = {
   backgroundColor: "transparent",
   borderRadius: "0px",
 };
+// Accepted tradeoff: Morpheus treats the first child as the visual surface so
+// callers can pass ordinary components without a Morpheus-specific wrapper.
 const liveSurfaceContentClassName =
   "absolute [&>*:first-child]:!border-transparent [&>*:first-child]:!bg-transparent [&>*:first-child]:!shadow-none";
 
@@ -186,6 +188,8 @@ function useMeasuredSize(
         element.firstElementChild instanceof HTMLElement
           ? element.firstElementChild
           : element;
+      // Accepted tradeoff: this infers shell visuals from the child DOM shape to
+      // keep the public API small. If child markup changes, revisit this.
       const computedStyle = getComputedStyle(surfaceElement);
       const nextVisualStyle = {
         backgroundColor: computedStyle.backgroundColor,
@@ -308,6 +312,11 @@ function MorphMeasurementNodes({
 }: MorphMeasurementNodesProps) {
   return (
     <>
+      {/*
+        These hidden copies intentionally render both states so Morpheus can
+        measure source/target dimensions and visual style while keeping a simple
+        caller API.
+      */}
       <div
         ref={collapsedRef}
         aria-hidden="true"
@@ -385,6 +394,8 @@ function MorphContentLayers({
             delay: expanded ? 0 : sourceReturnDelay,
           },
         }}
+        // TODO: Make trigger behavior explicit and keyboard-safe instead of
+        // relying on a wrapper click around arbitrary collapsed content.
         onClick={expanded ? undefined : onOpen}
         style={{
           width: collapsedLayerSize.width,
@@ -524,6 +535,8 @@ export function Morpheus({
           expandedContent={expandedContent}
         />
         {shouldRenderStaticSource ? (
+          // TODO: Use an explicit trigger contract here as well; this fallback
+          // is currently a clickable div during the pre-measurement frame.
           <div className="inline-block align-top" onClick={onOpen}>
             {collapsedContent}
           </div>
