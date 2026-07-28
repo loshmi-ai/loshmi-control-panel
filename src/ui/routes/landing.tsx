@@ -1,6 +1,6 @@
-import { Link, type LoaderFunctionArgs } from "react-router";
+import { type LoaderFunctionArgs } from "react-router";
 
-import { PublicShell } from "@src/ui/components/designSystem/public-shell";
+import { AppShell } from "@src/ui/components/designSystem/app-shell";
 import { getUser } from "@src/ui/domain/auth.server";
 import type { LandingLoaderData } from "@src/ui/routes/landing.types";
 
@@ -31,7 +31,7 @@ export default function Landing({
   loaderData: LandingLoaderData;
 }) {
   return (
-    <PublicShell user={loaderData.user}>
+    <AppShell user={loaderData.user}>
       <section className="grid min-h-full place-items-center px-4 py-12 sm:px-6 sm:py-0">
         <article className="max-w-[620px]">
           <img
@@ -59,30 +59,8 @@ export default function Landing({
               and can take actions on your behalf.
             </p>
           </div>
-          <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-3 font-semibold text-white">
-            <a
-              className="text-white/90"
-              href="mailto:founders@metablocks.world"
-            >
-              Join the waitlist.
-            </a>
-            {loaderData.user ? (
-              <>
-                <Link className="text-white/90" to="/dashboard">
-                  Dashboard
-                </Link>
-                <span className="text-sm font-normal text-white/60">
-                  {loaderData.user.name || loaderData.user.email}
-                </span>
-              </>
-            ) : (
-              <Link className="text-white/90" to="/login">
-                Log in
-              </Link>
-            )}
-          </div>
         </article>
       </section>
-    </PublicShell>
+    </AppShell>
   );
 }

@@ -6,8 +6,8 @@ import {
 } from "react-router";
 
 import { Button } from "@src/ui/components/designSystem/button";
+import { AppShell } from "@src/ui/components/designSystem/app-shell";
 import { Input } from "@src/ui/components/designSystem/input";
-import { PublicShell } from "@src/ui/components/designSystem/public-shell";
 import { Variant } from "@src/ui/components/designSystem/variants";
 import { authClient, safeRedirectTo } from "@src/ui/domain/auth";
 import { getUser } from "@src/ui/domain/auth.server";
@@ -104,7 +104,7 @@ export default function Login() {
   }
 
   return (
-    <PublicShell user={null}>
+    <AppShell user={null}>
       <section className="grid min-h-full place-items-center px-4 py-12 sm:px-6">
         <article className="w-full max-w-[420px] rounded-lg border border-white/10 bg-neutral-800/40 p-6 sm:p-7">
           <h1 className="text-3xl leading-tight font-bold text-white">
@@ -147,6 +147,6 @@ export default function Login() {
           </Button>
         </article>
       </section>
-    </PublicShell>
+    </AppShell>
   );
 }

@@ -10,5 +10,10 @@ export type AppShellUser = {
 export type AppShellProps = PropsWithChildren<{
   env?: string;
   renderedAt?: string;
-  user: AppShellUser;
+  user?: AppShellUser | null;
 }>;
+
+export type AppShellNavLink = {
+  label: string;
+  to: string;
+};
