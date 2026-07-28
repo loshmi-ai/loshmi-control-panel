@@ -5,11 +5,10 @@ import {
   useSearchParams,
 } from "react-router";
 
-import { Button } from "@src/ui/components/button";
 import { AppShell } from "@src/ui/components/app-shell";
+import { Button } from "@src/ui/components/button";
 import { Frame } from "@src/ui/components/frame";
 import { Input } from "@src/ui/components/input";
-import { Variant } from "@src/ui/components/variants";
 import { authClient, safeRedirectTo } from "@src/ui/domain/auth";
 import { getUser } from "@src/ui/domain/auth.server";
 
@@ -107,32 +106,41 @@ export default function Login() {
   return (
     <AppShell user={null}>
       <section className="grid min-h-full place-items-center px-4 py-12 sm:px-6">
-        <Frame
-          borderVisible={true}
-          className="w-full max-w-[420px] p-6 sm:p-7"
-        >
+        <Frame borderVisible={true} className="w-full max-w-[420px] p-6 sm:p-7">
           <h1 className="text-3xl leading-tight font-bold text-white">
             Log in
           </h1>
           <form className="mt-7 space-y-5" onSubmit={handleSubmit}>
-            <Input
-              required
-              autoComplete="email webauthn"
-              label="Email"
-              name="email"
-              type="email"
-            />
-            <Input
-              required
-              autoComplete="current-password webauthn"
-              label="Password"
-              minLength={8}
-              name="password"
-              type="password"
-            />
+            <label className="block">
+              <span className="mb-2 block text-sm font-semibold text-white/82">
+                Email
+              </span>
+              <Input
+                required
+                autoComplete="email webauthn"
+                name="email"
+                type="email"
+              />
+            </label>
+            <label className="block">
+              <span className="mb-2 block text-sm font-semibold text-white/82">
+                Password
+              </span>
+              <Input
+                required
+                autoComplete="current-password webauthn"
+                name="password"
+                type="password"
+              />
+            </label>
             {error ? <p className="text-sm text-red-700">{error}</p> : null}
-            <Button className="w-full" loading={isSubmitting} type="submit">
-              Log in
+            <Button
+              className="w-full"
+              disabled={isSubmitting}
+              loading={isSubmitting}
+              type="submit"
+            >
+              {isSubmitting ? "Logging in..." : "Log in"}
             </Button>
           </form>
           <div className="my-5 flex items-center gap-3 text-xs font-semibold text-white/45 uppercase">
@@ -142,12 +150,12 @@ export default function Login() {
           </div>
           <Button
             className="w-full"
-            disabled={isSubmitting}
+            disabled={isSubmitting || isPasskeySubmitting}
             loading={isPasskeySubmitting}
-            variant={Variant.Outline}
+            variant="outline"
             onClick={handlePasskeySignIn}
           >
-            Sign in with passkey
+            {isPasskeySubmitting ? "Signing in..." : "Sign in with passkey"}
           </Button>
         </Frame>
       </section>

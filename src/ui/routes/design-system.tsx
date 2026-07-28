@@ -1,64 +1,13 @@
 import { type LoaderFunctionArgs } from "react-router";
 import { Link } from "react-router";
 
+import { AnchorButton } from "@src/ui/components/anchor-button";
 import { AppShell } from "@src/ui/components/app-shell";
-import { AnchorButton } from "@src/ui/components/button";
 import { Frame } from "@src/ui/components/frame";
-import { Variant } from "@src/ui/components/variants";
 import { getUserOrRedirectToLogin } from "@src/ui/domain/auth.server";
 import { designSystemComponentLinks } from "@src/ui/routes/design-system/navigation";
 
 const designSystemFoundations = {
-  colors: [
-    {
-      className: "bg-neutral-950",
-      description: "Outer app shell and button preview surface.",
-      name: "Neutral 950",
-      token: "neutral-950",
-    },
-    {
-      className: "bg-neutral-900",
-      description: "Primary authenticated app panel.",
-      name: "Neutral 900",
-      token: "neutral-900",
-    },
-    {
-      className: "bg-white",
-      description: "Form fields and light preview surfaces.",
-      name: "White",
-      token: "white",
-    },
-    {
-      className: "bg-slate-50",
-      description: "Global page background and read-only field fill.",
-      name: "Slate 50",
-      token: "slate-50",
-    },
-    {
-      className: "bg-slate-300",
-      description: "Input borders and disabled primary controls.",
-      name: "Slate 300",
-      token: "slate-300",
-    },
-    {
-      className: "bg-gray-950",
-      description: "Primary foreground and strong control borders.",
-      name: "Gray 950",
-      token: "gray-950",
-    },
-    {
-      className: "bg-red-700",
-      description: "Danger and error text.",
-      name: "Red 700",
-      token: "red-700",
-    },
-    {
-      className: "bg-indigo-600",
-      description: "Brand eyebrow text on unauthenticated screens.",
-      name: "Indigo 600",
-      token: "indigo-600",
-    },
-  ],
   fonts: [
     {
       className: "font-sans",
@@ -117,7 +66,7 @@ export default function DesignSystem({
             <AnchorButton
               className="font-normal"
               to="/design-system"
-              variant={Variant.Minimal}
+              variant="ghost"
             >
               Overview
             </AnchorButton>
@@ -126,7 +75,7 @@ export default function DesignSystem({
                 className="font-normal"
                 key={section.id}
                 to={section.path}
-                variant={Variant.Minimal}
+                variant="ghost"
               >
                 {section.title}
               </AnchorButton>
@@ -159,7 +108,7 @@ export default function DesignSystem({
                     >
                       <Frame
                         borderVisible={true}
-                        className="h-full p-4 transition group-hover:border-[#979797] group-hover:bg-[#363638]"
+                        className="h-full p-4"
                       >
                         <h3 className="font-semibold">{section.title}</h3>
                         <p className="mt-2 text-sm leading-relaxed text-white/60">
@@ -189,35 +138,6 @@ export default function DesignSystem({
                       <p className="mt-1 text-sm leading-relaxed text-white/60">
                         {font.description}
                       </p>
-                    </Frame>
-                  ))}
-                </div>
-              </section>
-
-              <section>
-                <div className="mb-4">
-                  <h2 className="text-2xl font-bold">Colors</h2>
-                  <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/65">
-                    Core color tokens used by the shell, forms, and controls.
-                  </p>
-                </div>
-                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                  {designSystemFoundations.colors.map((color) => (
-                    <Frame
-                      borderVisible={true}
-                      className="overflow-hidden"
-                      key={color.token}
-                    >
-                      <div className={`h-20 ${color.className}`} />
-                      <div className="p-4">
-                        <h3 className="font-semibold">{color.name}</h3>
-                        <p className="mt-1 text-xs font-bold tracking-[0.08em] text-white/45 uppercase">
-                          {color.token}
-                        </p>
-                        <p className="mt-3 text-sm leading-relaxed text-white/60">
-                          {color.description}
-                        </p>
-                      </div>
                     </Frame>
                   ))}
                 </div>

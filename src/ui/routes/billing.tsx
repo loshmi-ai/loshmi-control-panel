@@ -2,7 +2,6 @@ import { type LoaderFunctionArgs } from "react-router";
 
 import { AppShell } from "@src/ui/components/app-shell";
 import { Button } from "@src/ui/components/button";
-import { Variant } from "@src/ui/components/variants";
 import { getUserOrRedirectToLogin } from "@src/ui/domain/auth.server";
 import { useBillingActions } from "@src/ui/domain/billing";
 import type { BillingLoaderData } from "@src/ui/routes/billing.types";
@@ -79,7 +78,8 @@ export default function Billing({
         <Button
           className="mt-5"
           disabled={billing.isOpeningBillingPortal}
-          variant={Variant.Secondary}
+          loading={billing.isOpeningBillingPortal}
+          variant="secondary"
           onClick={() => void billing.openBillingPortal()}
         >
           {billing.isOpeningBillingPortal ? "Opening..." : "Manage billing"}

@@ -3,7 +3,6 @@ import { type LoaderFunctionArgs } from "react-router";
 
 import { AppShell } from "@src/ui/components/app-shell";
 import { Button } from "@src/ui/components/button";
-import { Variant } from "@src/ui/components/variants";
 import { getUserOrRedirectToLogin } from "@src/ui/domain/auth.server";
 import { getRouteContext } from "@src/ui/lib/route-context.server";
 import type { DashboardLoaderData } from "@src/ui/routes/dashboard.types";
@@ -50,7 +49,7 @@ export default function Dashboard({
       <div className="mt-6 flex flex-wrap items-center gap-3">
         <span className="font-bold">Counter: {count}</span>
         <Button
-          variant={Variant.Secondary}
+          variant="secondary"
           onClick={() => setCount((value) => value + 1)}
         >
           Increment

@@ -28,16 +28,24 @@ export function AddPasskeyForm({
       className="mt-7 flex flex-col gap-3 sm:flex-row"
       onSubmit={handleSubmit}
     >
-      <Input
-        autoComplete="off"
-        className="min-w-0 flex-1"
-        label="New passkey name"
-        name="name"
-        placeholder="MacBook Touch ID"
-        type="text"
-      />
-      <Button className="self-end" loading={isAddingPasskey} type="submit">
-        Add passkey
+      <label className="block min-w-0 flex-1">
+        <span className="mb-2 block text-sm font-semibold text-white/82">
+          New passkey name
+        </span>
+        <Input
+          autoComplete="off"
+          name="name"
+          placeholder="MacBook Touch ID"
+          type="text"
+        />
+      </label>
+      <Button
+        className="self-end"
+        disabled={isAddingPasskey}
+        loading={isAddingPasskey}
+        type="submit"
+      >
+        {isAddingPasskey ? "Adding..." : "Add passkey"}
       </Button>
     </form>
   );

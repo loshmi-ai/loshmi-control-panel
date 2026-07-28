@@ -4,8 +4,6 @@ import type { ComponentProps } from "react";
 import { Button } from "@src/ui/components/button";
 import { Frame } from "@src/ui/components/frame";
 import { Input } from "@src/ui/components/input";
-import { Intent } from "@src/ui/components/intents";
-import { Variant } from "@src/ui/components/variants";
 
 type PasskeyCardProps = {
   deletingPasskeyId: Passkey["id"] | null;
@@ -59,33 +57,37 @@ export function PasskeyCard({
           </p>
         </div>
         <Button
-          intent={Intent.Danger}
+          disabled={deletingPasskeyId === passkey.id}
           loading={deletingPasskeyId === passkey.id}
-          variant={Variant.Outline}
+          variant="destructive"
           onClick={() => void onDeletePasskey(passkey.id)}
         >
-          Delete
+          {deletingPasskeyId === passkey.id ? "Deleting..." : "Delete"}
         </Button>
       </div>
       <form
         className="mt-4 flex flex-col gap-3 sm:flex-row"
         onSubmit={handleRenamePasskey}
       >
-        <Input
-          className="min-w-0 flex-1"
-          defaultValue={passkey.name ?? ""}
-          label="Rename"
-          name="name"
-          required
-          type="text"
-        />
+        <label className="block min-w-0 flex-1">
+          <span className="mb-2 block text-sm font-semibold text-white/82">
+            Rename
+          </span>
+          <Input
+            defaultValue={passkey.name ?? ""}
+            name="name"
+            required
+            type="text"
+          />
+        </label>
         <Button
           className="self-end"
+          disabled={updatingPasskeyId === passkey.id}
           loading={updatingPasskeyId === passkey.id}
           type="submit"
-          variant={Variant.Secondary}
+          variant="secondary"
         >
-          Save
+          {updatingPasskeyId === passkey.id ? "Saving..." : "Save"}
         </Button>
       </form>
     </Frame>

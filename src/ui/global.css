@@ -29,23 +29,6 @@
   scrollbar-width: thin;
 }
 
-/* Loading indicators */
-.button-loading-spinner {
-  animation: button-loading-spinner 0.015s linear infinite;
-}
-
-@keyframes button-loading-spinner {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .button-loading-spinner {
-    animation-duration: 1.2s;
-  }
-}
-
 /* WebKit scrollbar utilities */
 @utility scrollbar-soft {
   &::-webkit-scrollbar {

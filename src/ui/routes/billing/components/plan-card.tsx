@@ -34,11 +34,15 @@ export function BillingPlanCard({
       </ul>
       <Button
         className="mt-5 w-full"
-        disabled={isBillingLoading || isCurrentPlan}
-        loading={isAttaching}
+        disabled={isBillingLoading || isCurrentPlan || isAttaching}
+        loading={isBillingLoading || isAttaching}
         onClick={() => onSelectPlan(plan.id)}
       >
-        {isCurrentPlan ? "Current plan" : "Select plan"}
+        {isAttaching
+          ? "Selecting..."
+          : isCurrentPlan
+            ? "Current plan"
+            : "Select plan"}
       </Button>
     </Frame>
   );

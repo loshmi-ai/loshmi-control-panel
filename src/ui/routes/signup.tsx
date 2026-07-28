@@ -5,11 +5,11 @@ import {
   useSearchParams,
 } from "react-router";
 
-import { AnchorButton, Button } from "@src/ui/components/button";
+import { AnchorButton } from "@src/ui/components/anchor-button";
 import { AppShell } from "@src/ui/components/app-shell";
+import { Button } from "@src/ui/components/button";
 import { Frame } from "@src/ui/components/frame";
 import { Input } from "@src/ui/components/input";
-import { Variant } from "@src/ui/components/variants";
 import { authClient, safeRedirectTo } from "@src/ui/domain/auth";
 import { getUser } from "@src/ui/domain/auth.server";
 
@@ -72,25 +72,37 @@ export default function Signup() {
             Create account
           </h1>
           <form className="mt-7 space-y-5" onSubmit={handleSubmit}>
-            <Input required autoComplete="name" label="Name" name="name" />
-            <Input
-              required
-              autoComplete="email"
-              label="Email"
-              name="email"
-              type="email"
-            />
-            <Input
-              required
-              autoComplete="new-password"
-              label="Password"
-              minLength={8}
-              name="password"
-              type="password"
-            />
+            <label className="block">
+              <span className="mb-2 block text-sm font-semibold text-white/82">
+                Name
+              </span>
+              <Input required autoComplete="name" name="name" />
+            </label>
+            <label className="block">
+              <span className="mb-2 block text-sm font-semibold text-white/82">
+                Email
+              </span>
+              <Input required autoComplete="email" name="email" type="email" />
+            </label>
+            <label className="block">
+              <span className="mb-2 block text-sm font-semibold text-white/82">
+                Password
+              </span>
+              <Input
+                required
+                autoComplete="new-password"
+                name="password"
+                type="password"
+              />
+            </label>
             {error ? <p className="text-sm text-red-700">{error}</p> : null}
-            <Button className="w-full" loading={isSubmitting} type="submit">
-              Create account
+            <Button
+              className="w-full"
+              disabled={isSubmitting}
+              loading={isSubmitting}
+              type="submit"
+            >
+              {isSubmitting ? "Creating..." : "Create account"}
             </Button>
           </form>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -98,7 +110,7 @@ export default function Signup() {
             <AnchorButton
               className="w-full sm:ml-auto sm:w-auto"
               to={`/login?redirectTo=${encodeURIComponent(redirectTo)}`}
-              variant={Variant.Secondary}
+              variant="secondary"
             >
               Log in
             </AnchorButton>

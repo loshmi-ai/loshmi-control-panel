@@ -1,6 +1,5 @@
-import { AnchorButton } from "@src/ui/components/button";
+import { AnchorButton } from "@src/ui/components/anchor-button";
 import { Frame } from "@src/ui/components/frame";
-import { Variant } from "@src/ui/components/variants";
 import type { DesignSystemComponentPageProps } from "@src/ui/routes/design-system/components/component-page.types";
 import { designSystemComponentLinks } from "@src/ui/routes/design-system/navigation";
 
@@ -68,7 +67,7 @@ export function DesignSystemComponentPage<Props>({
           <AnchorButton
             className="font-normal"
             to="/design-system"
-            variant={Variant.Minimal}
+            variant="ghost"
           >
             Overview
           </AnchorButton>
@@ -77,7 +76,7 @@ export function DesignSystemComponentPage<Props>({
               className="font-normal"
               key={item.id}
               to={item.path}
-              variant={Variant.Minimal}
+              variant="ghost"
             >
               {item.title}
             </AnchorButton>

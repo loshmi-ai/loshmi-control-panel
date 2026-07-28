@@ -1,5 +1,4 @@
-export type DesignSystemComponentId =
-  "button" | "frame" | "intents" | "input" | "table" | "variants";
+export type DesignSystemComponentId = "frame";
 
 export type DesignSystemComponentLink = {
   description: string;

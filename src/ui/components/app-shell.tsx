@@ -1,21 +1,15 @@
 import clsx from "clsx";
-import {
-  CreditCard,
-  LogIn,
-  LogOut,
-  Palette,
-  Settings,
-} from "lucide-react";
+import { CreditCard, LogIn, LogOut, Palette, Settings } from "lucide-react";
 import type { ReactElement, ReactNode } from "react";
 import { Link } from "react-router";
 
+import { AnchorButton } from "@src/ui/components/anchor-button";
 import type {
   AppShellNavLink,
   AppShellProps,
   PanelProps,
 } from "@src/ui/components/app-shell.types";
-import { AnchorButton, Button } from "@src/ui/components/button";
-import { Variant } from "@src/ui/components/variants";
+import { Button } from "@src/ui/components/button";
 import { useAuthActions } from "@src/ui/domain/auth";
 
 const authenticatedNavLinks = {
@@ -68,10 +62,10 @@ function Nav({ user }: { user: AppShellProps["user"] }): ReactElement {
           <AnchorButton
             className="font-normal"
             key={link.to}
-            leftIcon={link.leftIcon}
             to={link.to}
-            variant={Variant.Minimal}
+            variant="ghost"
           >
+            <link.leftIcon aria-hidden="true" />
             {link.label}
           </AnchorButton>
         ))}
@@ -82,12 +76,13 @@ function Nav({ user }: { user: AppShellProps["user"] }): ReactElement {
             </span>
             <Button
               className="font-normal"
-              leftIcon={LogOut}
+              disabled={auth.isSigningOut}
               loading={auth.isSigningOut}
-              variant={Variant.Minimal}
+              variant="ghost"
               onClick={() => void auth.signOut()}
             >
-              Sign out
+              {auth.isSigningOut ? null : <LogOut aria-hidden="true" />}
+              {auth.isSigningOut ? "Signing out..." : "Sign out"}
             </Button>
           </>
         ) : null}
