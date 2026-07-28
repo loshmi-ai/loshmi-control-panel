@@ -10,7 +10,7 @@ export function meta() {
     {
       name: "description",
       content:
-        "High agency intelligence that achieves outcomes — Loshmi gives a full VPS with root access to every agent.",
+        "Always-on agents that notice, propose, and act. Loshmi is a computer for an agent, connected to the accounts and tools your work depends on.",
     },
   ];
 }
@@ -40,23 +40,30 @@ export default function Landing({
             className="mb-1 w-20 md:-ml-6"
           />
           <h1 className="font-mlm-roman text-[2.5rem] leading-[1.15] text-white sm:text-[clamp(2.25rem,6vw,3.75rem)]">
-            High agency intelligence that achieves outcomes
+            Always-on agents that notice, propose, and act
           </h1>
           <div className="mt-8 space-y-5 text-base leading-relaxed text-white/72 sm:text-lg">
             <p>
-              LLMs and AI Agents have fundamentally changed how we work. From
-              developing apps, to researching markets. From making videos to
-              publishing research.
+              Claude, Codex, and other AI agents have already changed how we
+              work. They help us think faster, write better, build software,
+              analyze information, and move from idea to execution with far less
+              friction.
             </p>
             <p>
-              Harnesses like Claude Code and Codex, help control your computer.
-              But in essence, they are limited and pose a security risk. Your
-              computer and the agent's computer should not fight for resources.
+              But today, most agents still wait for you to begin. You give them
+              a prompt, explain the context, describe the task, and then they
+              assist. Loshmi connects your agent to the signals you already
+              receive, so it can notice what needs attention, understand your
+              process, propose the right next step, and take action when you
+              allow it to.
             </p>
             <p>
-              Loshmi gives a full VPS with root access to every agent. Our
-              tasteful harness connects to your email, holds your card securely,
-              and can take actions on your behalf.
+              Loshmi is a computer for an agent. It is always online, has its
+              own domain and email, and connects to the accounts and tools your
+              work depends on. You can teach it how you operate, train it on
+              your processes, and let it handle work without waiting for a prompt
+              every time. When something needs judgment, approval, or a final
+              call, it asks for your permission.
             </p>
           </div>
         </article>
