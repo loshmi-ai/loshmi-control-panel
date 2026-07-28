@@ -1,5 +1,4 @@
 import type { PropsWithChildren } from "react";
-import type { LucideIcon } from "lucide-react";
 
 export type PanelProps = PropsWithChildren<{}>;
 
@@ -16,6 +15,5 @@ export type AppShellProps = PropsWithChildren<{
 
 export type AppShellNavLink = {
   label: string;
-  leftIcon: LucideIcon;
   to: string;
 };

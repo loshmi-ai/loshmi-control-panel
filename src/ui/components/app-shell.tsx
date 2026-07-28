@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import { CreditCard, LogIn, LogOut, Palette, Settings } from "lucide-react";
 import type { ReactElement, ReactNode } from "react";
 import { Link } from "react-router";
 
@@ -11,19 +10,19 @@ import type {
 } from "@src/ui/components/app-shell.types";
 import { Button } from "@src/ui/components/button";
 import { useAuthActions } from "@src/ui/domain/auth";
+import { CuelumeSound } from "@src/ui/lib/cuelume";
 
 const authenticatedNavLinks = {
-  billing: { label: "Billing", leftIcon: CreditCard, to: "/billing" },
+  billing: { label: "Billing", to: "/billing" },
   designSystem: {
     label: "Design System",
-    leftIcon: Palette,
     to: "/design-system",
   },
-  settings: { label: "Settings", leftIcon: Settings, to: "/settings" },
+  settings: { label: "Settings", to: "/settings" },
 } satisfies Record<string, AppShellNavLink>;
 
 const publicNavLinks = {
-  login: { label: "Log in", leftIcon: LogIn, to: "/login" },
+  login: { label: "Log in", to: "/login" },
 } satisfies Record<string, AppShellNavLink>;
 
 // Ether to stitch everything onto
@@ -60,12 +59,11 @@ function Nav({ user }: { user: AppShellProps["user"] }): ReactElement {
       <div className="ml-auto flex min-w-0 items-center">
         {Object.values(navLinks).map((link) => (
           <AnchorButton
-            className="font-normal"
+            className="px-2 font-normal"
             key={link.to}
             to={link.to}
-            variant="ghost"
+            variant="link"
           >
-            <link.leftIcon aria-hidden="true" />
             {link.label}
           </AnchorButton>
         ))}
@@ -75,13 +73,13 @@ function Nav({ user }: { user: AppShellProps["user"] }): ReactElement {
               {user.name || user.email}
             </span>
             <Button
-              className="font-normal"
+              className="px-2 font-normal"
               disabled={auth.isSigningOut}
               loading={auth.isSigningOut}
-              variant="ghost"
+              sound={CuelumeSound.Droplet}
+              variant="link"
               onClick={() => void auth.signOut()}
             >
-              {auth.isSigningOut ? null : <LogOut aria-hidden="true" />}
               {auth.isSigningOut ? "Signing out..." : "Sign out"}
             </Button>
           </>

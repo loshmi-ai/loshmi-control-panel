@@ -2,10 +2,11 @@ import { type VariantProps, cva } from "class-variance-authority";
 import { Loader } from "lucide-react";
 import type { ComponentProps } from "react";
 
+import { CuelumeSound } from "@src/ui/lib/cuelume";
 import { cn } from "@src/ui/lib/utils";
 
 export const buttonVariants = cva(
-  "inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all outline-none disabled:cursor-not-allowed disabled:opacity-50 focus-visible:border-white/35 focus-visible:ring-[3px] focus-visible:ring-white/20 aria-invalid:border-red-300/65 aria-invalid:ring-red-300/20 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium transition-all outline-none disabled:cursor-not-allowed disabled:opacity-50 focus-visible:border-white/35 focus-visible:ring-[3px] focus-visible:ring-white/20 aria-invalid:border-red-300/65 aria-invalid:ring-red-300/20 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     defaultVariants: {
       size: "default",
@@ -15,8 +16,8 @@ export const buttonVariants = cva(
       size: {
         default: "h-9 px-4 py-2",
         icon: "size-9",
-        lg: "h-10 rounded-md px-6",
-        sm: "h-8 rounded-md gap-1.5 px-3",
+        lg: "h-10 rounded-xl px-6",
+        sm: "h-8 rounded-xl gap-1.5 px-3",
       },
       variant: {
         default: "bg-white text-neutral-950 shadow-xs hover:bg-white/90",
@@ -35,11 +36,13 @@ export const buttonVariants = cva(
 type ButtonProps = ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
     loading?: boolean;
+    sound?: CuelumeSound;
   };
 
 export function Button({
   className,
   loading = false,
+  sound = CuelumeSound.Press,
   size,
   type = "button",
   variant,
@@ -53,7 +56,7 @@ export function Button({
         loading && "cursor-wait",
         className,
       )}
-      data-cuelume-press={props.disabled || loading ? undefined : ""}
+      data-cuelume-press={props.disabled || loading ? undefined : sound}
       data-loading={loading || undefined}
       type={type}
       {...props}

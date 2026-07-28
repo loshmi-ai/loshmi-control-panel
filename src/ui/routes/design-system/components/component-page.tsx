@@ -63,20 +63,20 @@ export function DesignSystemComponentPage<Props>({
         <p className="mb-3 text-[0.82rem] font-bold tracking-[0.08em] text-white/60 uppercase">
           Design System
         </p>
-        <nav className="flex gap-2 overflow-x-auto lg:flex-col lg:overflow-visible">
+        <nav className="flex gap-1 overflow-x-auto lg:flex-col lg:overflow-visible">
           <AnchorButton
-            className="font-normal"
+            className="px-2 font-normal"
             to="/design-system"
-            variant="ghost"
+            variant="link"
           >
             Overview
           </AnchorButton>
           {designSystemComponentLinks.map((item) => (
             <AnchorButton
-              className="font-normal"
+              className="px-2 font-normal"
               key={item.id}
               to={item.path}
-              variant="ghost"
+              variant="link"
             >
               {item.title}
             </AnchorButton>

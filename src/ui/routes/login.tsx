@@ -11,6 +11,7 @@ import { Frame } from "@src/ui/components/frame";
 import { Input } from "@src/ui/components/input";
 import { authClient, safeRedirectTo } from "@src/ui/domain/auth";
 import { getUser } from "@src/ui/domain/auth.server";
+import { CuelumeSound } from "@src/ui/lib/cuelume";
 
 export function meta() {
   return [{ title: "Log in | Loshmi Control Panel" }];
@@ -138,6 +139,7 @@ export default function Login() {
               className="w-full"
               disabled={isSubmitting}
               loading={isSubmitting}
+              sound={CuelumeSound.Chime}
               type="submit"
             >
               {isSubmitting ? "Logging in..." : "Log in"}
@@ -152,6 +154,7 @@ export default function Login() {
             className="w-full"
             disabled={isSubmitting || isPasskeySubmitting}
             loading={isPasskeySubmitting}
+            sound={CuelumeSound.Success}
             variant="outline"
             onClick={handlePasskeySignIn}
           >
