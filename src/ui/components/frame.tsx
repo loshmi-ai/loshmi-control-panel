@@ -15,11 +15,11 @@ export function Frame({
       className={twMerge(
         clsx(
           "rounded-lg border",
-          standout ? "bg-[#363638]" : "bg-[#242425]",
+          standout ? "bg-frame-standout" : "bg-frame",
           borderVisible
             ? standout
-              ? "border-[#979797]"
-              : "border-[#434343]"
+              ? "border-frame-standout-border"
+              : "border-frame-border"
             : "border-transparent",
           className,
         ),

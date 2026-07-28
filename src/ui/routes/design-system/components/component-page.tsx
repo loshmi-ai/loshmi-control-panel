@@ -1,7 +1,6 @@
-import { AnchorButton } from "@src/ui/components/anchor-button";
 import { Frame } from "@src/ui/components/frame";
 import type { DesignSystemComponentPageProps } from "@src/ui/routes/design-system/components/component-page.types";
-import { designSystemComponentLinks } from "@src/ui/routes/design-system/navigation";
+import { DesignSystemSidebar } from "@src/ui/routes/design-system/components/design-system-sidebar";
 
 export function DesignSystemComponentPage<Props>({
   activeComponent,
@@ -59,30 +58,7 @@ export function DesignSystemComponentPage<Props>({
 
   return (
     <div className="flex min-h-full flex-col gap-5 lg:flex-row">
-      <aside className="shrink-0 border-b border-white/10 pb-4 lg:w-56 lg:border-r lg:border-b-0 lg:pr-5">
-        <p className="mb-3 text-[0.82rem] font-bold tracking-[0.08em] text-white/60 uppercase">
-          Design System
-        </p>
-        <nav className="flex gap-1 overflow-x-auto lg:flex-col lg:overflow-visible">
-          <AnchorButton
-            className="px-2 font-normal"
-            to="/design-system"
-            variant="link"
-          >
-            Overview
-          </AnchorButton>
-          {designSystemComponentLinks.map((item) => (
-            <AnchorButton
-              className="px-2 font-normal"
-              key={item.id}
-              to={item.path}
-              variant="link"
-            >
-              {item.title}
-            </AnchorButton>
-          ))}
-        </nav>
-      </aside>
+      <DesignSystemSidebar activeComponent={activeComponent} />
 
       <section className="min-w-0 flex-1 pr-1">
         <div className="max-w-5xl pb-10">

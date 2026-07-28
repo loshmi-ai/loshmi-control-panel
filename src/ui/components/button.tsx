@@ -6,7 +6,7 @@ import { CuelumeSound } from "@src/ui/lib/cuelume";
 import { cn } from "@src/ui/lib/utils";
 
 export const buttonVariants = cva(
-  "inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium transition-all outline-none disabled:cursor-not-allowed disabled:opacity-50 focus-visible:border-[var(--control-focus-border)] focus-visible:ring-[3px] focus-visible:ring-[var(--control-focus-ring)] aria-invalid:border-red-300/65 aria-invalid:ring-red-300/20 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium transition-all outline-none disabled:cursor-not-allowed disabled:opacity-50 focus-visible:border-control-focus-border focus-visible:ring-[3px] focus-visible:ring-control-focus-ring aria-invalid:border-red-300/65 aria-invalid:ring-red-300/20 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     defaultVariants: {
       size: "default",
@@ -25,16 +25,16 @@ export const buttonVariants = cva(
       },
       variant: {
         default:
-          "bg-[var(--control)] text-[var(--control-foreground)] shadow-xs hover:bg-[var(--control-hover)]",
+          "bg-control text-control-foreground shadow-xs hover:bg-control-hover",
         destructive:
-          "bg-[var(--control-destructive)] text-white shadow-xs hover:bg-[var(--control-destructive-hover)] focus-visible:ring-[var(--control-destructive-focus)]",
+          "bg-control-destructive text-control-foreground shadow-xs hover:bg-control-destructive-hover focus-visible:ring-control-destructive-focus",
         ghost:
-          "text-white hover:bg-[var(--control-ghost-hover)] hover:text-white",
-        link: "text-white underline-offset-4 hover:underline",
+          "text-control-foreground hover:bg-control-ghost-hover hover:text-control-foreground",
+        link: "text-control-foreground underline-offset-4 hover:underline",
         outline:
-          "border border-[var(--control-border)] bg-transparent text-white shadow-xs hover:bg-[var(--control-ghost-hover)] hover:text-white",
+          "border border-control-border bg-transparent text-control-foreground shadow-xs hover:bg-control-ghost-hover hover:text-control-foreground",
         secondary:
-          "bg-[var(--control-secondary)] text-white shadow-xs hover:bg-[var(--control-secondary-hover)]",
+          "bg-control-secondary text-control-foreground shadow-xs hover:bg-control-secondary-hover",
       },
     },
   },

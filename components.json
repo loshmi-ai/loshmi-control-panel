@@ -7,7 +7,7 @@
     "config": "",
     "css": "src/ui/global.css",
     "baseColor": "neutral",
-    "cssVariables": false,
+    "cssVariables": true,
     "prefix": ""
   },
   "aliases": {

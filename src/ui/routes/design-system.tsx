@@ -1,10 +1,10 @@
 import { type LoaderFunctionArgs } from "react-router";
 import { Link } from "react-router";
 
-import { AnchorButton } from "@src/ui/components/anchor-button";
 import { AppShell } from "@src/ui/components/app-shell";
 import { Frame } from "@src/ui/components/frame";
 import { getUserOrRedirectToLogin } from "@src/ui/domain/auth.server";
+import { DesignSystemSidebar } from "@src/ui/routes/design-system/components/design-system-sidebar";
 import { designSystemComponentLinks } from "@src/ui/routes/design-system/navigation";
 
 const designSystemFoundations = {
@@ -58,30 +58,7 @@ export default function DesignSystem({
   return (
     <AppShell user={loaderData.user}>
       <div className="flex min-h-full flex-col gap-5 lg:flex-row">
-        <aside className="shrink-0 border-b border-white/10 pb-4 lg:w-56 lg:border-r lg:border-b-0 lg:pr-5">
-          <p className="mb-3 text-[0.82rem] font-bold tracking-[0.08em] text-white/60 uppercase">
-            Design System
-          </p>
-          <nav className="flex gap-1 overflow-x-auto lg:flex-col lg:overflow-visible">
-            <AnchorButton
-              className="px-2 font-normal"
-              to="/design-system"
-              variant="link"
-            >
-              Overview
-            </AnchorButton>
-            {designSystemComponentLinks.map((section) => (
-              <AnchorButton
-                className="px-2 font-normal"
-                key={section.id}
-                to={section.path}
-                variant="link"
-              >
-                {section.title}
-              </AnchorButton>
-            ))}
-          </nav>
-        </aside>
+        <DesignSystemSidebar />
 
         <section className="min-w-0 flex-1 pr-1">
           <div className="max-w-5xl pb-10">

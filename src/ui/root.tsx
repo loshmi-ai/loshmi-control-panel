@@ -50,7 +50,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="m-0 bg-slate-50 font-sans text-gray-900 antialiased">
+      <body className="m-0 bg-background font-sans text-foreground antialiased">
         <AutumnProvider>{children}</AutumnProvider>
         <ScrollRestoration />
         <Scripts />
@@ -92,14 +92,14 @@ export function ErrorBoundary({ error }: { error: unknown }) {
           className="w-full max-w-[460px] p-6 sm:p-7"
         >
           {status ? (
-            <p className="mb-3 text-[0.78rem] font-bold tracking-[0.08em] text-white/50 uppercase">
+            <p className="mb-3 text-[0.78rem] font-bold tracking-[0.08em] text-foreground/50 uppercase">
               Error {status}
             </p>
           ) : null}
-          <h1 className="text-3xl leading-tight font-bold text-white">
+          <h1 className="text-3xl leading-tight font-bold text-foreground">
             {title}
           </h1>
-          <p className="mt-4 text-base leading-relaxed text-white/65">
+          <p className="mt-4 text-base leading-relaxed text-foreground/65">
             {message}
           </p>
         </Frame>

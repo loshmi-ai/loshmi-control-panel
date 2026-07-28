@@ -30,7 +30,7 @@ function Base({ children }: { children: ReactNode }) {
   return (
     <div
       className={clsx(
-        "bg-neutral-950",
+        "bg-background",
         "flex flex-col",
         "h-screen w-full",
         "overflow-hidden",
@@ -46,7 +46,7 @@ function Nav({ user }: { user: AppShellProps["user"] }): ReactElement {
   const navLinks = user ? authenticatedNavLinks : publicNavLinks;
 
   return (
-    <nav className={clsx("flex items-center", "px-9 py-2 text-white")}>
+    <nav className={clsx("flex items-center", "px-9 py-2 text-foreground")}>
       <Link to={user ? "/dashboard" : "/"} className="flex items-center">
         <img
           alt="Loshmi Cat Logo"
@@ -69,7 +69,7 @@ function Nav({ user }: { user: AppShellProps["user"] }): ReactElement {
         ))}
         {user ? (
           <>
-            <span className="hidden max-w-48 truncate text-sm text-white/60 sm:block">
+            <span className="hidden max-w-48 truncate text-sm text-foreground/60 sm:block">
               {user.name || user.email}
             </span>
             <Button
@@ -94,9 +94,8 @@ function Panel({ children }: PanelProps): ReactElement {
     <main
       className={clsx(
         "min-h-0 flex-grow overflow-hidden",
-        "text-white",
-        // "bg-[#1C1C1E] rounded-3xl",
-        "bg-neutral-900 rounded-2xl",
+        "text-foreground",
+        "bg-card rounded-2xl",
         "mx-2 mb-2",
       )}
     >
