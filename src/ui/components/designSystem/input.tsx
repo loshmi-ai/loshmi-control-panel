@@ -8,7 +8,7 @@ const inputStatuses: Record<NonNullable<InputProps["status"]>, string> = {
   default:
     "border-white/10 text-white placeholder:text-white/38 hover:border-emerald-300/45 focus-within:border-emerald-300/45 focus-within:ring-emerald-300/14",
   error:
-    "border-red-300/35 text-white placeholder:text-red-200/45 hover:border-emerald-300/45 focus-within:border-red-300/65 focus-within:ring-red-300/14",
+    "border-red-300/35 text-white placeholder:text-red-200/45 hover:border-red-300/80 focus-within:border-red-300/65 focus-within:ring-red-300/14",
 };
 
 export function Input({
@@ -48,7 +48,7 @@ export function Input({
       ) : null}
       <div
         className={clsx(
-          "flex min-h-9 w-full items-center gap-2 rounded-md border bg-transparent px-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition active:bg-transparent focus-within:ring-2 focus-within:outline-none [-webkit-tap-highlight-color:transparent]",
+          "flex min-h-9 w-full items-center gap-2 rounded-md border bg-transparent px-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition active:bg-transparent focus-within:ring-4 focus-within:outline-none [-webkit-tap-highlight-color:transparent]",
           inputStatuses[resolvedStatus],
           disabled &&
             "cursor-not-allowed border-white/10 text-white/35 shadow-none hover:border-white/10 focus-within:ring-0 focus-within:outline-none",
@@ -59,7 +59,7 @@ export function Input({
             aria-hidden="true"
             className={clsx(
               "shrink-0",
-              resolvedStatus === "error" ? "text-red-200/75" : "text-white/45",
+              resolvedStatus === "error" ? "text-red-200/75" : "text-white/80",
               disabled && "text-white/25",
             )}
             size={18}
@@ -93,7 +93,7 @@ export function Input({
             aria-hidden="true"
             className={clsx(
               "shrink-0",
-              resolvedStatus === "error" ? "text-red-200/75" : "text-white/45",
+              resolvedStatus === "error" ? "text-red-200/75" : "text-white/80",
               disabled && "text-white/25",
             )}
             size={18}

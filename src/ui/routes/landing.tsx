@@ -35,9 +35,9 @@ export default function Landing({
       <section className="grid min-h-full place-items-center px-4 py-12 sm:px-6 sm:py-0">
         <article className="max-w-[620px]">
           <img
-            src="/zygote.png"
-            alt=""
-            className="mb-6 w-20 brightness-0 invert md:-ml-6"
+            src="/loshmi-cat.svg"
+            alt="Loshmi Cat Logo"
+            className="mb-1 w-20 md:-ml-6"
           />
           <h1 className="font-mlm-roman text-[2.5rem] leading-[1.15] text-white sm:text-[clamp(2.25rem,6vw,3.75rem)]">
             High agency intelligence that achieves outcomes

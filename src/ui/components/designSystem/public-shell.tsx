@@ -25,7 +25,7 @@ function Nav({ user }: Pick<PublicShellProps, "user">): ReactElement {
       <Link to="/">Loshmi</Link>
       <div className="ml-auto flex min-w-0 items-center gap-3">
         <a
-          className="text-sm font-semibold text-white/80"
+          className="text-sm font-semibold text-white/90"
           href="mailto:founders@metablocks.world"
         >
           Waitlist
@@ -33,7 +33,7 @@ function Nav({ user }: Pick<PublicShellProps, "user">): ReactElement {
         {user ? (
           <>
             <Link
-              className="text-sm font-semibold text-white/80"
+              className="text-sm font-semibold text-white/90"
               to="/dashboard"
             >
               Dashboard
@@ -43,7 +43,7 @@ function Nav({ user }: Pick<PublicShellProps, "user">): ReactElement {
             </span>
           </>
         ) : (
-          <Link className="text-sm font-semibold text-white/80" to="/login">
+          <Link className="text-sm font-semibold text-white/90" to="/login">
             Log in
           </Link>
         )}

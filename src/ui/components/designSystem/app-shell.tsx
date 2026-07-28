@@ -35,23 +35,23 @@ function Nav({ user }: { user: AppShellProps["user"] }): ReactElement {
         Loshmi
       </Link>
       <div className="ml-auto flex min-w-0 items-center gap-3">
-        <Link className="text-sm font-semibold text-white/80" to="/billing">
+        <Link className="text-sm font-semibold text-white/90" to="/billing">
           Billing
         </Link>
         <Link
-          className="text-sm font-semibold text-white/80"
+          className="text-sm font-semibold text-white/90"
           to="/design-system"
         >
           Design System
         </Link>
-        <Link className="text-sm font-semibold text-white/80" to="/settings">
+        <Link className="text-sm font-semibold text-white/90" to="/settings">
           Settings
         </Link>
         <span className="hidden max-w-48 truncate text-sm text-white/60 sm:block">
           {user.email}
         </span>
         <Button
-          className="min-h-0 px-0 py-0 text-sm text-white/80 shadow-none"
+          className="min-h-0 px-0 py-0 text-sm text-white/90 shadow-none"
           disabled={auth.isSigningOut}
           type="button"
           variant={Variant.Minimal}
