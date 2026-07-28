@@ -3,12 +3,19 @@ import type { ComponentProps } from "react";
 
 import { cn } from "@src/ui/lib/utils";
 
+type InputProps = ComponentProps<"input"> & {
+  label?: string;
+  labelClassName?: string;
+};
+
 export function Input({
   className,
+  label,
+  labelClassName,
   type = "text",
   ...props
-}: ComponentProps<"input">) {
-  return (
+}: InputProps) {
+  const input = (
     <InputPrimitive
       data-slot="input"
       className={cn(
@@ -20,5 +27,18 @@ export function Input({
       type={type}
       {...props}
     />
+  );
+
+  if (!label) {
+    return input;
+  }
+
+  return (
+    <label className={cn("block", labelClassName)}>
+      <span className="mb-2 block text-sm font-semibold text-white/82">
+        {label}
+      </span>
+      {input}
+    </label>
   );
 }

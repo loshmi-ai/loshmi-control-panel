@@ -505,6 +505,7 @@ export function Morpheus({
     x: sourceGrowthRatio,
     y: sourceGrowthRatio,
   };
+  const shouldRenderStaticSource = !measurementsReady && !expanded;
 
   return (
     <>
@@ -522,37 +523,45 @@ export function Morpheus({
           collapsedContent={collapsedContent}
           expandedContent={expandedContent}
         />
-        <div
-          aria-hidden="true"
-          style={{
-            visibility: "hidden",
-            width: collapsedLayerSize.width,
-            height: collapsedLayerSize.height,
-          }}
-        />
-        <MorphShell
-          expanded={expanded}
-          position={anchorPosition}
-          animatedSize={animatedSize}
-          visualStyle={visualStyle}
-          spring={activeSpring}
-        >
-          <MorphContentLayers
-            expanded={expanded}
-            collapsedContent={collapsedContent}
-            expandedContent={expandedContent}
-            collapsedLayerSize={collapsedLayerSize}
-            expandedLayerSize={expandedLayerSize}
-            sourcePosition={sourcePosition}
-            targetPosition={targetPosition}
-            sourceGrowthScale={sourceGrowthScale}
-            collapsedToExpandedScale={collapsedToExpandedScale}
-            transformOrigin={transformOrigin}
-            sourceTransition={sourceContentMotion}
-            targetTransition={targetContentMotion}
-            onOpen={onOpen}
-          />
-        </MorphShell>
+        {shouldRenderStaticSource ? (
+          <div className="inline-block align-top" onClick={onOpen}>
+            {collapsedContent}
+          </div>
+        ) : (
+          <>
+            <div
+              aria-hidden="true"
+              style={{
+                visibility: "hidden",
+                width: collapsedLayerSize.width,
+                height: collapsedLayerSize.height,
+              }}
+            />
+            <MorphShell
+              expanded={expanded}
+              position={anchorPosition}
+              animatedSize={animatedSize}
+              visualStyle={visualStyle}
+              spring={activeSpring}
+            >
+              <MorphContentLayers
+                expanded={expanded}
+                collapsedContent={collapsedContent}
+                expandedContent={expandedContent}
+                collapsedLayerSize={collapsedLayerSize}
+                expandedLayerSize={expandedLayerSize}
+                sourcePosition={sourcePosition}
+                targetPosition={targetPosition}
+                sourceGrowthScale={sourceGrowthScale}
+                collapsedToExpandedScale={collapsedToExpandedScale}
+                transformOrigin={transformOrigin}
+                sourceTransition={sourceContentMotion}
+                targetTransition={targetContentMotion}
+                onOpen={onOpen}
+              />
+            </MorphShell>
+          </>
+        )}
       </div>
     </>
   );

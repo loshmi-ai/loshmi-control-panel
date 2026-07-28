@@ -1,4 +1,4 @@
-import { type FormEvent, useEffect, useState } from "react";
+import { type FormEvent, useEffect } from "react";
 import {
   type LoaderFunctionArgs,
   redirect,
@@ -9,7 +9,7 @@ import { AppShell } from "@src/ui/components/app-shell";
 import { Button } from "@src/ui/components/button";
 import { Frame } from "@src/ui/components/frame";
 import { Input } from "@src/ui/components/input";
-import { authClient, safeRedirectTo } from "@src/ui/domain/auth";
+import { safeRedirectTo, useAuthActions } from "@src/ui/domain/auth";
 import { getUser } from "@src/ui/domain/auth.server";
 import { CuelumeSound } from "@src/ui/lib/cuelume";
 
@@ -30,78 +30,34 @@ export async function loader(args: LoaderFunctionArgs) {
 
 export default function Login() {
   const [searchParams] = useSearchParams();
-  const [error, setError] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isPasskeySubmitting, setIsPasskeySubmitting] = useState(false);
+  const auth = useAuthActions();
+  const { clearAuthError, startConditionalPasskeySignIn } = auth;
   const redirectTo = safeRedirectTo(searchParams.get("redirectTo"));
 
   useEffect(() => {
-    async function startConditionalPasskeySignIn() {
-      if (
-        typeof PublicKeyCredential === "undefined" ||
-        !PublicKeyCredential.isConditionalMediationAvailable
-      ) {
-        return;
-      }
+    clearAuthError();
+  }, [clearAuthError]);
 
-      const isAvailable =
-        await PublicKeyCredential.isConditionalMediationAvailable();
-
-      if (!isAvailable) {
-        return;
-      }
-
-      const result = await authClient.signIn.passkey({ autoFill: true });
-
-      if (result.error) {
-        return;
-      }
-
-      window.location.assign(redirectTo);
-    }
-
-    void startConditionalPasskeySignIn();
-  }, [redirectTo]);
+  useEffect(() => {
+    void startConditionalPasskeySignIn({ redirectTo });
+  }, [redirectTo, startConditionalPasskeySignIn]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setError(null);
-    setIsSubmitting(true);
 
     const formData = new FormData(event.currentTarget);
     const email = String(formData.get("email") ?? "");
     const password = String(formData.get("password") ?? "");
 
-    const result = await authClient.signIn.email({
+    await auth.loginWithEmail({
       email,
       password,
-      callbackURL: redirectTo,
+      redirectTo,
     });
-
-    setIsSubmitting(false);
-
-    if (result.error) {
-      setError(result.error.message ?? "Could not log in.");
-      return;
-    }
-
-    window.location.assign(redirectTo);
   }
 
   async function handlePasskeySignIn() {
-    setError(null);
-    setIsPasskeySubmitting(true);
-
-    const result = await authClient.signIn.passkey();
-
-    setIsPasskeySubmitting(false);
-
-    if (result.error) {
-      setError(result.error.message ?? "Could not log in with passkey.");
-      return;
-    }
-
-    window.location.assign(redirectTo);
+    await auth.loginWithPasskey({ redirectTo });
   }
 
   return (
@@ -112,37 +68,31 @@ export default function Login() {
             Log in
           </h1>
           <form className="mt-7 space-y-5" onSubmit={handleSubmit}>
-            <label className="block">
-              <span className="mb-2 block text-sm font-semibold text-white/82">
-                Email
-              </span>
-              <Input
-                required
-                autoComplete="email webauthn"
-                name="email"
-                type="email"
-              />
-            </label>
-            <label className="block">
-              <span className="mb-2 block text-sm font-semibold text-white/82">
-                Password
-              </span>
-              <Input
-                required
-                autoComplete="current-password webauthn"
-                name="password"
-                type="password"
-              />
-            </label>
-            {error ? <p className="text-sm text-red-700">{error}</p> : null}
+            <Input
+              required
+              autoComplete="email webauthn"
+              label="Email"
+              name="email"
+              type="email"
+            />
+            <Input
+              required
+              autoComplete="current-password webauthn"
+              label="Password"
+              name="password"
+              type="password"
+            />
+            {auth.error ? (
+              <p className="text-sm text-red-700">{auth.error}</p>
+            ) : null}
             <Button
               className="w-full"
-              disabled={isSubmitting}
-              loading={isSubmitting}
+              disabled={auth.isLoggingIn}
+              loading={auth.isLoggingIn}
               sound={CuelumeSound.Chime}
               type="submit"
             >
-              {isSubmitting ? "Logging in..." : "Log in"}
+              {auth.isLoggingIn ? "Logging in..." : "Log in"}
             </Button>
           </form>
           <div className="my-5 flex items-center gap-3 text-xs font-semibold text-white/45 uppercase">
@@ -152,13 +102,15 @@ export default function Login() {
           </div>
           <Button
             className="w-full"
-            disabled={isSubmitting || isPasskeySubmitting}
-            loading={isPasskeySubmitting}
+            disabled={auth.isLoggingIn || auth.isSigningInWithPasskey}
+            loading={auth.isSigningInWithPasskey}
             sound={CuelumeSound.Success}
             variant="outline"
             onClick={handlePasskeySignIn}
           >
-            {isPasskeySubmitting ? "Signing in..." : "Sign in with passkey"}
+            {auth.isSigningInWithPasskey
+              ? "Signing in..."
+              : "Sign in with passkey"}
           </Button>
         </Frame>
       </section>

@@ -1,4 +1,4 @@
-import { type FormEvent, useState } from "react";
+import { type FormEvent, useEffect } from "react";
 import {
   type LoaderFunctionArgs,
   redirect,
@@ -10,7 +10,7 @@ import { AppShell } from "@src/ui/components/app-shell";
 import { Button } from "@src/ui/components/button";
 import { Frame } from "@src/ui/components/frame";
 import { Input } from "@src/ui/components/input";
-import { authClient, safeRedirectTo } from "@src/ui/domain/auth";
+import { safeRedirectTo, useAuthActions } from "@src/ui/domain/auth";
 import { getUser } from "@src/ui/domain/auth.server";
 
 export function meta() {
@@ -30,35 +30,28 @@ export async function loader(args: LoaderFunctionArgs) {
 
 export default function Signup() {
   const [searchParams] = useSearchParams();
-  const [error, setError] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const auth = useAuthActions();
+  const { clearAuthError } = auth;
   const redirectTo = safeRedirectTo(searchParams.get("redirectTo"));
+
+  useEffect(() => {
+    clearAuthError();
+  }, [clearAuthError]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setError(null);
-    setIsSubmitting(true);
 
     const formData = new FormData(event.currentTarget);
     const name = String(formData.get("name") ?? "");
     const email = String(formData.get("email") ?? "");
     const password = String(formData.get("password") ?? "");
 
-    const result = await authClient.signUp.email({
+    await auth.signupWithEmail({
       name,
       email,
       password,
-      callbackURL: redirectTo,
+      redirectTo,
     });
-
-    setIsSubmitting(false);
-
-    if (result.error) {
-      setError(result.error.message ?? "Could not create your account.");
-      return;
-    }
-
-    window.location.assign(redirectTo);
   }
 
   return (
@@ -72,37 +65,31 @@ export default function Signup() {
             Create account
           </h1>
           <form className="mt-7 space-y-5" onSubmit={handleSubmit}>
-            <label className="block">
-              <span className="mb-2 block text-sm font-semibold text-white/82">
-                Name
-              </span>
-              <Input required autoComplete="name" name="name" />
-            </label>
-            <label className="block">
-              <span className="mb-2 block text-sm font-semibold text-white/82">
-                Email
-              </span>
-              <Input required autoComplete="email" name="email" type="email" />
-            </label>
-            <label className="block">
-              <span className="mb-2 block text-sm font-semibold text-white/82">
-                Password
-              </span>
-              <Input
-                required
-                autoComplete="new-password"
-                name="password"
-                type="password"
-              />
-            </label>
-            {error ? <p className="text-sm text-red-700">{error}</p> : null}
+            <Input required autoComplete="name" label="Name" name="name" />
+            <Input
+              required
+              autoComplete="email"
+              label="Email"
+              name="email"
+              type="email"
+            />
+            <Input
+              required
+              autoComplete="new-password"
+              label="Password"
+              name="password"
+              type="password"
+            />
+            {auth.error ? (
+              <p className="text-sm text-red-700">{auth.error}</p>
+            ) : null}
             <Button
               className="w-full"
-              disabled={isSubmitting}
-              loading={isSubmitting}
+              disabled={auth.isSigningUp}
+              loading={auth.isSigningUp}
               type="submit"
             >
-              {isSubmitting ? "Creating..." : "Create account"}
+              {auth.isSigningUp ? "Creating..." : "Create account"}
             </Button>
           </form>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
