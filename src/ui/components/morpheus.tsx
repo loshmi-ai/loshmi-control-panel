@@ -117,6 +117,7 @@ const sourceContentFade: Transition = {
   ease: "easeOut",
 };
 const sourceReturnDelay = 0.06;
+const sourceGrowthRatio = 2;
 
 const instantTransition: Transition = { duration: 0 };
 const defaultVisualStyle: PanelVisualStyle = {
@@ -359,7 +360,7 @@ function MorphContentLayers({
   expandedLayerSize,
   sourcePosition,
   targetPosition,
-  sourceToExpandedScale,
+  sourceGrowthScale,
   collapsedToExpandedScale,
   transformOrigin,
   sourceTransition,
@@ -373,8 +374,8 @@ function MorphContentLayers({
         initial={false}
         animate={{
           opacity: expanded ? 0 : 1,
-          scaleX: expanded ? sourceToExpandedScale.x : 1,
-          scaleY: expanded ? sourceToExpandedScale.y : 1,
+          scaleX: expanded ? sourceGrowthScale.x : 1,
+          scaleY: expanded ? sourceGrowthScale.y : 1,
           ...sourcePosition,
         }}
         transition={{
@@ -500,9 +501,9 @@ export function Morpheus({
     x: safeScale(collapsedLayerSize.width, expandedLayerSize.width),
     y: safeScale(collapsedLayerSize.height, expandedLayerSize.height),
   };
-  const sourceToExpandedScale = {
-    x: safeScale(expandedLayerSize.width, collapsedLayerSize.width),
-    y: safeScale(expandedLayerSize.height, collapsedLayerSize.height),
+  const sourceGrowthScale = {
+    x: sourceGrowthRatio,
+    y: sourceGrowthRatio,
   };
 
   return (
@@ -544,7 +545,7 @@ export function Morpheus({
             expandedLayerSize={expandedLayerSize}
             sourcePosition={sourcePosition}
             targetPosition={targetPosition}
-            sourceToExpandedScale={sourceToExpandedScale}
+            sourceGrowthScale={sourceGrowthScale}
             collapsedToExpandedScale={collapsedToExpandedScale}
             transformOrigin={transformOrigin}
             sourceTransition={sourceContentMotion}

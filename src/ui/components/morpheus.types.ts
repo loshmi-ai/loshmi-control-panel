@@ -79,7 +79,7 @@ export type MorphContentLayersProps = {
   expandedLayerSize: PanelSize;
   sourcePosition: PanelPosition;
   targetPosition: PanelPosition;
-  sourceToExpandedScale: ContentOffset;
+  sourceGrowthScale: ContentOffset;
   collapsedToExpandedScale: ContentOffset;
   transformOrigin: string;
   sourceTransition: Transition;

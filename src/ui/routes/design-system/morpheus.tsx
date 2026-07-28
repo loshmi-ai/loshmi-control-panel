@@ -4,6 +4,7 @@ import {
   ChevronRightIcon,
   ChevronUpIcon,
   type LucideIcon,
+  SettingsIcon,
 } from "lucide-react";
 import { useState } from "react";
 import { type LoaderFunctionArgs } from "react-router";
@@ -39,6 +40,7 @@ type MorphPossibility = {
   overlayBlur?: number;
   overlayColor?: string;
   overlayOpacity?: number;
+  sourceVariant?: "button" | "icon" | "link";
   spring: MorphSpringPreset;
   subtitle: string;
   targetClassName?: string;
@@ -91,6 +93,29 @@ const morphPossibilityGroups: readonly MorphPossibilityGroup[] = [
         spring: defaultSpring,
         title: "Left",
         subtitle: "Opens toward the inline start of the control.",
+      },
+    ],
+  },
+  {
+    title: "Source Controls",
+    subtitle:
+      "Different collapsed trigger controls morphing into the same panel.",
+    possibilities: [
+      {
+        anchor: defaultAnchor,
+        direction: defaultDirection,
+        sourceVariant: "link",
+        spring: defaultSpring,
+        title: "Link Button",
+        subtitle: "Uses the link button treatment as the collapsed source.",
+      },
+      {
+        anchor: defaultAnchor,
+        direction: defaultDirection,
+        sourceVariant: "icon",
+        spring: defaultSpring,
+        title: "Icon Button",
+        subtitle: "Uses an icon-only control as the collapsed source.",
       },
     ],
   },
@@ -567,6 +592,38 @@ function MorpheusExpandedContent({
   );
 }
 
+function MorpheusCollapsedContent({
+  possibility,
+}: {
+  possibility: MorphPossibility;
+}) {
+  const TriggerIcon = triggerIconByDirection[possibility.direction];
+
+  if (possibility.sourceVariant === "link") {
+    return (
+      <Button size="sm" variant="link">
+        {possibility.title}
+        <TriggerIcon />
+      </Button>
+    );
+  }
+
+  if (possibility.sourceVariant === "icon") {
+    return (
+      <Button aria-label={possibility.title} size="icon-sm" variant="secondary">
+        <SettingsIcon />
+      </Button>
+    );
+  }
+
+  return (
+    <Button size="sm" variant="secondary">
+      {possibility.title}
+      <TriggerIcon />
+    </Button>
+  );
+}
+
 function MorpheusPossibilityDemo({
   possibility,
 }: {
@@ -583,7 +640,6 @@ function MorpheusPossibilityDemo({
       : undefined,
   ].filter((label) => label !== undefined);
   const hasOverlayVariant = overlayLabels.length > 0;
-  const TriggerIcon = triggerIconByDirection[possibility.direction];
 
   return (
     <section className="min-w-0">
@@ -617,10 +673,7 @@ function MorpheusPossibilityDemo({
           overlayOpacity={possibility.overlayOpacity}
           spring={morphSpringPresets[possibility.spring]}
           collapsedContent={
-            <Button size="sm" variant="secondary">
-              {possibility.title}
-              <TriggerIcon />
-            </Button>
+            <MorpheusCollapsedContent possibility={possibility} />
           }
           expandedContent={
             <MorpheusExpandedContent
